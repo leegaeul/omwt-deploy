@@ -5,7 +5,8 @@
 	<import file="${build.root}/build/macro.xml" />
 
 	<target name="clear">
-		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="rm -rf ${dev.tomcat.appbase}/ROOT" usepty="false" useSystemIn="false" />
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="rm -rf ${dev.tomcat.appbase}/ROOT*" usepty="false" useSystemIn="false" />
+		<sleep seconds="${remove.sleep}"/> 
 	</target>
 
 	<target name="deploy" depends="clear">
