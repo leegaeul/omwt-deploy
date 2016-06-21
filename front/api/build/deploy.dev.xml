@@ -4,10 +4,14 @@
 	<property file="${build.root}/api/build/build.properties" />
 	<import file="${build.root}/build/macro.xml" />
 
-	<target name="deploy">
+	<target name="clear">
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="rm -rf ${dev.tomcat.appbase}/api" usepty="false" useSystemIn="false" />
+	</target>
+
+	<target name="deploy" depends="clear">
 		<remote_copy file="${bin-dir}/${dev.warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
 	</target>
-	<target name="rollback">
+	<target name="rollback" depends="clear">
 		<remote_copy file="${backup-dir}/${dev.warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
 	</target>
 </project>

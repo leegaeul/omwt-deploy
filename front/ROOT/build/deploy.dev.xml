@@ -4,6 +4,10 @@
 	<property file="${build.root}/ROOT/build/build.properties" />
 	<import file="${build.root}/build/macro.xml" />
 
+	<target name="clear">
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="rm -rf ${dev.tomcat.appbase}/ROOT" usepty="false" useSystemIn="false" />
+	</target>
+
 	<target name="deploy">
 		<remote_copy file="${bin-dir}/${dev.warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
 	</target>
