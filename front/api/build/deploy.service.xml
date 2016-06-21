@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>   
+	<property file="build.properties" />
+	<property file="${build.root}/api/build/build.properties" />
+	<import file="${build.root}/build/macro.xml" />
+
+	<!-- ************************** -->
+	<!-- *	DEPLOY			-->
+	<!-- ************************** -->
+	<target name="deploy">
+	</target>
+	<target name="service1.deploy">
+		<remote_copy file="${bin-dir}/${warfile}" host="${service1.host}" username="${service1.username}" target-dir="${service1.tomcat.appbase}" password="${service1.password}"/>
+	</target>
+
+	<!-- ************************** -->
+	<!-- *	ROLLBACK		-->
+	<!-- ************************** -->
+	<target name="rollback">
+	</target>
+	<target name="service1.rollback">
+		<remote_copy file="${backup-dir}/${warfile}" host="${service1.host}" username="${service1.username}" target-dir="${service1.tomcat.appbase}" password="${service1.password}"/>
+	</target>
+</project>

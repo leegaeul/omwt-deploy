@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>   
+	<property file="build.properties" />
+	<property file="${build.root}/api/build/build.properties" />
+	<import file="${build.root}/build/macro.xml" />
+
+	<target name="project-import">
+		 <svn_export target-dir="${contextpath}" repo-url="${svn.repo.url}/${project}" repo-user="${svn.repo.user}" repo-password="${svn.repo.password}" revision="HEAD"/>
+	</target>
+
+	<target name="compile" depends="project-import">
+		<dependency_install pomfile="${contextpath}/pom.xml" target-dir="${lib-dir}"/>
+		<javac_compile lib-dir="${lib-dir}" javasrc-dir="${contextpath}/src/main/java" classes-dir="${classes-dir}" resources-dir="${contextpath}/src/main/resources"/>
+	</target>
+
+	<target name="package" depends="compile">
+		<backup bin-dir="${bin-dir}" file="${warfile}" target-dir="${backup-dir}"/>
+		<warpack warfile="${bin-dir}/${warfile}" webfile="${webapp-dir}/WEB-INF/web.xml" lib-dir="${lib-dir}" classes-dir="${classes-dir}" webapp-dir="${webapp-dir}"/>
+	</target>
+	<target name="build" depends="package"/>
+</project>

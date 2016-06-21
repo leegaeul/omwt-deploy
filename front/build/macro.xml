@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build Macro" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<property file="build.properties" />
+
+	<tstamp>
+		<format property="timestamp" pattern="yyyyMMddHHmmss"/>
+	</tstamp>
+
+	<!-- SVN EXPORT -->	
+	<macrodef name="svn_export">
+		<attribute name="target-dir"/>
+		<attribute name="repo-url" />
+		<attribute name="repo-user" />
+		<attribute name="repo-password"/>
+		<attribute name="revision" />
+		<sequential>
+			<path id="svnant.classpath">
+				<fileset dir="${ant.lib.dir}/svnant">
+					<include name="*.jar" />
+				</fileset>
+			</path>
+			<typedef classpathref="svnant.classpath" resource="org/tigris/subversion/svnant/svnantlib.xml" />
+			<delete dir="@{target-dir}"/>
+			<svn username="@{repo-user}" password="@{repo-password}" svnkit="false" javahl="false">
+				<checkout url="@{repo-url}" revision="@{revision}" destPath="@{target-dir}" />
+			</svn>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="dependency_install">
+		<attribute name="pomfile" />
+		<attribute name="target-dir" />
+		<sequential>
+			<path id="maven.classpath">
+				<fileset dir="${ant.lib.dir}/maven">
+					<include name="maven-ant-tasks-2.1.3.jar" />
+				</fileset>
+			</path>
+			<typedef classpathref="maven.classpath" resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" />
+
+			<artifact:pom id="pom" file="@{pomfile}" />
+			<artifact:dependencies filesetId="pom.fileset" pathId="pom.classpath" pomRefId="pom" />
+			<copy todir="@{target-dir}">
+				<fileset refid="pom.fileset" />
+				<mapper type="flatten" />
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="javac_compile">
+		<attribute name="lib-dir"/>
+		<attribute name="javasrc-dir"/>
+		<attribute name="classes-dir"/>
+		<attribute name="resources-dir"/>
+		<sequential>
+			<path id="master.classpath">
+				<fileset dir="@{lib-dir}">
+					<include name="*.jar" />
+				</fileset>
+				<pathelement path="@{classes-dir}"/>
+			</path>	
+			<delete dir="@{classes-dir}" />
+			<mkdir dir="@{classes-dir}" />
+			<javac srcdir="@{javasrc-dir}" destdir="@{classes-dir}" classpathref="master.classpath" includes="**/*" debug="on" encoding="UTF-8" includeantruntime="false" deprecation="true"/> 
+			<copy todir="@{classes-dir}"><fileset dir="@{resources-dir}"><exclude name="**/META-INF"/></fileset></copy>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="backup">
+		<attribute name="bin-dir"/>
+		<attribute name="file"/>
+		<attribute name="target-dir"/>
+		<sequential>
+			<property name="origin" value="@{bin-dir}/@{file}"/>
+			<copy todir="@{target-dir}" file="${origin}" preservelastmodified="true" failonerror="false"/>	
+			<copy tofile="@{target-dir}/@{file}.${timestamp}" file="${origin}" preservelastmodified="true" failonerror="false"/>	
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="warpack">
+		<attribute name="warfile"/>
+		<attribute name="webfile"/> <!-- web.xml -->
+		<attribute name="lib-dir"/>
+		<attribute name="classes-dir"/>
+		<attribute name="webapp-dir"/>
+		<sequential>
+			<war destfile="@{warfile}" webxml="@{webfile}">
+				<fileset dir="@{webapp-dir}"/>
+				<lib dir="@{lib-dir}"/>
+				<classes dir="@{classes-dir}"/>
+			</war>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="remote_command">
+		<attribute name="host"/>
+		<attribute name="username"/>
+		<attribute name="password"/>
+		<attribute name="command"/>
+		<attribute name="usepty"/>
+		<attribute name="useSystemIn"/>
+		<sequential>
+			<path id="jsch.classpath">
+				<fileset dir="${ant.lib.dir}/jsch">
+					<include name="ant-jsch.jar" />
+					<include name="jsch-0.1.53.jar" />
+				</fileset>
+			</path>
+			<taskdef name="sshexec" classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHExec" classpathref="jsch.classpath" />
+			<sshexec host="@{host}" username="@{username}" password="@{password}" command="@{command}" trust="true" usepty="@{usepty}" useSystemIn="@{useSystemIn}" />
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="remote_copy">
+		<attribute name="target-dir"/>
+		<attribute name="file"/>
+		<attribute name="host"/>
+		<attribute name="username"/>
+		<attribute name="password"/>
+		<sequential>
+			<path id="jsch.classpath">
+				<fileset dir="${ant.lib.dir}/jsch">
+					<include name="ant-jsch.jar" />
+					<include name="jsch-0.1.40.jar" />
+				</fileset>
+			</path>
+			<taskdef name="scp" classname="org.apache.tools.ant.taskdefs.optional.ssh.Scp" classpathref="jsch.classpath" />		
+			<property name="server" value="@{host}"/>
+			<scp file="@{file}" todir="@{username}@${server}:@{target-dir}" password="@{password}" trust="true" />
+		</sequential>
+	</macrodef>
+</project>

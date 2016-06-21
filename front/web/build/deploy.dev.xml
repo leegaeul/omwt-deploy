@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>   
+	<property file="build.properties" />
+	<property file="${build.root}/web/build/build.properties" />
+	<import file="${build.root}/build/macro.xml" />
+
+	<target name="deploy">
+		<remote_copy file="${bin-dir}/${warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
+		<remote_copy file="${bin-dir}/${tarfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.apache.appbase}" password="${dev.password}"/>
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="cd ${dev.apache.appbase} &amp;&amp; tar xvf ${tarfile} &amp;&amp; echo y | rm ${tarfile}" usepty="false" useSystemIn="false"/>
+	</target>
+	<target name="rollback">
+		<remote_copy file="${backup-dir}/${warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
+	</target>
+</project>

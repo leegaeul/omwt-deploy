@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Olleh Market Webtoon - Front" basedir="." default="build">
+	<property file="${basedir}/build.properties"/>
+	<import file="${build.root}/build/macro.xml"/>
+
+	<target name="build.service">
+		<ant antfile="${build.root}/web/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/api/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/ROOT/build/build.xml" target="build"/>
+		<ant antfile="${basedir}/deploy.service.xml" target="deploy" />
+	</target>
+	<target name="build.qa">
+		<ant antfile="${build.root}/web/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/api/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/ROOT/build/build.xml" target="build"/>
+		<ant antfile="${basedir}/deploy.qa.xml" target="deploy" />
+	</target>
+	<target name="build.development">
+		<ant antfile="${build.root}/web/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/api/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/ROOT/build/build.xml" target="build"/>
+		<ant antfile="${basedir}/deploy.dev.xml" target="deploy" />
+	</target>
+
+	<target name="rollback.service"><ant antfile="${basedir}/deploy.service.xml" target="rollback"/></target>
+	<target name="rollback.qa"><ant antfile="${basedir}/deploy.qa.xml" target="rollback"/></target>
+	<target name="rollback.development"><ant antfile="${basedir}/deploy.dev.xml" target="rollback"/></target>
+
+	<target name="test">
+		<ant antfile="${build.root}/web/build/build.xml" target="build"/>
+		<ant antfile="${build.root}/web/build/deploy.dev.xml" target="deploy"/>
+	</target>
+</project>	

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property file="${basedir}/build.properties"/>
+	<import file="${build.root}/build/macro.xml"/>
+	
+	<!-- ************************** -->
+	<!-- *	DEPLOY			-->
+	<!-- ************************** -->
+	<target name="deploy"> 
+		<antcall target="service1.deploy"/>
+	</target>
+	<target name="service1.deploy">
+		<antcall target="service1.stop"/>
+		<ant antfile="${build.root}/web/build/deploy.service.xml" target="service1.deploy"/>
+		<ant antfile="${build.root}/api/build/deploy.service.xml" target="service1.deploy"/>
+		<ant antfile="${build.root}/ROOT/build/deploy.service.xml" target="deploy.service1"/>
+		<sleep seconds="${deploy.sleep}"/>
+		<antcall target="service1.start"/>
+	</target>
+
+	<!-- ************************** -->
+	<!-- *	ROLLBACK		-->
+	<!-- ************************** -->
+	<target name="rollback">
+		<antcall target="service1.rollback"/>
+	</target>
+	<target name="service1.rollback">
+		<antcall target="service1.stop"/>
+		<ant antfile="${build.root}/web/build/deploy.service.xml" target="service1.rollback"/>
+		<ant antfile="${build.root}/api/build/deploy.service.xml" target="service1.rollback"/>
+		<ant antfile="${build.root}/ROOT/build/deploy.service.xml" target="deploy"/>
+		<sleep seconds="${deploy.sleep}"/>
+		<antcall target="service1.start"/>
+	</target>
+
+	<target name="service1.stop">
+		<remote_command host="${service1.host}" username="${service1.username}" password="${service1.password}" command="sudo ${service1.apache.home}/${apache.stop.command}" usepty="true" useSystemIn="false"/>
+		<sleep seconds="${apache.stop.sleep}"/>
+		<remote_command host="${service1.host}" username="${service1.username}" password="${service1.password}" command="${service1.tomcat.home}/${tomcat.stop.command}" usepty="false" useSystemIn="false"/>
+		<sleep seconds="${tomcat.stop.sleep}"/>
+	</target>
+	<target name="service1.start">	
+		<remote_command host="${service1.host}" username="${service1.username}" password="${service1.password}" command="${service1.tomcat.home}/${tomcat.start.command}" usepty="false" useSystemIn="false"/>
+		<sleep seconds="${tomcat.start.sleep}"/>
+		<remote_command host="${service1.host}" username="${service1.username}" password="${service1.password}" command="sudo ${service1.apache.home}/${apache.start.command}" usepty="true" useSystemIn="true"/>
+	</target>
+</project>
+
+

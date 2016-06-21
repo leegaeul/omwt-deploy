@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property file="${basedir}/build.properties"/>
+	<import file="${build.root}/build/macro.xml"/>
+
+	<target name="deploy"> 
+		<antcall target="dev.stop"/>
+		<ant antfile="${build.root}/web/build/deploy.dev.xml" target="deploy"/>
+		<ant antfile="${build.root}/api/build/deploy.dev.xml" target="deploy"/>
+		<ant antfile="${build.root}/ROOT/build/deploy.dev.xml" target="deploy"/>
+		<sleep seconds="${deploy.sleep}"/>
+		<antcall target="dev.start"/>
+	</target>
+	<target name="rollback">
+		<antcall target="dev.stop"/>
+		<ant antfile="${build.root}/web/build/deploy.dev.xml" target="rollback"/>
+		<ant antfile="${build.root}/api/build/deploy.dev.xml" target="rollback"/>
+		<ant antfile="${build.root}/ROOT/build/deploy.dev.xml" target="deploy"/>
+		<sleep seconds="${deploy.sleep}"/>
+		<antcall target="dev.start"/>
+	</target>
+	<target name="dev.stop">
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="sudo ${dev.apache.home}/${apache.stop.command}" usepty="true" useSystemIn="false"/>
+		<sleep seconds="${apache.stop.sleep}"/>
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="${dev.tomcat.home}/${tomcat.stop.command}" usepty="false" useSystemIn="false"/>
+		<sleep seconds="${tomcat.stop.sleep}"/>
+	</target>
+	<target name="dev.start">	
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="${dev.tomcat.home}/${tomcat.start.command}" usepty="false" useSystemIn="false"/>
+		<sleep seconds="${tomcat.start.sleep}"/>
+		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="sudo ${dev.apache.home}/${apache.start.command}" usepty="true" useSystemIn="true"/>
+	</target>
+</project>
+
+
