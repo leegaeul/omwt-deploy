@@ -16,6 +16,7 @@
 	<target name="package" depends="compile">
 		<backup bin-dir="${bin-dir}" file="${warfile}" target-dir="${backup-dir}"/>
 		<warpack warfile="${bin-dir}/${warfile}" webfile="${webapp-dir}/WEB-INF/web.xml" lib-dir="${lib-dir}" classes-dir="${classes-dir}" webapp-dir="${webapp-dir}"/>
+		<warpack warfile="${bin-dir}/${dev.warfile}" webfile="${webapp-dir}/WEB-INF/web.xml" lib-dir="${lib-dir}" classes-dir="${classes-dir}" webapp-dir="${webapp-dir}"/>
 		<tar destfile="${bin-dir}/${tarfile}" basedir="${webapp-dir}" includes="pc, mobile, promotion"/>
 	</target>
 	
