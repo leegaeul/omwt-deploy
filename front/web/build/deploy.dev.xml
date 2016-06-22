@@ -10,11 +10,11 @@
 	</target>
 
 	<target name="deploy" depends="clear">
-		<remote_copy file="${bin-dir}/${warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
+		<remote_copy file="${bin-dir}/${dev.warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
 		<remote_copy file="${bin-dir}/${tarfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.apache.appbase}" password="${dev.password}"/>
 		<remote_command host="${dev.host}" username="${dev.username}" password="${dev.password}" command="cd ${dev.apache.appbase} &amp;&amp; tar xvf ${tarfile} &amp;&amp; echo y | rm ${tarfile}" usepty="false" useSystemIn="false"/>
 	</target>
 	<target name="rollback" depends="clear">
-		<remote_copy file="${backup-dir}/${warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
+		<remote_copy file="${backup-dir}/${dev.warfile}" host="${dev.host}" username="${dev.username}" target-dir="${dev.tomcat.appbase}" password="${dev.password}"/>
 	</target>
 </project>
