@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="Author" content="Kim nakun" />
+<meta name="content" content="" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>올레마켓웹툰 2주년 생일파티 이벤트</title><!-- 20150702 수정 -->
+<link rel="shortcut icon" type="image/x-icon" href="" />
+<link rel="stylesheet" type="text/css" href="/css/pc/event/2years/common.css" />
+<link rel="stylesheet" type="text/css" href="/css/pc/event/2years/event_2years.css" />
+<script type="text/javascript" src="/js/pc/event/2years/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/js/pc/event/2years/event_2years.js"></script>
+<script type="text/javascript" >
+
+//숫자만 입력 체크
+var telValidate = function(event) 
+{
+	var key = window.event ? event.keyCode : event.which;
+	var keychar = String.fromCharCode(key);
+	var reg = /[0-9\b]/;
+	return reg.test(keychar);
+};
+
+var isLogin = false;
+$(document).ready(function(){
+	
+	//ajax 기본 세팅
+   	jQuery.ajaxSetup({
+   	   	global: false,
+   	    cache: true,
+   	    dataType: 'json',
+   	    timeout: 30000,
+   	    type: 'POST'
+   	});
+	
+	//전화번호 숫자 체크
+   	$('.phone_input').keyup(function(){
+   		$(this).val($(this).val().replace(/[^0-9]/g,''));
+   	});
+   	
+   	fncGetLoginInfo();
+});
+
+function fncGetLoginInfo() {
+	
+	//ajax 방식으로 서버에 처리 요청
+   	$.ajax({
+   		type : 'POST',
+        url: '/common/getLoginInfo.kt',
+        data: {},
+        beforeSend: function(xmlHttpRequest) {	
+        	isRunning = true;
+		},
+        error: function(xhr, textStatus, errorThrown) {
+        	//에러 메시지 처리
+        	if(xhr.status != 0)
+        		cfPrintMsg("ok","요청 중 서버에서 에러가 발생하였습니다.",null);
+        },
+        success: function(json, textStatus) {
+        	isLogin = json.isLogin;
+        	if(!isLogin) {
+        		$(".btn_click_prv").unbind("click");
+        		$(".btn_click_prv").attr("href", "/login.kt");
+        		return false;
+        	}
+        	
+        	getTwoAnniEventJoinyn();
+        },
+        complete: function(xhr, textStatus) {
+        	isRunning = false;
+        }
+    });
+}
+
+var loginCnt = 3;
+var rumorCnt = 2;
+var stickerCnt = 10;
+var commentCnt = 10;
+var snsCnt = 5;
+var agreeCheck = false;
+
+function getTwoAnniEventJoinyn() {
+	
+	//ajax 방식으로 서버에 처리 요청
+   	$.ajax({
+   		type : 'POST',
+        url: '/common/getMissionEventJoinyn.kt',
+        data: {},
+        beforeSend: function(xmlHttpRequest) {	
+        	isRunning = true;
+		},
+        error: function(xhr, textStatus, errorThrown) {
+        	//에러 메시지 처리
+        	if(xhr.status != 0)
+        		cfPrintMsg("ok","요청 중 서버에서 에러가 발생하였습니다.",null);
+        },
+        success: function(json, textStatus) {
+        	if(json.joinyn == "Y") {
+        		$(".btn_click_prv").unbind("click");
+        		$(".btn_click_prv").attr("onclick", "javascript:fncMyMission(); return false;");
+        		agreeCheck = true;
+        		//현재상황 반영하기
+        		if(json.missionList != null && json.missionList.length > 0) {
+        			
+        			for(var i = 0; i < json.missionList.length; i++) {
+        				
+        				var mission = json.missionList[i];
+        				
+        				if(mission.missionfg == "login") {
+        					if($('.attendance_seal > li').size() < loginCnt){
+        						$('.attendance_seal').append("<li><img src='/images/pc/event/2years/event_2years_sticker01.png' alt='출석완료 도장' /></li>");
+        					}
+        				}else if(mission.missionfg == "rumor") {
+        					if($('.rumor_seal > li').size() < rumorCnt){
+        						$('.rumor_seal').append("<li><img src='/images/pc/event/2years/event_2years_sticker02.png' alt='소문내기완료 도장' /></li>");
+        					}
+        				}else if(mission.missionfg == "sticker") {
+        					if($('.sticker_seal > li').size() < stickerCnt){
+        						$('.sticker_seal').append("<li><img src='/images/pc/event/2years/event_2years_sticker03.png' alt='스티커완료 도장' /></li>");
+        					}
+        				}else if(mission.missionfg == "comment") {
+        					if($('.reply_seal > li').size() < commentCnt){
+        						$('.reply_seal').append("<li><img src='/images/pc/event/2years/event_2years_sticker04.png' alt='댓글완료 도장' /></li>");
+        					}
+        				}else if(mission.missionfg == "sns") {
+        					if($('.share_seal > li').size() < snsCnt){
+        						$('.share_seal').append("<li><img src='/images/pc/event/2years/event_2years_sticker05.png' alt='공유완료 도장' /></li>");
+        					}
+        				}
+        			}
+        		}
+        	}
+        },
+        complete: function(xhr, textStatus) {
+        	isRunning = false;
+        }
+    });
+}
+
+function fncRegistEvent() {
+
+	var phoneNum = $('.phone_input').val();
+	var chk1 = $('#agree_chk1').is(":checked");
+	var chk2 = $('#agree_chk2').is(":checked");
+	
+	if(phoneNum == "" || phoneNum == "휴대폰 번호’-’를 제외한 숫자만 입력") {
+		alert("휴대폰 번호를 입력해주세요.");
+		$('.phone_input').focus();
+		return false;
+	}
+	
+	if(phoneNum.length < 10 || phoneNum.length > 11) {
+		alert("잘못된 휴대폰 번호입니다.\n휴대폰 번호를 확인해 주세요.");
+		$('.phone_input').focus();
+		return false;
+	}
+	
+	/* if(!chk1 || !chk2){
+		alert("약관 동의 후 이용해 주세요.");
+		return false;
+	} */
+	
+	if(!chk1){
+		alert("개인정보 수집, 활용 약관 동의 후 이용해 주세요.");
+		return false;
+	}
+	
+	if(!chk2){
+		alert("개인정보 수집 및 위탁업무 약관 동의 후 이용해 주세요.");
+		return false;
+	}
+  	  
+	//ajax 방식으로 서버에 처리 요청
+   	$.ajax({
+   		type : 'POST',
+        url: '/common/missionEventRegistProc.kt',
+        data: {phonenum : phoneNum},
+        beforeSend: function(xmlHttpRequest) {	
+		},
+        error: function(xhr, textStatus, errorThrown) {
+        	//에러 메시지 처리
+        	if(xhr.status != 0)
+        		cfPrintMsg("ok","요청 중 서버에서 에러가 발생하였습니다.",null);
+        },
+        success: function(json, textStatus) {
+        	if(json.erroryn && json.erroryn == "Y") {
+        		alert(json.errormsg);
+        		return false;
+        	}
+        	
+        	location.reload();
+        },
+        complete: function(xhr, textStatus) {
+        }
+    });
+  	
+}
+
+var isRunning = false;
+function fncMyMission() {
+
+	if(isRunning){
+		return;
+	} 
+	
+	//ajax 방식으로 서버에 처리 요청
+   	$.ajax({
+   		type : 'POST',
+        url: '/common/getMyMission.kt',
+        data: {},
+        beforeSend: function(xmlHttpRequest) {	
+        	isRunning = true;
+		},
+        error: function(xhr, textStatus, errorThrown) {
+        	//에러 메시지 처리
+        	if(xhr.status != 0)
+        		cfPrintMsg("ok","요청 중 서버에서 에러가 발생하였습니다.",null);
+        },
+        success: function(json, textStatus) {
+        	
+        	if(json.erroryn && json.erroryn == "Y") {
+        		alert(json.errormsg);
+        		return false;
+        	}
+        	
+        	isRunning = false;
+        	
+        	$('#logincnt').text(json.loginTotalCnt);
+        	$('#rumorcnt').text(json.rumorTotalCnt);
+        	$('#stickercnt').text(json.stickerTotalCnt);
+        	$('#commentcnt').text(json.commentTotalCnt);
+        	$('#snscnt').text(json.snsTotalCnt);
+        	
+        	var totalCnt = json.loginTotalCnt + json.rumorTotalCnt + json.stickerTotalCnt + json.commentTotalCnt + json.snsTotalCnt;
+        	if(totalCnt <= 6) {
+        		$('#popupText').html(popText1);
+        	}else if(totalCnt <= 12) {
+        		$('#popupText').html(popText2);
+        	}else if(totalCnt <= 18) {
+        		$('#popupText').html(popText3);
+        	}else if(totalCnt <= 24) {
+        		$('#popupText').html(popText4);
+        	}else {
+        		$('#popupText').html(popText5);
+        	}
+        	
+        	//변경사항이 없을 경우
+        	if(json.updateyn == "N") {
+        		$('#missionBtn').attr("onclick", "javascript:layerHidden(); return false;");
+        	}else{
+        		$('#missionBtn').attr("onclick", "javascript:missionRegist(); return false;");
+        	}
+        	
+        	//모든 미션 클리어시
+        	if(json.loginTotalCnt >= loginCnt && json.rumorTotalCnt >= rumorCnt 
+        			&& json.stickerTotalCnt >= stickerCnt && json.commentTotalCnt >= commentCnt && json.snsTotalCnt >= snsCnt) {
+        		$('#missionBtn').attr("onclick", "javascript:layerHidden(); return false;");
+            	$('#missionBtn > img').attr("src", "/images/pc/event/2years/layer_mission_btn02.gif");
+        	}
+        	
+        	layerShow();
+        },
+        complete: function(xhr, textStatus) {
+        }
+    });
+	
+}
+
+var popText1 = "참여 도장 꾸욱-*<br/>응모 열정 불태워 이벤트의 주인공이 되세요!" 	   	  //6개 미션 도장까지
+var popText2 = "추가 적립 시~원하게 완료!<br/>경품을 향해 야무지게 달릴 준비 되셨나요?!" //12개 미션 도장까지
+var popText3 = "이벤트 응모에 버닝 중♥<br/>당첨으로 가는 열쇠를 거머쥐셨네요!"         //18개 미션 도장까지 
+var popText4 = "오늘도 릴레이 출!췍!<br/>커지는 혜택과 감동! 미션 달성까지 화이팅♪"     //24개 미션 도장까지 
+var popText5 = "꾸준한 열정에 박수를!★<br/>1등을 향한 미션은 계속된다!" 			  //30개 이후 미션 도장까지
+	
+/* 20150702 레이어 분기 처리 */
+function layerShow() {
+	if(!agreeCheck){
+		$targetLayer.fadeIn('fast').addClass("on");
+
+		function pop_vertical1(){//팝업 센터 정렬
+			var pop_height = $('.layer_agree').height();
+			var pop_height_device = - (pop_height / 2); 
+			$('.layer_agree').css("top","50%");
+			$('.layer_agree').css("margin-top",pop_height_device);
+		}
+		pop_vertical1();
+	}else{
+		$('.layer_mission_detail').fadeIn('fast').addClass("on");
+
+		function pop_vertical2(){//팝업 센터 정렬
+			var pop_height = $('.layer_mission_detail').height();
+			var pop_height_device = - (pop_height / 2); 
+			$('.layer_mission_detail').css("top","50%");
+			$('.layer_mission_detail').css("margin-top",pop_height_device);
+		}
+		pop_vertical2();
+	}
+	$('.layer_bg_wrap').css({'display' : 'block'});
+};
+
+function layerHidden() {
+	if(!agreeCheck){
+		$targetLayer.fadeOut('fast').removeClass("on");
+	}else{
+		$('.layer_mission_detail').fadeOut('fast').removeClass("on");
+	}
+	$('.layer_bg_wrap').css({'display' : 'none'});
+	$("html").css({"overflow-y" : "auto"});
+	$("#wrap").css({"overflow-y" : "auto"});
+};
+/* //20150702 레이어 분기 처리 */
+
+function missionRegist() {
+	
+	if(isRunning){
+		return;
+	}
+	
+	//ajax 방식으로 서버에 처리 요청
+   	$.ajax({
+   		type : 'POST',
+        url: '/common/missionRegistProc.kt',
+        data: {},
+        beforeSend: function(xmlHttpRequest) {	
+        	isRunning = true;
+		},
+        error: function(xhr, textStatus, errorThrown) {
+        	//에러 메시지 처리
+        	if(xhr.status != 0)
+        		cfPrintMsg("ok","요청 중 서버에서 에러가 발생하였습니다.",null);
+        },
+        success: function(json, textStatus) {
+        	
+        	if(json.erroryn && json.erroryn == "Y") {
+        		alert(json.errormsg);
+        		return false;
+        	}
+        	
+        	location.reload();
+        },
+        complete: function(xhr, textStatus) {
+        	isRunning = false;
+        }
+    });
+	
+}
+</script>
+</head>
+<body>
+    <!-- start -->
+	<div class="event_2years_wrap">
+        <h1 class="title"><img src="/images/pc/event/2years/event_2years_title.jpg" alt="2nd anniversary 올레마켓웹툰과 신세경의 트윈 생일파티 2015. 7. 6 ~ 7. 19 (14일간) 축하 미션 수행하고 신세경과 생파하자! 미션 수행 할수록 당첨확률도 UP!" /></h1><!-- 20150702-2 alt추가 -->
+        <p class="txt"><img src="/images/pc/event/2years/event_2years_txt01.jpg" alt="올레마켓웹툰 2주년과 함께 냄.보.소 by만취 드라마의 주인공 신세경이 트윈 생일파티를 진행하려 합니다.간단한 축하 미션으로 올레마켓웹툰 2주년 크~게 축하 해주시고, 신세경과 함께하는 생파에도 놀러오세요. 기간 : 2015. 7. 6 ~ 7. 19 (14일간) 당첨발표 : 2015. 7. 20 잠깐! 미션 수행방법 살펴 볼까요?! 로그인 후 나의 미션 현황보기 버튼을 누르면 미션 완료!  ※ 출석체크는 1일 1회만 가능합니다. 올레마켓웹툰 모~든 작품과 콘텐츠에 댓글, 스티커, SNS 공유하기를 하시면 축하 미션이 체크됩니다. 미션 All Clear를 위해 소문내기(트윈 생파 이벤트 공유하기)는 필수이니 잊지 마세요~미션 All Clear 후에도 계속~계속~ 미션 활동을 해야 1등 당첨 확률이 높아져요~!" /></p><!-- 20150702-2 alt추가 -->
+        <div class="event_view_box">
+            <p class="txt"><img src="/images/pc/event/2years/event_2years_subtitle.jpg" alt="나의 미션 현황 출석과 스티커, 댓글, 공유하기 등으로 올레마켓웹툰의 2주년을 축하해주세요.도장을 모두 모으신 후에도 계속 참여하면 당첨 확률이 높아집니다~!" /></p><!-- 20150702-2 alt추가 -->
+            <a href="#layerAgree1" class="btn_click_prv"><img src="/images/pc/event/2years/event_2years_btn01.jpg" alt="나의 미션 현황보기" /></a><!-- 20150702-2 alt추가 -->
+        </div>
+        <div class="app_box">
+            <!-- ***********************************
+            (D) 도장 추가시 해당 repeat 부분 마크업을 추가해주시면 됩니다.
+
+            ex) <li><img src="/images/pc/event/2years/event_2years_sticker01.png" alt="출석완료 도장" /></li>
+            ************************************ -->
+            <!-- (D) 출석완료 도장 -->
+            <ul class="attendance_seal">
+                <!-- repeat -->
+                <!-- <li><img src="/images/pc/event/2years/event_2years_sticker01.png" alt="출석완료 도장" /></li>
+                //repeat
+                <li><img src="/images/pc/event/2years/event_2years_sticker01.png" alt="출석완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker01.png" alt="출석완료 도장" /></li> -->
+            </ul>
+            <!-- //(D) 출석완료 도장 -->
+
+            <!-- (D) 소문내기완료 도장 -->
+            <ul class="rumor_seal">
+                <!-- <li><img src="/images/pc/event/2years/event_2years_sticker02.png" alt="소문내기완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker02.png" alt="소문내기완료 도장" /></li> -->
+            </ul>
+            <!-- //(D) 소문내기완료 출석도장 -->
+
+            <!-- (D) 스티커완료 도장 -->
+            <ul class="sticker_seal">
+                <!-- <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker03.png" alt="스티커완료 도장" /></li> -->
+            </ul>
+            <!-- //(D) 스티커완료 출석도장 -->
+
+            <!-- (D) 댓글완료 도장 -->
+            <ul class="reply_seal">
+               <!--  <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker04.png" alt="댓글완료 도장" /></li> -->
+            </ul>
+            <!-- //(D) 댓글완료 출석도장 -->
+
+            <!-- (D) 공유완료 도장 -->
+            <ul class="share_seal">
+                <!-- <li><img src="/images/pc/event/2years/event_2years_sticker05.png" alt="공유완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker05.png" alt="공유완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker05.png" alt="공유완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker05.png" alt="공유완료 도장" /></li>
+                <li><img src="/images/pc/event/2years/event_2years_sticker05.png" alt="공유완료 도장" /></li> -->
+            </ul>
+            <!-- //(D) 공유완료 도장 -->
+            <a href="/main.kt" class="btn"><img src="/images/pc/event/2years/event_2years_btn02.jpg" alt="미션 수행 하러가기" /></a>
+        </div>
+        <p class="txt"><img src="/images/pc/event/2years/event_2years_txt02.jpg" alt="미션을 계속할 수 밖에 없게 만드는 서프라이즈 경품 1등 3명 신세경 생일파티 초대권(식사권) 2매 + 참여자 냄보소 단행본 1권 증정(신세경사인) 2등 50명 즐거우리 우리네 인생 캐릭터 인형 + 교보 드림카드 3만원권 3등 100명 썸툰 캐릭터 수첩 3개 + 교보드림카드 5천원권" /></p><!-- 20150702-2 alt추가 -->
+        <p class="txt"><img src="/images/pc/event/2years/event_2years_notice.jpg" alt="이벤트 주의사항 1등 경품 지급은 전화로 안내드리며, ‘신세경 생일파티’는 7월 25일(토) 오후 3시 광화문 kt사옥에서 진행될 예정입니다. 1등 경품은 신세경 생일파티 참여자분들께만 증정하며, 미참여 의사를 밝히시면 다른 분에게 증정됩니다. 2등, 3등 상품은 당첨자발표일에 올레마켓웹툰에서 발송해 드리는 SMS 내 url에 주소를 입력해주셔야 경품 지급이 가능합니다. 이벤트 경품 수신일은 당첨자 발표일과 다소 차이가 있을 수 있습니다. 이벤트 응모 시 입력한 휴대폰 번호로 주소가 확인되니 정확한 휴대폰 번호를 기재 바랍니다. kt 고객님들 외에도 SKT/LGT 고객님들도 웹툰ID만 만들면 참여 가능합니다. 이벤트 관련 사항은 올레마켓웹툰 고객센터 1:1문의하기 또는 webtoon@kt.com으로 문의 바랍니다." usemap="#event2years" /></p>
+
+		<map name="event2years" id="event2years">
+            <area shape="rect" coords="336,201,420,224" href="/support/qnaRegist.kt" alt="1:1문의하기" />
+        </map>
+
+        <!-- 레이어 첫번째 -->
+        <div id="layerAgree1" class="layer_agree">
+            <div class="layer_top">
+                <h3 class="layer_title">이벤트 약관</h3>
+                <a href="#none" class="layer_top_btn btn_layer_close"><img src="/images/pc/event/2years/layer_agree_close.gif" alt="레이어 닫기(이벤트 약관 동의)" /></a>
+            </div>
+            <div class="layer_content">
+                <h4 class="layer_subtitle"><img src="/images/pc/event/2years/layer_agree_tit01.gif" alt="꼭 입력해주세요!" /></h4>
+                <input type="tel" value="휴대폰 번호’-’를 제외한 숫자만 입력" class="phone_input" maxlength="11" onkeypress="return telValidate(event);"/>
+                <h4 class="layer_subtitle"><img src="/images/pc/event/2years/layer_agree_tit02.gif" alt="꼭 읽어주세요!" /></h4>
+                <!-- 개인정보 동의 영역 -->
+                <ul class="term_agree_list">
+                    <li>
+                        <dl class="term_box1">
+                            <dt>
+                                <input type="checkbox" id="agree_chk1">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree1"><img src="/images/pc/event/2years/layer_agree_label01.gif" alt="개인정보 수집, 활용에 대한 동의" /></label>
+                            </dt>
+                            <dd class="preview_txt">
+                                <textarea cols="0" rows="0">
+개인정보 수집, 활용에 대한 동의
+
+고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등 에 관한 법률'에 따라 kt가 수집, 활용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다. 입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 활용되지 않습니다.
+
+1) 개인정보 수집 및 이용목적
+
+가. 이벤트 대상 여부 및 본인 확인, 경품 배송
+
+2) 수집하는 개인정보 항목
+
+가. 이벤트 응모자의 핸드폰 번호
+나. 이벤트 응모자의 아이디
+
+3) 개인정보 보유 및 이용기간
+- 당첨자 발표 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)
+
+4) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다.
+                                </textarea>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="term_box2">
+                            <dt>
+                                <input type="checkbox" id="agree_chk2">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree2"><img src="/images/pc/event/2years/layer_agree_label02.gif" alt="개인정보 수집 및 위탁업무 동의" /></label>
+                            </dt>
+                            <dd class="preview_txt">
+                                <textarea cols="0" rows="0" class="textarea2">
+개인정보 수집 및 위탁업무
+
+회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.
+
+1) 개인정보 취급위탁을 받는 자
+- 업체명 : 케이티하이텔(주)
+- 문의 : 올레마켓웹툰 이벤트 담당자 (02)3289-4133 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외)
+
+2) 위탁목적
+- 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송
+
+3) 위탁범위
+- 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보
+
+4) 위탁기간
+- 이벤트 종료 후 10일 이내 폐기
+                                </textarea>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <!-- //개인정보 동의 영역 -->
+                <ul class="btn_list">
+                    <li><a href="#none" class="btn_layer_agree" onclick="fncRegistEvent(); return false;"><img src="/images/pc/event/2years/layer_agree_btn02.gif" alt="동의하기(이벤트 약관 동의)" /></a></li>
+                    <li><a href="#none" class="btn_layer_close btn_01"><img src="/images/pc/event/2years/layer_agree_btn01.gif" alt="취소(이벤트 약관 동의)" /></a></li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!-- 20150702 추가 -->
+        <!-- [레이어] 나의 미션 내역 -->
+        <div class="layer_mission_detail">
+            <div class="layer_top">
+                <h3 class="layer_title">나의 미션 내역</h3>
+                <a href="#none" class="layer_top_btn btn_layer_close"><img src="/images/pc/event/2years/layer_agree_close.gif" alt="레이어 닫기(이벤트 약관 동의)" /></a>
+            </div>
+            <div class="layer_content">
+                <ul>
+                    <li>＊출석: : <em  id="logincnt"></em>회</li>
+                    <li>＊스티커 : <em id="stickercnt"></em>회</li>
+                    <li>＊댓글 : <em id="commentcnt"></em>회</li>
+                    <li>＊작품/콘텐츠 공유하기 : <em id="snscnt"></em>회</li>
+                    <li>＊이벤트 공유하기 : <em id="rumorcnt"></em>회</li>
+                </ul>
+                <p id="popupText"></p>
+                <!-- (D) 요건에 따라 버튼 변경 -->
+                <a href="#none" class="btn" onclick="javascript:missionRegist(); return false;" id="missionBtn"><img src="/images/pc/event/2years/layer_mission_btn01.gif" alt="도장받기" /></a>
+                <!--<a href="#none" class="btn"><img src="/images/pc/event/2years/layer_mission_btn02.gif" alt="확인" /></a>
+                <!-- //(D) 요건에 따라 버튼 변경 -->
+            </div>
+        </div>
+        <!-- //[레이어] 나의 미션 내역 -->
+        <!-- //20150702 추가 -->
+        
+        <div class="layer_bg_wrap">&nbsp;</div>
+        <!-- //레이어 첫번째 -->
+    </div>
+    <!-- //start -->
+</body>
+
+</html>

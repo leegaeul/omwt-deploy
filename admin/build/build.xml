@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Olleh Market Webtoon - Front" basedir="." default="build">
+	<property file="${basedir}/build.properties"/>
+	<import file="${build.root}/build/macro.xml"/>
+
+	<target name="build.service">
+		<ant antfile="${basedir}/deploy.service.xml" target="deploy" />
+	</target>
+	<target name="build.qa">
+		<ant antfile="${basedir}/deploy.qa.xml" target="deploy" />
+	</target>
+	<target name="build.development" depends="package">
+		<ant antfile="${basedir}/deploy.dev.xml" target="deploy" />
+	</target>
+
+	<target name="rollback.service"><ant antfile="${basedir}/deploy.service.xml" target="rollback"/></target>
+	<target name="rollback.qa"><ant antfile="${basedir}/deploy.qa.xml" target="rollback"/></target>
+	<target name="rollback.development"><ant antfile="${basedir}/deploy.dev.xml" target="rollback"/></target>
+
+	<target name="project-import">
+		 <svn_export target-dir="${contextpath}" repo-url="${svn.repo.url}/${project}" repo-user="${svn.repo.user}" repo-password="${svn.repo.password}" revision="HEAD"/>
+	</target>
+
+	<target name="compile" depends="project-import">
+		<dependency_install pomfile="${contextpath}/pom.xml" target-dir="${lib-dir}"/>
+		<javac_compile lib-dir="${lib-dir}" javasrc-dir="${contextpath}/src/main/java" classes-dir="${classes-dir}" resources-dir="${contextpath}/src/main/resources"/>
+	</target>
+
+	<target name="package" depends="compile">
+		<backup bin-dir="${bin-dir}" file="${warfile}" target-dir="${backup-dir}"/>
+		<backup bin-dir="${bin-dir}" file="${dev.warfile}" target-dir="${backup-dir}"/>
+		<warpack warfile="${bin-dir}/${warfile}" webfile="${webapp-dir}/WEB-INF/web.xml" lib-dir="${lib-dir}" classes-dir="${classes-dir}" webapp-dir="${webapp-dir}"/>
+		<warpack warfile="${bin-dir}/${dev.warfile}" webfile="${webapp-dir}/WEB-INF/web.xml" lib-dir="${lib-dir}" classes-dir="${classes-dir}" webapp-dir="${webapp-dir}"/>
+	</target>
+
+	
+</project>	

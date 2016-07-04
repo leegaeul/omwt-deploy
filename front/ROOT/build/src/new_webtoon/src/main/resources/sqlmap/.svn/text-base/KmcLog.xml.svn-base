@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.kmc.persistence.KmcLogMapper">
+
+	<insert id="insertKmcLog"
+			parameterType="com.olleh.webtoon.common.dao.kmc.domain.KmcLogDomain"
+			useGeneratedKeys="true"
+			keyProperty="kmclogseq">
+		INSERT INTO 
+			ow_kmc_log
+			(
+				regid,
+				idfg,
+				phonenum,
+				certnum,
+				result,
+				errormsg,
+				regdt
+			)
+			VALUES 
+			(
+				  #{regid}
+				, #{idfg}
+				, #{phonenum}
+				, #{certnum}
+				, #{result}
+				, #{errormsg}
+				, #{regdt}
+			);
+    </insert>
+    
+    <update id="modifyKmcLog" parameterType="com.olleh.webtoon.common.dao.kmc.domain.KmcLogDomain">
+        UPDATE ow_kmc_log 
+	         SET phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015')),
+         		 result = #{result},
+         		 errormsg = #{errormsg},
+         		 regdt = #{regdt}
+		WHERE certnum = #{certnum}
+    </update>
+</mapper>

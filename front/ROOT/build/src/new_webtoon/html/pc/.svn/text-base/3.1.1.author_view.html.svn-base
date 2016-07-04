@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+
+<!-- 20140718 추가 -->
+<script type="text/javascript">
+$(document).ready(function(){
+	//작가 에피소드 더 보기 20140923 수정
+	$('.toon_author_epi .list_epi').each(function(){//페이지 로딩시 리스트 1개만 노출
+		if (!$(this).hasClass('list_epi_on'))
+		{
+			$(this).hide();
+		}
+	});
+	$('.toon_author_epi .com_more_toggle').click(function(){
+		$(this).hide();
+		$('.toon_author_epi .list_epi').show();
+		return false;
+	});
+
+	//작가 아이템 더 보기 20140923 수정
+	$('.toon_author_item .item_cont li').each(function(){//페이지 로딩시 리스트 5개만 노출
+		if (($(this).index()+1)>5)
+		{
+			$(this).hide();
+		}
+	});
+	$('.toon_author_item .com_more_toggle').click(function(){
+		$(this).hide();
+		$('.toon_author_item .item_cont li').show();
+		return false;
+	});
+});
+</script>
+<!-- //20140718 추가 -->
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 전체적으로 수정 20140429 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#" class="on"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#" onclick="alert('Comming soon!');return false;">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+				</a></li>
+				<li><a href="#" onclick="alert('Comming soon!');return false;">
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">주간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 -->
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 없음 -->
+<!-- //메뉴 전체적으로 수정 20140429 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+
+		<!-- layout_left -->
+		<div class="layout_left">
+			
+			<!-- 작가소개 -->
+			<div class="toon_author_main">
+				<img src="img/temp/tmp_author.png" alt="버내노" class="author" />
+				<div class="authorEtc">
+					<div class="tit"><img src="img/tit_toon_author01.png" alt="작가소개" /></div>
+					<div class="name">버내노</div>
+					<div class="cont">버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은버내노님은</div>
+				</div>
+				<div class="authorBtn">
+					<a href="#" class="bt_type_blog">블로그</a>
+					<a href="#" class="bt_type_fb">facebook</a>
+					<a href="#" class="bt_type_twit">twitter</a>
+				</div>
+			</div>
+			<!-- //작가소개 -->
+
+			<!-- 연재 작품 20140529 수정 -->
+			<div class="toon_author_list">
+				<div class="list_tit">
+					버내노 <img src="img/tit_toon_author02.gif" alt="님의 연재 작품" />
+				</div>
+				<!-- 작품 -->
+				<div class="list_cont">
+					<img src="img/temp/tmp_author_toon01.jpg" alt="샌드위치를 먹다" class="thumb" />
+					<div class="thumbEtc">
+						<div class="main_tit">샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다</div>
+						<ul>
+							<li>
+								<span class="tit genre">장르</span>
+								<span class="wr wr_tp02">드라마, 감성 드라마, 드라마, 감성 드라마, 드라마, 감성 드라마, 드라마, 감성 드라마</span>
+								<span class="tit update">연재일</span>
+								<span class="wr">월 화 수 목 금 토 일</span>
+								<br />
+							</li>
+							<!--<li>
+								<span class="tit price">가격</span>
+								<span class="wr">100000000코인/회차 <em>|</em> 210,000원/작품</span> <a href="#" class="bt_type_buy">전회구매</a>
+							</li>-->
+						</ul>
+						<div class="cont">소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다? 소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?</div>
+						<div class="btn">
+							<a href="#" class="bt_type_view1st">첫회보기</a>
+							<a href="#" class="bt_type_favor">즐겨찾기</a>
+							<a href="#" class="bt_type_fb">facebook</a>
+							<a href="#" class="bt_type_twit">twitter</a>
+							<a href="#" class="bt_type_band">BAND</a>
+							<a href="#" class="bt_type_copy">URL 복사</a>
+						</div>
+					</div>
+				</div>
+				<!-- //작품 -->
+				<!-- 작품 -->
+				<div class="list_cont">
+					<img src="img/temp/tmp_author_toon01.jpg" alt="샌드위치를 먹다" class="thumb" />
+					<div class="thumbEtc">
+						<div class="main_tit">샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다</div>
+						<ul>
+							<li>
+								<span class="tit genre">장르</span>
+								<span class="wr wr_tp02">드라마, 감성 드라마, 드라마, 감성 드라마, 드라마, 감성 드라마, 드라마, 감성 드라마</span>
+								<span class="tit update">연재일</span>
+								<span class="wr">월 화 수 목 금 토 일</span>
+								<br />
+							</li>
+							<!--<li>
+								<span class="tit price">가격</span>
+								<span class="wr">100000000코인/회차 <em>|</em> 210,000원/작품</span> <a href="#" class="bt_type_buy">전회구매</a>
+							</li>-->
+						</ul>
+						<div class="cont">소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다? 소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?소꿉친구인 동하,다빈,주리 서로 헤어진 이후 5년 뒤 다시 만나게 되는데 예전에 알던 그들이 아니다?</div>
+						<div class="btn">
+							<a href="#" class="bt_type_view1st">첫회보기</a>
+							<a href="#" class="bt_type_favor">즐겨찾기</a>
+							<a href="#" class="bt_type_fb">facebook</a>
+							<a href="#" class="bt_type_twit">twitter</a>
+							<a href="#" class="bt_type_band">BAND</a>
+							<a href="#" class="bt_type_copy">URL 복사</a>
+						</div>
+					</div>
+				</div>
+				<!-- //작품 -->
+			</div>
+			<!-- //연재 작품 20140512 수정 -->
+
+			<!-- 작가의 아이템 20141110 ~ B한정 아이콘 추가, 가격표시 수정 -->
+			<div class="toon_author_item">
+				<div class="item_tit">
+					버내노 <img src="img/tit_toon_author04.gif" alt="님의 아이템" />
+					<a href="#" class="com_more_toggle"><span>더보기 +</span></a><!-- 20140923 수정 -->
+				</div>
+				<div class="item_cont">
+					<ul>
+						<!-- 리스트 -->
+						<li class="on">
+							<div class="thumb nameconThumb"><img src="img/temp/tmp_sticker_author.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_evt">EVENT</span>
+								<span class="ic_blue_s">B한정</span><!-- B한정 -->
+							<div class="tit">
+								<span class="mark_namecon">네임콘</span>
+								<!--<span class="mark_stickon">스티콘</span>-->
+								아기자기 표정이 가득 가득...
+							</div>
+																												
+							<!--베리/블루베리-->
+							<div class="berry">
+								<span class="ico_berry">Berry</span>
+								<span class="ico_bberry">Blue Berry</span>
+								1,200
+							</div>
+							<!--//베리/블루베리-->
+						</li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+																												
+							<!--블루베리-->
+							<div class="berry berry_bl">
+								<span class="ico_bberry">Blue Berry</span>
+								1,200
+							</div>
+							<!--//블루베리-->
+						</li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+																												
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+																												
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+																												
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li>
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득" /></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+																												
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</li>
+						<!-- //리스트 -->
+					</ul>
+				</div>
+			</div>
+			<!-- //작가의 아이템 -->
+
+			<!-- 작가 에피소드 20140528 ~ 섬네일 이미지 라인영역 추가-->
+			<div class="toon_author_epi">
+				<div class="list_tit">
+					<img src="img/tit_toon_author03.gif" alt="작가 에피소드" />
+					<a href="#" class="com_more_toggle"><span>더보기 +</span></a><!-- 20140923 수정 -->
+				</div>
+
+				<!-- 리스트 -->
+				<div class="list_epi list_epi_on"><!-- 20140718 페이지 로딩시 리스트 첫 번째만 노출시키기 위하여 list_epi_on 클래스 붙임 -->
+					<a href="#">
+						<img src="img/temp/tmp_author_thumb.jpg" alt="사心가득 인터뷰 1탄" class="thumb" />
+						<span class="bg_thumb"></span>
+						<span class="cont_wr">
+							<strong class="tit">[사心가득 인터뷰 1탄] 그 첫 번째</strong>
+							<strong class="stit">버내노 작가의 괜찮게 사는 이야기 ②</strong>
+							<span class="cont">버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드</span>
+							<span class="btm">
+								<span class="date">2014.04.02</span> |
+								<span class="cmt">댓글 <strong>345</strong></span>
+							</span>
+						</span>
+					</a>
+				</div>
+				<!-- //리스트 -->
+				<!-- 리스트 -->
+				<div class="list_epi">
+					<a href="#">
+						<img src="img/temp/tmp_author_thumb.jpg" alt="사心가득 인터뷰 1탄" class="thumb" />
+						<span class="bg_thumb"></span>
+						<span class="cont_wr">
+							<strong class="tit">[사心가득 인터뷰 1탄]</strong>
+							<strong class="stit">버내노 작가의 괜찮게 사는 이야기 ②</strong>
+							<span class="cont">버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드</span>
+							<span class="btm">
+								<span class="date">2014.04.02</span> |
+								<span class="cmt">댓글 <strong>345</strong></span>
+							</span>
+						</span>
+					</a>
+				</div>
+				<!-- //리스트 -->
+				<!-- 리스트 -->
+				<div class="list_epi">
+					<a href="#">
+						<img src="img/temp/tmp_author_thumb.jpg" alt="사心가득 인터뷰 1탄" class="thumb" />
+						<span class="bg_thumb"></span>
+						<span class="cont_wr">
+							<strong class="tit">[사心가득 인터뷰 1탄]</strong>
+							<strong class="stit">버내노 작가의 괜찮게 사는 이야기 ②</strong>
+							<span class="cont">버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드</span>
+							<span class="btm">
+								<span class="date">2014.04.02</span> |
+								<span class="cmt">댓글 <strong>345</strong></span>
+							</span>
+						</span>
+					</a>
+				</div>
+				<!-- //리스트 -->
+				<!-- 리스트 -->
+				<div class="list_epi">
+					<a href="#">
+						<img src="img/temp/tmp_author_thumb.jpg" alt="사心가득 인터뷰 1탄" class="thumb" />
+						<span class="bg_thumb"></span>
+						<span class="cont_wr">
+							<strong class="tit">[사心가득 인터뷰 1탄]</strong>
+							<strong class="stit">버내노 작가의 괜찮게 사는 이야기 ②</strong>
+							<span class="cont">버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드 따뜻하고 유쾌한 시간 그 두 번째 에피소드~ 버내노 작가님과의 따뜻하고 유쾌한 시간 그 두 번째 에피소드</span>
+							<span class="btm">
+								<span class="date">2014.04.02</span> |
+								<span class="cmt">댓글 <strong>345</strong></span>
+							</span>
+						</span>
+					</a>
+				</div>
+				<!-- //리스트 -->
+			</div>
+			<!-- //작가 에피소드 -->
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- 주간 인기 20140512 2차 오픈 범위
+			<div class="toon_weekly_ranking">
+				<div class="tit">
+					<img src="img/tit_toon_rank.gif" alt="실시간 인기" />
+				</div>
+				<ol class="list">
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o01">1</span>
+								<!-/-<span class="order o01">1</span>
+								<span class="order o02">2</span>
+								<span class="order o03">3</span>
+								<span class="order o04">4</span>
+								<span class="order o05">5</span>-/->
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn01.png" alt="" />578</span>
+								</div>
+								<div class="rank rk_up">57857</div><!-/- 인기 상승 -/->
+								<!-/-<div class="rank rk_dash">578</div> 인기 그대로 -/->
+								<!-/-<div class="rank rk_dn">578</div> 인기 그대로 -/->
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o02">2</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />533</span>
+								</div>
+								<div class="rank rk_dash">변화 없음</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o03">3</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o04">4</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o05">5</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+				</ol>
+				<div class="more">
+					<a href="#">+ 더보기</a>
+				</div>
+			</div>-->
+			<!-- //주간 인기 20140512 -->
+
+			<!-- 앱 광고 -->
+			<div class="toon_day_app">
+				<a href="#">
+					<img src="img/temp/tmp_app2.png" alt="로드 오브 히어로즈 PLUS" />
+					<span class="cont">
+						<strong>로드 오브 히어로즈<br />PLUS</strong>
+						<span class="corp">나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트</span>
+					</span>
+				</a>
+			</div>
+			<!-- //앱 광고 -->
+
+		</div>
+		<!-- //layout_right -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

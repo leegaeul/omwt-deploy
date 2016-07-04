@@ -1,0 +1,80 @@
+<modify-entry
+   name=".classpath"
+   present-props=""
+   has-prop-mods="false"
+   has-props="false"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name=".classpath"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name=".classpath"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/.classpath"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name=".classpath"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest=".classpath"
+   name=".svn/tmp/text-base/.classpath.svn-base"/>
+<mv
+   dest=".svn/text-base/.classpath.svn-base"
+   name=".svn/tmp/text-base/.classpath.svn-base"/>
+<readonly
+   name=".svn/text-base/.classpath.svn-base"/>
+<modify-entry
+   name=".classpath"
+   checksum="503aec5e2b3e70245220c85ffffbd706"/>
+<modify-entry
+   name=".classpath"
+   text-time="working"/>
+<modify-entry
+   name=".classpath"
+   working-size="working"/>
+<modify-entry
+   name=".project"
+   present-props=""
+   has-prop-mods="false"
+   has-props="false"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name=".project"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name=".project"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/.project"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name=".project"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest=".project"
+   name=".svn/tmp/text-base/.project.svn-base"/>
+<mv
+   dest=".svn/text-base/.project.svn-base"
+   name=".svn/tmp/text-base/.project.svn-base"/>
+<readonly
+   name=".svn/text-base/.project.svn-base"/>
+<modify-entry
+   name=".project"
+   checksum="5612b9671acb73fdc87300e68f276f60"/>
+<modify-entry
+   name=".project"
+   text-time="working"/>
+<modify-entry
+   name=".project"
+   working-size="working"/>

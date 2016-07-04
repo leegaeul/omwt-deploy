@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMJoinMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+			useGeneratedKeys="true"
+			keyProperty="joinseq">
+		INSERT INTO 
+			ow_bm_join 
+			(
+				  prdcode
+				, idfg
+				, userid
+				, joindt
+				, canceldt
+				, joinstatusfg
+				, changereqfg
+				, changereqdt
+				, changejoinseq
+				, billmethodfg
+				, buyertel
+				, buyeremail
+				, pgresultcode
+				, pgresultmsg
+				, pgtid
+				, pgbillkey
+				, pgauthcode
+				, pgauthdt
+				, pgcardkind
+				, pgcardcode
+				, pguserkey
+				, reason
+				, regdt
+				, regid
+				, moddt
+				, modid
+				, updatetoken
+			)
+			VALUES 
+			(
+				  #{prdcode}
+				, #{idfg}
+				, #{userid}
+				, #{joindt}
+				, #{canceldt}
+				, #{joinstatusfg}
+				, #{changereqfg}
+				, #{changereqdt}
+				, #{changejoinseq}
+				, #{billmethodfg}
+				, #{buyertel}
+				, #{buyeremail}
+				, #{pgresultcode}
+				, #{pgresultmsg}
+				, #{pgtid}
+				, #{pgbillkey}
+				, #{pgauthcode}
+				, #{pgauthdt}
+				, #{pgcardkind}
+				, #{pgcardcode}
+				, #{pguserkey}
+				, #{reason}
+				, #{regdt}
+				, #{regid}
+				, #{moddt}
+				, #{modid}
+				, #{updatetoken}
+			);
+    </insert>
+    
+	<update id="updateByJoinseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+		UPDATE
+			ow_bm_join
+		SET
+				joinseq = joinseq
+		<if test="isNotEmpty(prdcode)"		>, prdcode		= #{prdcode}</if>
+		<if test="isNotEmpty(idfg)"			>, idfg			= #{idfg}</if>
+		<if test="isNotEmpty(userid)"		>, userid		= #{userid}</if>
+		<if test="isNotEmpty(joindt)"		>, joindt		= #{joindt}</if>
+		<if test="isNotEmpty(canceldt)"		>, canceldt		= #{canceldt}</if>
+		<if test="isNotEmpty(joinstatusfg)"	>, joinstatusfg	= #{joinstatusfg}</if>
+		<if test="isNotEmpty(changereqfg)"	>, changereqfg	= #{changereqfg}</if>
+		<if test="isNotEmpty(changereqdt)"	>, changereqdt	= #{changereqdt}</if>
+		<if test="isNotEmpty(changejoinseq)">, changejoinseq= #{changejoinseq}</if>
+		<if test="isNotEmpty(billmethodfg)"	>, billmethodfg	= #{billmethodfg}</if>
+		<if test="isNotEmpty(buyertel)"		>, buyertel		= #{buyertel}</if>
+		<if test="isNotEmpty(buyeremail)"	>, buyeremail	= #{buyeremail}</if>
+		<if test="isNotEmpty(pgresultcode)"	>, pgresultcode	= #{pgresultcode}</if>
+		<if test="isNotEmpty(pgresultmsg)"	>, pgresultmsg	= #{pgresultmsg}</if>
+		<if test="isNotEmpty(pgtid)"		>, pgtid		= #{pgtid}</if>
+		<if test="isNotEmpty(pgbillkey)"	>, pgbillkey	= #{pgbillkey}</if>
+		<if test="isNotEmpty(pgauthcode)"	>, pgauthcode	= #{pgauthcode}</if>
+		<if test="isNotEmpty(pgauthdt)"		>, pgauthdt		= #{pgauthdt}</if>
+		<if test="isNotEmpty(pgcardkind)"	>, pgcardkind	= #{pgcardkind}</if>
+		<if test="isNotEmpty(pgcardcode)"	>, pgcardcode	= #{pgcardcode}</if>
+		<if test="isNotEmpty(pguserkey)"	>, pguserkey	= #{pguserkey}</if>
+		<if test="isNotEmpty(reason)"		>, reason		= #{reason}</if>
+		<if test="isNotEmpty(regdt)"		>, regdt		= #{regdt}</if>
+		<if test="isNotEmpty(regid)"		>, regid		= #{regid}</if>
+		<if test="isNotEmpty(moddt)"		>, moddt		= #{moddt}</if>
+		<if test="isNotEmpty(modid)"		>, modid		= #{modid}</if>
+		<if test="isNotEmpty(updatetoken)"	>, updatetoken	= #{updatetoken}</if>
+		WHERE
+			joinseq = #{joinseq}
+		;
+    </update>
+    
+    <update id="updateTokenForRenewal" parameterType="map">
+		UPDATE
+			ow_bm_join
+		SET
+			updatetoken = #{updatetoken}
+		WHERE
+			NOT EXISTS 
+				(SELECT 1 FROM 
+					(SELECT 	1
+					FROM 	ow_bm_join jj2 
+					WHERE 	jj2.updatetoken = #{updatetoken}) 
+				as j2)
+			AND	joinseq = (
+				SELECT 
+					j1.joinseq
+				FROM
+					(
+						SELECT 		jj1.joinseq
+						FROM 		ow_bm_join jj1 
+						WHERE 		jj1.updatetoken='' 
+							AND 	jj1.joinstatusfg='active' 
+					) j1
+				INNER JOIN
+					(
+						SELECT 		tt1.joinseq, IFNULL(MAX(tt1.termseq), 0) AS termseq
+						FROM 		ow_bm_join_term tt1 
+						GROUP BY 	tt1.joinseq
+					) t1
+				ON
+					j1.joinseq = t1.joinseq
+				INNER JOIN
+					(
+						SELECT 		tt2.termseq
+						FROM 		ow_bm_join_term tt2 
+						WHERE 		tt2.enddt BETWEEN #{startdt} AND #{enddt}
+					) t2
+				ON 
+					t1.termseq = t2.termseq
+				LEFT JOIN
+					ow_bm_join_fail f
+				ON
+					j1.joinseq = f.joinseq
+				WHERE
+					f.failseq IS NULL
+				LIMIT 
+					1 )
+		;
+    </update>
+    
+    <update id="updateTokenForFinishRenewal" parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	UPDATE
+			ow_bm_join
+		SET
+			updatetoken = ''
+		WHERE
+			updatetoken = #{updatetoken}
+		;
+	</update>
+    
+    <select id="selectLastByUpdatetoken"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+			resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+		SELECT
+			*
+		FROM
+			ow_bm_join
+		WHERE
+			updatetoken = #{updatetoken}
+		ORDER BY
+			joinseq DESC
+		LIMIT
+			1
+		;
+	</select>
+    
+    <delete id="deleteByJoinseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+		DELETE FROM
+			ow_bm_join
+		WHERE
+			joinseq = #{joinseq}
+    </delete>
+    
+    <select id="selectByJoinseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    		joinseq = #{joinseq}
+    </select>
+
+
+    <select id="selectLastByChangeJoinseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    		changejoinseq = #{changejoinseq}
+    	ORDER BY
+    		joinseq DESC
+    	LIMIT
+    		1
+    	;
+    </select>
+    
+    
+    <select id="selectLastForUserByJoinStatus"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    		AND joinstatusfg = #{joinstatusfg}
+    	ORDER BY
+    		joinseq DESC
+    	LIMIT
+    		1
+    	;
+    </select>
+    
+    
+    <select id="selectLastForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    	ORDER BY
+    		joinseq DESC
+    	LIMIT
+    		1
+    </select>
+    
+    
+    <select id="selectLastCancelForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    		AND joinstatusfg = 'cancel'
+    	ORDER BY
+    		joinseq DESC
+    	LIMIT
+    		1
+    </select>
+    
+    <select id="selectCancelListForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    		AND joinstatusfg = 'cancel'
+    	ORDER BY
+    		joinseq DESC
+    </select>
+    
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join
+    </select>
+</mapper>

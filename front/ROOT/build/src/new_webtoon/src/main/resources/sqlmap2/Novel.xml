@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.novel.persistence.NovelMapper">
+	
+	<select id="selectNovelList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select 
+			toon.thumbpath, toon.nthumbpath, toon.webtoonnm, toon.agefg, toon.webtoonseq, toon.serialfg,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			ifnull(genre1.genrenm, '') genrenm1, 
+			ifnull(genre2.genrenm, '') genrenm2, 
+			ifnull(genre3.genrenm, '') genrenm3,
+			format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+		<![CDATA[
+	        case 
+				when 
+					times.displayyn = 'Y' 
+					and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+					and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+				else 'N'
+		  	end as upyn,
+	        
+			case 
+	          when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+	        
+	        case 
+	          when 
+              toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+	        else 'N'
+	        end as restyn
+	    ]]>
+		from ow_webtoon toon
+		left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+		left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+		left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+		left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+        (
+			select 
+				a.displayyn, a.directdisplayyn, a.timesseq,a.timestitle, a.startdt, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq
+			from (
+				select 
+					displayyn, directdisplayyn, timesseq, timestitle, startdt, totalstickercnt, webtoonseq
+				from ow_times 
+				where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+				order by publishdt desc, timesseq desc 
+			) as a 
+			group by a.webtoonseq
+        ) times on toon.webtoonseq = times.webtoonseq
+		where 
+			toon.toonfg = 'novel'
+			and ifnull(times.timesseq, 0) > 0
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and toon.pcdisplayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and toon.mdisplayyn = 'Y'
+		</if>
+			
+	</select>
+	
+</mapper>

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/resources/inipay/key/INIBillTst
+END
+keypass.enc
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/resources/inipay/key/INIBillTst/keypass.enc
+END
+mcert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/resources/inipay/key/INIBillTst/mcert.pem
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/resources/inipay/key/INIBillTst/readme.txt
+END
+mpriv.pem
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/resources/inipay/key/INIBillTst/mpriv.pem
+END

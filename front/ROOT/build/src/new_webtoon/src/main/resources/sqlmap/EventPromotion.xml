@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.eventpromotion.persistence.EventPromotionMapper">
+	
+	<select id="selectIceEventDuplicateyn" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select "Y"
+		from ow_member_event
+		where phonenum = #{phonenum} or regid = #{regid}
+		limit 0, 1
+	</select>
+	
+	<insert id="insertIceEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		insert into ow_member_event (regid, phonenum, regdt, winyn)
+		values (#{regid}, #{phonenum}, #{regdt}, 'N');
+    </insert>
+    
+    <select id="selectEventJoinyn" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select "Y"
+		from ow_user
+	<![CDATA[
+		where email = #{regid}
+			  and date_format(joindt, '%Y%m%d%H%i%s') >= date_format(#{startdt}, '%Y%m%d%H%i%s')
+			  and date_format(joindt, '%Y%m%d%H%i%s') <= date_format(#{enddt}, '%Y%m%d%H%i%s')
+	]]>
+	</select> 
+	
+	<select id="selectIceMemberEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select date_format(regdt, '%Y년 %m월 %d일')
+		from ow_member_event
+		where phonenum = #{phonenum} and winyn = 'Y'
+		order by regdt desc
+		limit 0, 1   
+	</select>
+	
+	<select id="selectIceSnsEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select date_format(regdt, '%Y년 %m월 %d일')
+		from ow_sns_event
+		where 
+			eventfg= #{eventfg} and winyn = 'Y'
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014'))
+		order by regdt desc
+	</select> 
+	
+	<select id="selectIceSnsCmtTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.Integer">
+		select  count(*)
+		from ow_sns_event  
+		where eventfg = #{eventfg}
+	</select>
+	
+	<select id="selectIceSnsCmtList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select  
+			CONVERT(AES_DECRYPT(UNHEX(tb1.phonenum), 'ollehwebtoon2014') using utf8) as phonenum, 
+			tb1.snsfg, tb1.content, tb1.idfg, tb1.regid, date_format(tb1.regdt, '%Y-%m-%d %H:%i') as regdt, 
+			case 
+				when idfg = 'open' then tb2.nickname
+				else tb1.regid
+			end as nickname
+		from ow_sns_event tb1
+			left join ow_user tb2 on tb1.regid = tb2.email and tb2.userstatus = 'use'
+		where tb1.eventfg = #{eventfg} 
+		order by tb1.regdt desc
+		limit #{startRowNo}, #{pageSize}
+	</select>
+	
+	<insert id="insertIceSnsEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		insert into ow_sns_event (phoneoperator, phonenum, snsfg, content, winyn, idfg, regid, regdt, eventfg)
+		values(#{phoneoperator}, HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014')), #{snsfg}, #{content}, 'N', #{idfg}, #{regid}, #{regdt}, #{eventfg})
+    </insert>
+    
+    <select id="selectIceSnsEventHistory" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.Integer">
+		select count(*)
+		from ow_sns_event
+		where phonenum = #{phonenum} and snsfg = #{snsfg}
+		limit 0, 1
+	</select>
+	
+	 <select id="selectContestPnmCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+		select count(*)
+		from ow_contest
+		where contestpnm = #{contestpnm}
+		limit 0, 1
+	</select>
+	      	
+	<insert id="insertContestEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		insert into ow_contest (regdt, contestnm, contestpnm, title, email, phonenm, genretype1, genretype2, synopsis, filepath, filename, statelevel)
+		values (#{regdt}, #{contestnm}, #{contestpnm}, #{title}, #{email}, #{phonenm}, #{genretype1}, #{genretype2}, #{synopsis}, #{filepath}, #{filename}, #{statelevel});
+    </insert>
+	      	
+	<insert id="updateCouponEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		update ow_member_coupon 
+		set idfg=#{idfg}, regid=#{regid}, regdt=#{regdt}, useyn='Y'
+		where couponnum=#{couponnum};
+    </insert>
+    
+    <select id="selectCouponEventByCouponnum" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select couponnum, idfg, regid, regdt, useyn
+		from ow_member_coupon
+		where couponnum = #{couponnum}
+		limit 0, 1
+	</select>
+    
+    <select id="selectCouponEventById" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select couponnum, idfg, regid, regdt, useyn
+		from ow_member_coupon
+		where idfg = #{idfg} and regid = #{regid}
+		limit 0, 1
+	</select>
+	      	
+	<insert id="insertPlusCouponEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		insert into ow_member_event (idfg, regid, phonenum, regdt, winyn)
+		values(#{idfg}, #{regid}, HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014')), #{regdt}, 'N');
+    </insert>
+    
+    <select id="selectPlusCouponEventById" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select idfg, regid, phonenum, regdt
+		from ow_member_event
+		where idfg = #{idfg} and regid = #{regid}
+		limit 0, 1
+	</select>
+	
+	<select id="selectContestCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+		select count(*) as totalcount
+		from ow_contest
+	</select>
+	
+	<select id="selectCouponEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select date_format(regdt, '%Y년 %m월 %d일') regdt, winyn
+		from ow_member_event
+		where 
+			winyn != 'N' and winyn is not null
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014'))
+		order by regdt desc
+	</select>
+	
+	<insert id="insertContestDefault" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (idfg,regid,phonenum,regdt) 
+		VALUES (#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+	<insert id="insertContestComment" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (commentseq,idfg,regid,phonenum,regdt) 
+		VALUES (#{commentseq},#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+    <insert id="insertContestSticker" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (timesseq,idfg,regid,phonenum,regdt) 
+		VALUES (#{timesseq},#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+    <select id="selectContestEventHisCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+    	select count(*) from ow_comment_event
+    	where idfg = #{idfg} and regid = #{regid} 
+    </select>
+    
+    <select id="selectContestPhoneNumber" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.String">
+    	select phonenum from ow_comment_event
+    	where idfg = #{idfg} and regid = #{regid} and phonenum is not null
+    	limit 0, 1 
+    </select>
+    
+    <select id="selectRecentCommentseq" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+    	select commentseq from ow_comment
+    	where idfg = #{idfg} and regid = #{regid}
+    	order by commentseq desc
+    	limit 0, 1 
+    </select>
+    
+    <select id="selectNaembosoEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select date_format(regdt, '%Y년 %m월 %d일') as regdt, grade, degree
+		from ow_sns_event
+		where 
+			eventfg= #{eventfg} and winyn = 'Y'
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014'))
+		order by regdt desc
+	</select> 
+	
+	<select id="selectNaembosoCommentEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select date_format(regdt, '%Y년 %m월 %d일') as regdt, degree
+		from ow_comment_event
+		where 
+			eventfg= #{eventfg} and winyn = 'Y'
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015'))
+		order by regdt desc
+	</select> 
+    
+    <select id="selectNaembosoPhotoEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select date_format(regdt, '%Y년 %m월 %d일') as regdt, grade, degree
+		from ow_photo_event
+		where 
+			eventfg= #{eventfg} and winyn = 'Y'
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015'))
+		order by regdt desc
+	</select>
+	
+	<select id="selectSnsEventJoinHisCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" 
+                                          resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_sns_event
+		where
+			eventfg = #{eventfg} 
+			and regid = #{regid}
+			and idfg = #{idfg}
+    </select>
+    
+	<!-- <select id="selectMissionEventRegdt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.String">
+    	select regdt from ow_mission_event
+    	where idfg = #{idfg} and regid = #{regid}
+    	order by regdt asc
+    	limit 0, 1
+    </select>
+	
+	<insert id="insertMissionEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+		insert into ow_mission_event (regid, idfg, phonenum, regdt)
+		values (#{regid}, #{idfg}, HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015')), #{regdt});
+    </insert>
+    
+    <select id="selectMissionEventList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                        resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+    	select regdt, missionfg from ow_mission_event
+    	where idfg = #{idfg} and regid = #{regid}
+    	order by regdt asc
+    </select>
+    
+    <select id="selectRumorTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_sns
+    	where idfg = #{idfg} and regid = #{regid} and regdt >= #{regdt} and articlefg = 'event'
+    </select>
+    
+    <select id="selectStickerTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_sticker
+    	where idfg = #{idfg} and regid = #{regid} and regdt >= #{regdt}
+    </select>
+    
+    <select id="selectCommentTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_comment
+    	where idfg = #{idfg} and regid = #{regid} and regdt >= #{regdt}
+    </select>
+    
+    <select id="selectSnsTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_sns
+    	where idfg = #{idfg} and regid = #{regid} and regdt >= #{regdt} and articlefg in ('times', 'webtoon', 'novel')
+    </select>
+    
+    <select id="selectMissionCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from ow_mission_event
+    	where 
+    		idfg = #{idfg} and regid = #{regid} 
+    		and missionfg is not null 
+    	<if test="missionfg != null and missionfg != ''"> 		
+    		and missionfg = #{missionfg}
+    	</if>	
+    </select>
+    
+    <select id="selectRecentMissionseq" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="java.lang.String">
+    	select missionseq 
+    	from ow_mission_event 
+    	where 
+    		idfg = #{idfg} 
+    		and regid = #{regid} 
+    		and missionfg = #{missionfg}
+    	order by missionseq desc
+    	limit 0, 1
+    </select>
+    
+    <select id="selectMissionseqList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="java.lang.String">
+    	select missionseq 
+    	from ow_mission_event 
+    	where 
+    		idfg = #{idfg} 
+    		and regid = #{regid} 
+    		and missionfg = #{missionfg}
+    </select>
+    
+    
+    <insert id="insertMission" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+		insert into ow_mission_event (regid, idfg, regdt, missionseq, missionfg)
+		values (#{regid}, #{idfg}, #{regdt}, #{missionseq}, #{missionfg});
+    </insert>
+    
+    <select id="selectMissionTodayHisCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" resultType="java.lang.Integer">
+    	select count(*) from ow_mission_event
+    	where 
+    		idfg = #{idfg} and regid = #{regid} and missionfg = 'login'
+    		and date_format(regdt, '%Y%m%d') = date_format(now(), '%Y%m%d')  
+    </select>
+    
+    <select id="selectRumorList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+    	select snsseq as missionseq, idfg, regid, date_format(now(), '%Y%m%d%H%i%s') as regdt, 'rumor' as missionfg
+    	from ow_sns
+		where
+			idfg = #{idfg} 
+			and regid = #{regid}
+			and articlefg = 'event'
+		<if test="missionseq != null and missionseq != ''">
+			and snsseq > #{missionseq}
+		</if>
+		<if test="missionseq == null or missionseq == ''">
+			and regdt >= #{regdt}
+		</if>
+    </select>
+    
+    <select id="selectStickerList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+    	select timesseq as missionseq, idfg, regid, date_format(now(), '%Y%m%d%H%i%s') as regdt, 'sticker' as missionfg
+    	from ow_sticker
+		where
+			idfg = #{idfg} 
+			and regid = #{regid}
+			and regdt >= #{regdt}
+		<if test="missionseqList != null and missionseqList != ''">
+			and timesseq not in (${missionseqList})
+		</if>
+			
+    </select>
+    
+    <select id="selectCommentList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+    	select commentseq as missionseq, idfg, regid, date_format(now(), '%Y%m%d%H%i%s') as regdt, 'comment' as missionfg
+    	from ow_comment
+		where
+			idfg = #{idfg} 
+			and regid = #{regid}
+		<if test="missionseq != null and missionseq != ''">
+			and commentseq > #{missionseq}
+		</if>
+		<if test="missionseq == null or missionseq == ''">
+			and regdt >= #{regdt}
+		</if>
+    </select>
+    
+    <select id="selectSnsList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain" 
+                                          resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventMissionDomain">
+    	select snsseq as missionseq, idfg, regid, date_format(now(), '%Y%m%d%H%i%s') as regdt, 'sns' as missionfg 
+    	from ow_sns
+		where
+			idfg = #{idfg}
+			and regid = #{regid}
+			and articlefg in ('times', 'webtoon', 'novel')
+		<if test="missionseq != null and missionseq != ''">
+			and snsseq > #{missionseq}
+		</if>
+		<if test="missionseq == null or missionseq == ''">
+			and regdt >= #{regdt}
+		</if>
+    </select> -->
+   
+</mapper>

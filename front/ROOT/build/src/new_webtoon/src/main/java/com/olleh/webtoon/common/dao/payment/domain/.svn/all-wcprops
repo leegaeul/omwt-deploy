@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/domain
+END
+PaymentFailDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/domain/PaymentFailDomain.java
+END
+OrderDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/domain/OrderDomain.java
+END
+IPGPaymentDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/domain/IPGPaymentDomain.java
+END
+PaymentDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/domain/PaymentDomain.java
+END

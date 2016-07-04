@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMOrderMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+			useGeneratedKeys="true"
+			keyProperty="orderseq">
+		INSERT INTO 
+			ow_bm_order 
+			(
+				  paymentseq
+				, buyseq
+				, termseq
+				, originorderseq
+				, usefg
+				, orderfg
+				, orderamount
+				, orderid
+				, orderdt
+				, idfg
+				, reason
+				, regid
+				, regdt
+				, modid
+				, moddt
+			)
+			VALUES 
+			(
+				  #{paymentseq}
+				, #{buyseq}
+				, #{termseq}
+				, #{originorderseq}
+				, #{usefg}
+				, #{orderfg}
+				, #{orderamount}
+				, #{orderid}
+				, #{orderdt}
+				, #{idfg}
+				, #{reason}
+				, #{regid}
+				, #{regdt}
+				, #{modid}
+				, #{moddt}
+			);
+    </insert>
+    
+	<update id="updateByOrderseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+		UPDATE
+			ow_bm_order
+		SET
+		  		 				  				orderseq	 	= orderseq
+		<if test="isNotEmpty(paymentseq)"	>,	paymentseq 		= #{paymentseq}		</if>
+		<if test="isNotEmpty(buyseq)"		>,	buyseq			= #{buyseq}			</if>
+		<if test="isNotEmpty(termseq)"		>,	termseq			= #{termseq}		</if>
+		<if test="isNotEmpty(originorderseq)">,	originorderseq	= #{originorderseq}	</if>
+		<if test="isNotEmpty(usefg)"		>,	usefg			= #{usefg}			</if>
+		<if test="isNotEmpty(orderfg)"		>,	orderfg			= #{orderfg}		</if>
+		<if test="isNotEmpty(orderamount)"	>,  orderamount		= #{orderamount}	</if>
+		<if test="isNotEmpty(orderid)"		>,  orderid			= #{orderid}		</if>
+		<if test="isNotEmpty(orderdt)"		>,  orderdt			= #{orderdt}		</if>
+		<if test="isNotEmpty(idfg)"			>,  idfg			= #{idfg}			</if>
+		<if test="isNotEmpty(reason)"		>,  reason			= #{reason}			</if>
+		<if test="isNotEmpty(regid)"		>,  regid			= #{regid}			</if>
+		<if test="isNotEmpty(regdt)"		>,  regdt			= #{regdt}			</if>
+		<if test="isNotEmpty(modid)"		>,  modid			= #{modid}			</if>
+		<if test="isNotEmpty(moddt)"		>,  moddt			= #{moddt}			</if>
+		WHERE
+			orderseq = #{orderseq}
+		;
+    </update>
+    
+    <delete id="deleteByOrderseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+		DELETE FROM
+			ow_bm_order
+		WHERE
+			orderseq = #{orderseq}
+		;
+    </delete>
+    
+    <select id="selectByOrderseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_order
+    	WHERE
+    		orderseq = #{orderseq}
+    	;
+    </select>
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_order
+    	;
+    </select>
+    
+    
+    <select id="selectLastByPaymentseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_order
+    	WHERE
+    		paymentseq = #{paymentseq}
+    	ORDER BY
+    		orderseq DESC
+    	LIMIT
+    		1
+    	;
+    </select>
+
+    <select id="selectChargeOrderByPaymentseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_order
+    	WHERE
+    			paymentseq 	= #{paymentseq}
+    		AND usefg 		= 'charge'
+    		AND orderfg 	= 'order'
+    		AND NOT EXISTS 
+    		(
+    			SELECT 
+    				orderseq 
+    			FROM 
+    				ow_bm_order 
+    			WHERE 
+    					paymentseq 	= #{paymentseq}
+    				AND
+    				(
+    					(
+		    					usefg 		= 'charge' 
+		    				AND orderfg 	= 'expire'
+	    				)
+	    				OR 	
+	    				(		usefg		= 'buy'
+	    					AND orderfg		= 'cancel'
+	    				)
+    				)
+    		)
+    	;
+    </select>
+    
+    
+	<!-- 특정 사용자가 보유한 블루베리 합계 -->
+    <select id="selectOwnBlueBerryForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMOrderDomain"
+    		resultType="java.lang.Integer">
+    	SELECT 
+    		IFNULL
+    		(
+    			SUM(CAST(orderamount AS SIGNED) * 
+    			CASE concat(usefg, orderfg) 
+	    			WHEN 'chargeorder' THEN 1 
+	    			WHEN 'chargecancel' THEN -1 
+	    			WHEN 'chargerefund' THEN -1 
+	    			WHEN 'chargeexpire' THEN -1 
+	    			WHEN 'buyorder' THEN -1 
+	    			WHEN 'buycancel' THEN 1 
+	    		END 
+	    	), 0)
+    	FROM
+    		ow_bm_order
+    	WHERE
+    			idfg = #{idfg}
+    		AND orderid = #{orderid}
+    	;
+	</select>
+</mapper>

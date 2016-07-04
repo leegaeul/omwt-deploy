@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code
+END
+ApnsPayloadKeyCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/ApnsPayloadKeyCode.java
+END
+ApiResultCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/ApiResultCode.java
+END
+DomainNameCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/DomainNameCode.java
+END
+DeviceIdfgCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/DeviceIdfgCode.java
+END
+DevicefgCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/DevicefgCode.java
+END
+PushStatusfgCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/PushStatusfgCode.java
+END
+PushTargetfgCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/code/PushTargetfgCode.java
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/persistence
+END
+PaymentMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/persistence/PaymentMapper.java
+END
+PaymentFailMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/persistence/PaymentFailMapper.java
+END

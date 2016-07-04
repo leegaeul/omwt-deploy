@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/persistence
+END
+DeviceMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/persistence/DeviceMapper.java
+END
+AppLatestVersionMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/persistence/AppLatestVersionMapper.java
+END
+AppMetaMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/persistence/AppMetaMapper.java
+END

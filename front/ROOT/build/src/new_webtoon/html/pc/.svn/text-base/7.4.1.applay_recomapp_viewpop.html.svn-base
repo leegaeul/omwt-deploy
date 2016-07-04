@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+<!-- 20140513 수정 -->
+<!--<script type="text/javascript" src="js/jquery.flexslider.js"></script> flexslider ~ rolling banner js 삭제-->
+<script type="text/javascript" src="js/jcarousellite_1.0.1.js"></script><!-- jcarousellite jquery -->
+<script type="text/javascript">
+$(window).load(function(){
+	/*앱 상세 배너 삭제
+	$('.applay_recom_appslide').flexslider({
+		animation: "slide",
+		animationLoop: false,
+		slideshow: false,
+		controlNav: false
+	});*/
+
+	//앱 상세 배너
+	$(".applay_recom_appslide .jCarouselLite").jCarouselLite({
+		btnNext: ".applay_recom_appslide .next",
+		btnPrev: ".applay_recom_appslide .prev",
+		visible: 2,
+		circular: false
+	});
+});
+$(document).ready(function(){
+	$('#q_mobile1').styledSelect( {innerClass:'select_jssel'} );//셀렉트 박스
+
+	//팝업 배경 레이어 css 초기화 20140507 edit
+	$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});
+	$('.com_popup_bglayer').show();
+
+	//팝업 보이기 20140507 추가
+	$('.popup_downloadURL').fadeIn('fast');
+
+	//다운로드 url 받기 팝업 닫기
+	$('.popup_downloadURL .popup_close a').click(function(){
+		$(this).parent().parent().fadeOut('fast');
+		$('.com_popup_bglayer').hide();
+		return false;
+	});
+});
+</script>
+<!-- //20140513 수정 -->
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 전체적으로 수정 20140429 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#">
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#" class="on"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#" onclick="alert('Comming soon!');return false;">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+				</a></li>
+				<li><a href="#" onclick="alert('Comming soon!');return false;">
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">주간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03 subMenuOn"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li class="on"><a href="#">앱추천</a></li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 -->
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 없음 -->
+<!-- //메뉴 전체적으로 수정 20140429 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+
+		<!-- layout_left -->
+		<div class="layout_left">
+			
+			<!--applay_recom_appview-->
+			<div class="applay_recom_appview">
+				<img src="img/temp/tmp_app4.png" alt="올레 폰찾고 정보보호" class="app_thumb" />
+				<div class="app_thumbetc">
+					<div class="info_tit">올레 폰찾고 정보보호 올레 폰찾고 정보보호 올레 폰찾고 정보보호</div>
+					<table class="info_table">
+						<colgroup>
+							<col width="23px" />
+							<col width="150px" />
+							<col width="50px" />
+							<col width="*" />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row"><span class="th_price">가격</span></th>
+								<td colspan="3">1,000원</td>
+							</tr>
+							<tr>
+								<th scope="row"><span class="th_sort">분류</span></th>
+								<td>교육/외국어/Kisd</td>
+								<th scope="row"><span class="th_buyer">판매자</span></th>
+								<td>(주)케이티</td>
+							</tr>
+							<tr>
+								<th scope="row"><span class="th_grade">등급</span></th>
+								<td>전체 이용가</td>
+								<th scope="row"><span class="th_mb">파일 용량</span></th>
+								<td>20MB</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="info_sns">
+						<a href="#" class="bt_type_fb">페이스북</a>
+						<a href="#" class="bt_type_twit">트위터</a>
+						<a href="#" class="bt_type_band">BAND</a>
+					</div>
+					<div class="info_btn">
+						<a href="#" class="bt_goMarket">올레마켓 가기</a>
+						<a href="#" class="bt_goDownloadURL">다운로드 URL 받기</a>
+					</div>
+				</div>
+			</div>
+			<!--//applay_recom_appview-->
+
+			<!--applay_recom_appslide 20140513 수정-->
+			<div class="applay_recom_appslide">
+				<button type="button" class="prev">이전</button>
+				<div class="carousel">
+					<div class="jCarouselLite">
+						<ul>
+							<li><img src="img/temp/tmp_appview.jpg" alt="올레 폰찾고 정보보호 스크린샷 1" /></li>
+							<li><img src="img/temp/tmp_appview02.jpg" alt="올레 폰찾고 정보보호 스크린샷 2" /></li>
+							<li><img src="img/temp/tmp_appview.jpg" alt="올레 폰찾고 정보보호 스크린샷 1" /></li>
+							<li><img src="img/temp/tmp_appview02.jpg" alt="올레 폰찾고 정보보호 스크린샷 2" /></li>
+							<li><img src="img/temp/tmp_appview.jpg" alt="올레 폰찾고 정보보호 스크린샷 1" /></li>
+							<li><img src="img/temp/tmp_appview02.jpg" alt="올레 폰찾고 정보보호 스크린샷 2" /></li>
+						</ul>
+					</div>
+				</div>
+				<button type="button" class="next">다음</button>
+			</div>
+			<!--//applay_recom_appslide 20140513 수정-->
+
+			<!--applay_recom_appinfo-->
+			<div class="applay_recom_appinfo">
+				<div class="info_tit"><img src="img/tit_app_info.gif" alt="상세정보" /></div>
+				<div class="info_cont">
+					<p>Touch My Music, 지니~! 가 3.0 버전으로 업데이트 되었습니다~!</p>
+					<p>지니는 항상 여러분이 더 나은 음악을 듣고, 마법같은 여러분의 일상을 니니가 채울 수 있길 바랍니다.<br />
+					이제 그 시작으로 새로운 어플리케이션 버전을 업테이트 하였고, 더 나은 모습을 보여드리고자 합니다.<br />
+					자, 그럼 새로운 기능들을 소개해드릴께요~!</p>
+					<p>지니는 항상 여러분이 더 나은 음악을 듣고, 마법같은 여러분의 일상을 니니가 채울 수 있길 바랍니다.<br />
+					이제 그 시작으로 새로운 어플리케이션 버전을 업테이트 하였고, 더 나은 모습을 보여드리고자 합니다.<br />
+					자, 그럼 새로운 기능들을 소개해드릴께요~!</p>
+					<p>지니는 항상 여러분이 더 나은 음악을 듣고, 마법같은 여러분의 일상을 니니가 채울 수 있길 바랍니다.<br />
+					이제 그 시작으로 새로운 어플리케이션 버전을 업테이트 하였고, 더 나은 모습을 보여드리고자 합니다.<br />
+					자, 그럼 새로운 기능들을 소개해드릴께요~!</p>
+					<p>지니는 항상 여러분이 더 나은 음악을 듣고, 마법같은 여러분의 일상을 니니가 채울 수 있길 바랍니다.<br />
+					이제 그 시작으로 새로운 어플리케이션 버전을 업테이트 하였고, 더 나은 모습을 보여드리고자 합니다.<br />
+					자, 그럼 새로운 기능들을 소개해드릴께요~!</p>
+				</div>
+			</div>
+			<!--//applay_recom_appinfo-->
+			
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- 주간 인기 20140512 2차 오픈 범위
+			<div class="toon_weekly_ranking">
+				<div class="tit">
+					<img src="img/tit_toon_rank.gif" alt="실시간 인기" />
+				</div>
+				<ol class="list">
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o01">1</span>
+								<!-/-<span class="order o01">1</span>
+								<span class="order o02">2</span>
+								<span class="order o03">3</span>
+								<span class="order o04">4</span>
+								<span class="order o05">5</span>-/->
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn01.png" alt="" />578</span>
+								</div>
+								<div class="rank rk_up">57857</div><!-/- 인기 상승 -/->
+								<!-/-<div class="rank rk_dash">578</div> 인기 그대로 -/->
+								<!-/-<div class="rank rk_dn">578</div> 인기 그대로 -/->
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o02">2</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />533</span>
+								</div>
+								<div class="rank rk_dash">변화 없음</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o03">3</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o04">4</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o05">5</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+				</ol>
+				<div class="more">
+					<a href="#">+ 더보기</a>
+				</div>
+			</div>-->
+			<!-- //주간 인기 20140512 -->
+
+			<!-- 앱 광고 -->
+			<div class="toon_day_app">
+				<a href="#">
+					<img src="img/temp/tmp_app2.png" alt="로드 오브 히어로즈 PLUS" />
+					<span class="cont">
+						<strong>로드 오브 히어로즈<br />PLUS</strong>
+						<span class="corp">나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트</span>
+					</span>
+				</a>
+			</div>
+			<!-- //앱 광고 -->
+
+		</div>
+		<!-- //layout_right -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+<!-- 팝업 배경 레이어 -->
+<div class="com_popup_bglayer"></div>
+<!-- //팝업 배경 레이어 -->
+
+<!-- 다운로드 url 받기 팝업 -->
+<div class="com_popup_layout popup_downloadURL">
+	<div class="popup_tit01">
+		<img src="img/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+
+	<div class="popup_com_cont">
+
+		<div class="sTit">다운로드 URL 받기</div>
+		<p class="sExp">휴대폰 번호를 입력하시면 입력하신 번호로 앱을 다운로드 하실 수 있는 URL을 문자로 전송해드립니다. </p>
+
+		<form action="">
+			<div class="sInput">
+				<span class="basic_jsselWr" style="width:96px;">
+					<select name="q_mobile1" id="q_mobile1" class="basic_jssel">
+						<option value="">010</option>
+						<option value="">011</option>
+						<option value="">016</option>
+						<option value="">017</option>
+						<option value="">018</option>
+						<option value="">019</option>
+					</select>
+				</span> -
+				<input type="text" class="basic_ipt" style="width:85px;" /> -
+				<input type="text" class="basic_ipt" style="width:85px;" />&nbsp;
+				<button type="submit" class="bts_frm_gyline">보내기</button>
+			</div>
+		</form>
+
+		<p class="sAlert">* 보내시는 번호는 저장되지 않습니다.</p>
+
+	</div>
+
+	<div class="popup_close"><a href="#"><img src="img/btn_close01.gif" alt="close" /></a></div>
+</div>
+<!-- //다운로드 url 받기 팝업 -->
+
+</body>
+</html>

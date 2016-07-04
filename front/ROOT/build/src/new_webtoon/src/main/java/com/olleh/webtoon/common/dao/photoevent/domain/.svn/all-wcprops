@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/photoevent/domain
+END
+ImageDeclarationDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/photoevent/domain/ImageDeclarationDomain.java
+END
+PhotoEventDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/photoevent/domain/PhotoEventDomain.java
+END
+ImageRecommendDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/photoevent/domain/ImageRecommendDomain.java
+END
+PhotoEventImageDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/photoevent/domain/PhotoEventImageDomain.java
+END

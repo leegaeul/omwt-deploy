@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.ranking.persistence.RankingMapper">
+	
+	<select id="selectRealtimeList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			toon.webtoonseq, toon.webtoonnm, r1.timesseq,
+			toon.thumbpath, toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+		    icon.oniconurl, icon.officonurl, icon.listiconurl, icon.defaultyn,
+			format(ifnull(r1.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+			ifnull(author1.authornm, '') authornm1, 
+		    ifnull(author2.authornm, '') authornm2, 
+		    ifnull(author3.authornm, '') authornm3,
+			r1.timesseq, r1.timestitle,
+			ifnull(date_format(r1.startdt, '%Y.%m.%d'), '-') as regdt
+		from ow_webtoon toon
+			left join ow_sticker_icon icon on toon.iconseq = icon.iconseq
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		    left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		    left join ow_author author3 on toon.authorseq3 = author3.authorseq
+			left join
+			(
+			     select
+			          a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.startdt
+			     from (
+			          select
+			               timesseq,timestitle,totalstickercnt, webtoonseq, startdt
+			          from ow_times
+			          where displayyn = 'Y' 
+			                and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+			          order by publishdt desc, timesseq desc
+			     ) as a
+			     group by a.webtoonseq
+			) r1 on toon.webtoonseq = r1.webtoonseq
+			left join
+			(
+				select timesseq, sum(pvcnt) as totalpvcnt, sum(uvcnt) as totaluvcnt from ow_view_stat
+			    group by timesseq
+			) r2 on r1.timesseq = r2.timesseq
+		group by toon.webtoonseq
+		order by 
+			(ifnull(r2.totalpvcnt, 0) * 40 + ifnull(r2.totaluvcnt, 0) * 60) desc
+		limit 0, 10
+	</select>
+	
+	<select id="selectRankingRate" resultType="hashmap">
+    	select
+    		ifnull(visit, 0) as visitrate,
+			ifnull(active, 0) as activerate,
+			ifnull(visit_pv, 0) as pvrate,
+			ifnull(visit_uv, 0) as uvrate,
+			ifnull(active_cmt, 0) as cmtrate,
+			ifnull(active_sns, 0) as snsrate,
+			ifnull(active_sticker, 0) as stickerrate,
+			ifnull(active_favor, 0) as favorrate,
+			ifnull(active_book, 0) as bookrate
+    	from ow_month_rate
+    	limit 0, 1
+    </select>
+	 
+	<select id="selectRankingDate" resultType="java.lang.String">
+		select rankingmt
+		from ow_month_ranking
+		where displayyn = 'Y'
+		order by rankingmt desc
+	</select>
+	
+	<select id="selectMonthList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			tb1.rankingmt, tb1.comment, tb1.webtoonseq,
+			tb2.webtoonnm, thumbpath, tb2.mondayyn, tb2.tuesdayyn, tb2.wednesdayyn, tb2.thursdayyn, tb2.fridayyn, tb2.saturdayyn, tb2.sundayyn, tb2.serialfg,
+		    tb4.oniconurl, tb4.officonurl, tb4.listiconurl, tb4.defaultyn,
+		    ifnull(date_format(tb5.startdt, '%Y.%m.%d'), '-') as regdt,
+		    format(ifnull(tb5.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(tb5.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+			ifnull(author1.authornm, '') authornm1, 
+		    ifnull(author2.authornm, '') authornm2, 
+		    ifnull(author3.authornm, '') authornm3,
+		    ifnull(prev.prevRanking, 0) as prevRanking
+		from ow_month_webtoon tb1
+			left join ow_webtoon       tb2 on tb1.webtoonseq = tb2.webtoonseq
+			left join ow_month_ranking tb3 on tb1.rankingmt  = tb3.rankingmt and tb3.displayyn = 'Y'
+			left join ow_sticker_icon  tb4 on tb2.iconseq    = tb4.iconseq
+		    left join 
+	        (
+				select 
+					a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.startdt
+				from (
+					select 
+						timesseq,timestitle,totalstickercnt, webtoonseq, startdt
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) tb5 on tb2.webtoonseq = tb5.webtoonseq
+	        left join ow_author author1 on tb2.authorseq1 = author1.authorseq
+		    left join ow_author author2 on tb2.authorseq2 = author2.authorseq
+		    left join ow_author author3 on tb2.authorseq3 = author3.authorseq
+		    left join 
+			(
+				select @ROWNUM := @ROWNUM + 1 AS prevRanking, webtoonseq from ow_month_webtoon, (SELECT @ROWNUM := 0) R 
+				where rankingmt = date_format(date_add(str_to_date(concat(#{rankingmt},'01'), '%Y%m%d'), interval -1 month), '%Y%m')
+				order by totalscore desc
+			) prev on tb1.webtoonseq = prev.webtoonseq
+		where 
+			tb1.rankingmt = #{rankingmt}
+		order by tb1.totalscore desc
+	<if test="startRowNo == null">
+		limit 0, 10
+	</if>
+	<if test="startRowNo != null">
+		limit #{startRowNo}, #{pageSize}
+	</if>
+	</select>
+	
+<!-- 	<select id="selectYorankingListCnt" parameterType="hashmap" resultType="java.lang.Integer">
+		select count(*)
+		from ow_yoyozine
+	</select>
+	
+	<select id="selectYorankingList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		select *
+		from ow_yoyozine
+		limit #{startRowNo}, #{pageSize}
+	</select> 
+	
+	<select id="selectYorankingDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		select
+			yoyozineseq, categoryfg, subject, title, startdt, subtitle, imageyn, thumbpath, contentsurl,readcnt, publishdt,
+			date_format(regdt, '%y.%m.%d') regdt,
+			(select yoyozineseq from ow_yoyozine
+		<![CDATA[
+			 where yoyozineseq < #{yoyozineseq} 
+			 	   and displayyn = 'Y' 
+				   and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d')) or (directdisplayyn = 'Y'))
+			]]>
+			 order by yoyozineseq desc
+			 limit 0, 1) prevyoyozineseq,
+			(select yoyozineseq from ow_yoyozine
+		<![CDATA[
+			 where yoyozineseq > #{yoyozineseq} 
+			 	   and displayyn = 'Y' 
+				   and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d')) or (directdisplayyn = 'Y'))
+				]]>
+			 order by yoyozineseq asc
+			 limit 0, 1) nextyoyozineseq
+		from
+			ow_yoyozine
+		where
+		<![CDATA[
+			displayyn = 'Y' 
+			and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+			or (directdisplayyn = 'Y'))
+		]]>
+			and yoyozineseq = #{yoyozineseq}
+	</select> -->
+	
+	<select id="selectYorankingListCnt" parameterType="hashmap" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_yoranking
+ 	<![CDATA[
+		where displayyn = 'Y' 
+			  and date_format(now(), '%Y%m%d%H%i%s') >= date_format(startdt, '%Y%m%d%H%i%s')
+			  and date_format(now(), '%Y%m%d%H%i%s') <= date_format(enddt, '%Y%m%d%H%i%s')
+	]]>
+	</select>
+	
+	<select id="selectYorankingList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.ranking.domain.YoRankingDomain">
+		select 
+			rankingseq,
+			title, 
+			contents,
+			comment, 
+			date_format(regdt, '%Y.%m.%d') as regdt,
+			date_format(startdt, '%Y.%m.%d') as startdt,
+		case 
+			when date_add(regdt, interval + 7 day) > now() then 'Y'
+			else 'N'
+		end as newyn,
+		thumbpath
+		from 
+			ow_yoranking
+ 	<![CDATA[
+		where displayyn = 'Y' 
+			  and date_format(now(), '%Y%m%d%H%i%s') >= date_format(startdt, '%Y%m%d%H%i%s')
+			  and date_format(now(), '%Y%m%d%H%i%s') <= date_format(enddt, '%Y%m%d%H%i%s')
+	]]>
+		order by rankingseq desc
+		limit #{startRowNo}, #{pageSize}
+	</select>
+	
+	 <select id="getYoRankingInfo" parameterType="java.lang.Integer" resultType="com.olleh.webtoon.common.dao.ranking.domain.YoRankingDomain">
+    	SELECT 
+        	rankingseq,
+        	(
+        		select rankingseq from ow_yoranking
+				where 
+				<![CDATA[
+					rankingseq < #{rankingseq}
+					and displayyn = 'Y' 
+				]]>
+				order by rankingseq desc
+				limit 0,1
+			) 
+			prevrankingseq,
+			(
+				select rankingseq from ow_yoranking
+				where 
+				<![CDATA[
+					rankingseq > #{rankingseq}
+					and displayyn = 'Y' 
+				]]>
+				order by rankingseq asc
+				limit 0,1
+			)
+			nextrankingseq,
+        	displayyn,
+        	date_format(startdt, '%Y.%m.%d') as startdt,
+        	enddt,
+			title,
+			contents,
+			comment,
+			contenturl,
+			tb1.iconseq,
+			thumbpath,
+			thumbfilenm,
+			mthumbpath,
+			mthumbfilenm,
+			oniconurl AS onstickerpath, 
+			officonurl AS offstickerpath, 
+			listiconurl AS liststickerpath,
+			tb1.regid,
+			tb1.regdt
+		FROM 
+			ow_yoranking tb1, ow_sticker_icon tb2
+		WHERE 
+			tb1.rankingseq = #{rankingseq}
+		and
+			tb1.iconseq = tb2.iconseq
+    </select>
+    
+    <select id="getRefwebtoonInfo" parameterType="java.lang.Integer" resultType="com.olleh.webtoon.common.dao.ranking.domain.RankingRefwebtoonDomain">
+        select 
+        	refseq,
+        	rankingseq,
+        	ref.authorseq1,
+        	ref.authorseq2,
+        	ref.authorseq3,
+			(SELECT authornm FROM ow_author WHERE authorseq = ref.authorseq1) AS authornm1,
+			(SELECT authornm FROM ow_author WHERE authorseq = ref.authorseq2) AS authornm2,
+			(SELECT authornm FROM ow_author WHERE authorseq = ref.authorseq3) AS authornm3,	
+			ref.webtoonseq,
+			webtoon.webtoonnm as webtoonnm,
+			webtoon.sthumbfilenm as sthumbfilenm,
+			webtoon.sthumbpath as sthumbpath,
+			webtoon.thumbpath as thumbpath,
+			ref.regid,
+			ref.regdt
+		from
+			ow_ranking_refwebtoon ref
+		left join 
+			ow_webtoon webtoon on webtoon.webtoonseq = ref.webtoonseq
+		where
+			rankingseq = #{rankingseq}
+    </select>
+    
+    <select id="stickerSelectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT 
+        	format(ifnull(sum(stickercnt), 0),0)
+        FROM 
+        	ow_ranking_sticker
+        WHERE 
+        	rankingseq = #{rankingseq}
+    </select>
+    
+    <select id="myYorankingStickerSelectCount" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT 
+        	format(ifnull(sum(stickercnt), 0),0)
+        FROM 
+        	ow_ranking_sticker
+        WHERE 
+        	rankingseq = #{rankingseq} and idfg = #{idfg} and regid = #{regid}
+    </select>
+    
+    <insert id="stickerInsert" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain">
+        insert into ow_ranking_sticker
+       	(
+	       	rankingseq, 
+	       	idfg, 
+	       	regid, 
+	       	stickercnt, 
+	       	regdt
+       	) 
+       	values 
+       	(
+			#{rankingseq}, 
+			#{idfg}, 
+			#{regid}, 
+			#{stickercnt}, 
+			#{regdt}
+		);
+    </insert>
+    
+    <select id="stickerCheck" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT
+        	count(stickercnt)
+        FROM 
+        	ow_ranking_sticker
+        WHERE 
+        	rankingseq = #{rankingseq} 
+        and 
+        	regid = #{regid}
+    </select>
+</mapper>

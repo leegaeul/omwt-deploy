@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.support.persistence.QNAMapper">
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+
+	<select id="qnaSelectListCnt" parameterType="com.olleh.webtoon.common.dao.support.domain.QnaDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_qna
+		where regid = #{regid} and idfg = #{idfg}
+	</select>
+	
+	<select id="qnaSelectList" parameterType="com.olleh.webtoon.common.dao.support.domain.QnaDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.QnaDomain">
+		select
+			qnaseq,
+			qnafg,
+			title,
+			contents,
+			reply,
+			secondreply,		
+			statusfg,
+			date_format(regdt, '%Y.%m.%d') regdt,
+			date_format(replydt, '%Y.%m.%d') replydt,
+			date_format(secondreplydt, '%Y.%m.%d')secondreplydt 
+		from 
+			ow_qna
+		where regid = #{regid} and idfg = #{idfg}
+		order by
+			qnaseq desc
+		limit 
+			#{startRowNo}, #{pageSize}
+	</select>
+
+	<insert id="qnaInsert" parameterType="com.olleh.webtoon.common.dao.support.domain.QnaDomain">
+		insert into ow_qna (
+			qnafg,
+			title,
+			contents,
+			email,
+			phone1,
+			phone2,
+			statusfg,
+			regdt,
+			idfg,
+			regid
+		)
+		values (
+			#{qnafg},
+			#{title},
+			#{contents},
+			#{email},
+			#{phone1},
+			#{phone2},
+			'regist',
+			#{regdt},
+			#{idfg},
+			#{regid}
+		)
+	</insert>
+
+
+</mapper>

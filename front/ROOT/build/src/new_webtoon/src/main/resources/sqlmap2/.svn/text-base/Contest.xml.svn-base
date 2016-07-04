@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.contest.persistence.ContestMapper">	
+
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+
+	<select id="contestSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+		select * from (
+		  select 
+		    toon.webtoonseq, toon.webtoonnm, toon.thumbpath, toon.sthumbpath, toon.imagepath, toon.agefg, toon.moddt,
+		    toon.pcdisplayyn, toon.mdisplayyn, toon.authornm,
+        	toon.genreseq1, toon.genreseq2, toon.genreseq3,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(genre1.genrenm, '') genrenm1, 
+			ifnull(genre2.genrenm, '') genrenm2, 
+			ifnull(genre3.genrenm, '') genrenm3,
+		    ifnull(times.timesno, '') maxtimesno,
+    		ifnull(times.timestitle, '') maxtimestitle,
+		    ifnull(times.thumbpath, '') maxtimesthumbpath,
+		    format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+		    times.totalstickercnt totalstickercntsort,
+		    format(ifnull(times.sumtotalstickercnt,0)/ifnull((select count(*) from ow_contest_times where webtoonseq = toon.webtoonseq), 1), 0) sumtotalstickercnt,
+		    (times.sumtotalstickercnt/ifnull((select count(*) from ow_contest_times where webtoonseq = toon.webtoonseq), 1)) sumtotalstickercntsort,
+	        times.timesseq,
+			times.timestitle,
+	        DATE_FORMAT(times.startdt, '%Y.%m.%d') regdt,
+	        times.startdt
+		  from ow_contest_webtoon toon
+			left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+			left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+			left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+     		left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt
+				from (
+					select times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,times.totalstickercnt, times.webtoonseq, times.regdt
+					from ow_contest_times times
+					where times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+					order by times.timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		  where times.timesseq is not null
+		) toonlist
+		
+		order by
+		<if test="sort == null or sort == '' or sort == 'subject'">
+			toonlist.webtoonnm asc , toonlist.timesseq desc
+		</if>
+		<if test="sort != null and sort == 'sticker'">	
+			toonlist.sumtotalstickercntsort*1 desc , 
+			toonlist.timesseq desc
+		</if>
+		<if test="sort != null and sort == 'author'">
+			toonlist.authornm asc, 
+			toonlist.timesseq desc
+		</if>
+	</select>
+	
+	<select id="topContestSelectList" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+	<![CDATA[
+		select
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			toon.authornm,
+			top.thumbpath1 as thumbpath,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0)/ifnull((select count(*) from ow_contest_times where webtoonseq = toon.webtoonseq), 1), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		from ow_top_webtoon top
+		left join ow_contest_webtoon toon on toon.webtoonseq = top.webtoonseq1
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt
+				from (
+					select times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,times.totalstickercnt, times.webtoonseq, times.regdt
+					from ow_contest_times times
+					where times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+					order by times.timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = 'contest'
+			and top.displayyn = 'Y'
+			and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+		union all
+		select 
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			toon.authornm,
+			top.thumbpath2 as thumbpath,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0)/ifnull((select count(*) from ow_contest_times where webtoonseq = toon.webtoonseq), 1), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		from ow_top_webtoon top
+		left join ow_contest_webtoon toon   on toon.webtoonseq = top.webtoonseq2
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt
+				from (
+					select times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,times.totalstickercnt, times.webtoonseq, times.regdt
+					from ow_contest_times times
+					where times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+					order by times.timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = 'contest'
+			and top.displayyn = 'Y'
+		and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+		union all
+		select 
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			toon.authornm,
+			top.thumbpath3 as thumbpath,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0)/ifnull((select count(*) from ow_contest_times where webtoonseq = toon.webtoonseq), 1), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		FROM ow_top_webtoon top
+		left join ow_contest_webtoon toon   on toon.webtoonseq = top.webtoonseq3
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt
+				from (
+					select times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,times.totalstickercnt, times.webtoonseq, times.regdt
+					from ow_contest_times times
+					where times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+					order by times.timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = 'contest'
+			and top.displayyn = 'Y'
+		and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+	]]>
+	</select>
+	
+	<select id="contestSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+	<![CDATA[ 
+		select 
+			toon.webtoonnm, toon.webtoondesc, toon.webtoonseq, toon.thumbpath, toon.sthumbpath, toon.imagepath, toon.agefg,
+			toon.authornm, times.timesseq, times.timestitle,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(genre1.genrenm, '') genrenm1, 
+			ifnull(genre2.genrenm, '') genrenm2, 
+			ifnull(genre3.genrenm, '') genrenm3
+		from ow_contest_webtoon toon
+			left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+			left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+			left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+	      	left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, a.webtoonseq, a.regdt
+				from (
+					select 
+						timesseq,timesno,timestitle,thumbpath,startdt,totalstickercnt, webtoonseq, regdt
+					from ow_contest_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by timesseq asc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where times.timesseq is not null
+      		and toon.webtoonseq = #{webtoonseq}
+      	limit 0, 1
+	]]>
+	</select>
+	
+	<select id="timesSelectListCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select count(timesseq)
+		from ow_contest_times
+		where webtoonseq = #{webtoonseq}
+		and displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+	</select>
+	
+	<select id="timesSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+	<![CDATA[ 
+		select
+			times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,
+			format(ifnull(times.totalstickercnt,0) ,0) totalstickercnt, times.webtoonseq, date_format(times.regdt, '%Y.%m.%d') as regdt,
+			contest.agefg, sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn
+		from ow_contest_times times
+			left join ow_contest_webtoon contest on times.webtoonseq = contest.webtoonseq
+      	    left join ow_sticker_icon sticker_icon on contest.iconseq = sticker_icon.iconseq
+	]]>
+		where times.webtoonseq = #{webtoonseq}
+		and times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+		
+		<if test="startRowNo != null and pageSize != null">
+		limit #{startRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="timesSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+	<![CDATA[ 
+		select 
+			times.timesseq, times.timesno, times.timestitle, times.thumbpath, times.totalstickercnt,
+			contest.webtoonnm, contest.webtoondesc, contest.webtoonseq, contest.authornm, contest.agefg, contest.pcdisplayyn, contest.mdisplayyn, 
+        	sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			(
+				select timesseq 
+				from ow_contest_times prevtimes 
+				where prevtimes.webtoonseq = times.webtoonseq and prevtimes.displayyn = 'Y' and prevtimes.timesseq < times.timesseq 
+				order by prevtimes.timesseq desc limit 0,1
+			) prevtimesseq,
+			(
+				select timesseq 
+				from ow_contest_times nexttimes 
+				where nexttimes.webtoonseq = times.webtoonseq and nexttimes.displayyn = 'Y' and nexttimes.timesseq > times.timesseq 
+				and (nexttimes.directdisplayyn = 'Y' or (nexttimes.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= nexttimes.startdt))
+				order by nexttimes.timesseq asc limit 0,1
+			) nexttimesseq,
+			(
+				select timesseq 
+				from ow_contest_times firsttimes 
+				where firsttimes.webtoonseq = times.webtoonseq and firsttimes.displayyn = 'Y'
+				order by firsttimes.timesseq asc limit 0,1
+			) firsttimesseq
+		from ow_contest_times times
+	      left join ow_contest_webtoon contest on times.webtoonseq = contest.webtoonseq
+      	  left join ow_sticker_icon sticker_icon on contest.iconseq = sticker_icon.iconseq
+      	]]>
+		where
+			times.timesseq = #{timesseq} and times.webtoonseq = #{webtoonseq}
+		<if test='myuseyn != "Y"'>
+			and times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+		</if> 
+	</select>
+	
+	<select id="tiemsnoSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+		select
+			timesseq, timesno, timestitle
+		from ow_contest_times
+		where webtoonseq = #{webtoonseq}
+		and displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+		order by timesseq desc 
+	</select>
+	
+	<select id="contestImageSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestImageDomain">
+		select
+			imagepath, width, height
+		from ow_webtoon_image
+		where timesseq = #{timesseq}
+		order by displayorder asc
+	</select>
+	
+	<select id="stickerSelectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT format(ifnull(sum(stickercnt), 0),0)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq}
+    </select>
+    
+    <select id="myStickerSelectCount" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT format(ifnull(sum(stickercnt), 0),0)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq} and idfg = #{idfg} and regid = #{regid}
+    </select>
+    
+    <insert id="stickerInsert" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain">
+        insert into ow_sticker(
+			timesseq, idfg, regid, stickercnt, regdt
+		) values (
+			#{timesseq}, #{idfg}, #{regid}, #{stickercnt}, #{regdt}
+		);
+    </insert>
+	
+	<update id="stickerUpdate" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain">
+		update ow_contest_times 
+            set totalstickercnt = totalstickercnt+#{stickercnt} 
+            where timesseq = #{timesseq};
+    </update>
+    
+    <select id="stickerCheck" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT count(stickercnt)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq} and regid = #{regid}
+    </select>
+       
+    <select id="simpleContestSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+		select
+			webtoonnm,
+			webtoonseq,
+			thumbpath,
+			agefg
+		from 
+			ow_contest_webtoon
+		where
+			webtoonseq = #{webtoonseq}
+	</select>
+	
+	<select id="simpleTimesSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.contest.domain.ContestDomain">
+		select
+			contest.webtoonnm,
+			contest.webtoonseq,
+			contest.agefg,
+			contest.mdisplayyn,
+			times.timesseq,
+			times.thumbpath,
+			times.timestitle			
+		from 
+			ow_contest_webtoon contest
+		left join ow_contest_times times on contest.webtoonseq = times.webtoonseq
+		where
+			contest.webtoonseq = #{webtoonseq}
+			and times.timesseq = #{timesseq}
+	</select>
+	
+</mapper>

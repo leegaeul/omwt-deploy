@@ -1,0 +1,25 @@
+####################################################
+# MySQL Replication DB Properties
+####################################################
+webtoondb.driverClassName=com.mysql.jdbc.Driver
+webtoondb.url=jdbc:mysql:replication://172.27.76.125:3306,172.27.174.59:3306,172.27.215.116:3306,172.27.251.214:3306,172.27.246.119:3306,172.27.80.82:3306,172.27.46.31:3306,172.27.75.199:3306/newwebtoondb?characterEncoding=utf8&characterSetResults=utf8
+
+webtoondb.username=webtoon
+webtoondb.password=ollehwebtoon123!()
+webtoondb.maxIdle=5
+webtoondb.maxActive=30
+webtoondb.maxWait=5000
+
+
+
+####################################################
+# MySQL Master DB Properties
+####################################################
+masterdb.driverClassName=com.mysql.jdbc.Driver
+masterdb.url=jdbc:mysql://172.27.76.125:3306/newwebtoondb
+
+masterdb.username=webtoon
+masterdb.password=ollehwebtoon123!()
+masterdb.maxIdle=5
+masterdb.maxActive=30
+masterdb.maxWait=5000

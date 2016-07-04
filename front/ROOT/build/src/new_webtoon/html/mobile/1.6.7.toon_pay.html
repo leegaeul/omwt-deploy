@@ -1,0 +1,584 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js" type="text/javascript"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<script src="common/js/jquery.flexslider.js" type="text/javascript"></script><!-- 20140417 slider-->
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" >
+$(document).ready(function(){
+
+	//********* 메뉴 레이어 제어관련*********//	
+	var lmenuDown = false;
+	var lmenuTime = 5000; //레이어메뉴 유지 시간
+	var lmenuDownTimer = setTimeout(lmenu_hide,lmenuTime);
+
+	$("header").css("position","fixed");	//상단 헤더 처리
+
+	$('.toonArea').click(function(){//화면 클릭시 레이어 메뉴
+		if(lmenuDown==false){
+			lmenu_show();			
+			clearTimeout(lmenuDownTimer);
+			lmenuDownTimer = setTimeout(lmenu_hide,lmenuTime);
+		}else{
+			lmenu_hide();
+		}
+	});
+	$(window).scroll(function(){//스크롤시 레이어 메뉴
+		var posF = $(document).scrollTop();
+		if( posF == 0){
+			//$('header').fadeIn("fast");
+			$('header').css("display","block");
+		}else{
+			lmenu_hide();
+		}
+	});
+	function lmenu_show(){//레이어 메뉴 show
+		$('.toon_tool, header').fadeIn("fast");
+		lmenuDown = true;
+	}
+	function lmenu_hide(){//레이어 메뉴 hide
+		$('.toon_tool, header').fadeOut("fast");
+		lmenuDown = false;
+	}
+
+	$(".btn_top").click(function(e){//상단으로 이동
+		$("html,body").stop().animate({'scrollTop':0},500);
+		e.preventDefault();
+	});	/*end*/		
+
+	$(".btn_reply").click(function(e){//댓글로 이동
+		var posY = $(".replyArea").position();		
+		$("html,body").stop().animate({'scrollTop':posY.top - 0},500);
+		e.preventDefault();
+	});	/*end*/		
+
+	$(".btn_stiker").click(function(e){//스티커로 이동 20140716
+		var posY = $(".view_cont.sticker").position();		
+		$("html,body").stop().animate({'scrollTop':posY.top - 0},500);
+		e.preventDefault();
+	});	/*end*/	
+
+	$('#sticon_pic').flexslider({//슬라이더 20140717
+		animation: "slide",
+		slideshow: false,
+		controlNav: false,
+		directionNav: true,
+		after: function(slider) {
+	    $('.current-slide').text(slider.currentSlide+1);
+			collectionPagenum = slider.currentSlide; //슬라이드 넘버링		
+			$idx = slider.currentSlide + 1
+			getWallpaper($idx);
+			getContentItem($idx);
+		},
+		start: function(slider) {
+	    $('.total-slides').text(slider.count);	
+			collectionPagenum = slider.currentSlide; //슬라이드 넘버링
+			$idx = slider.currentSlide + 1
+			getWallpaper($idx);
+			getContentItem($idx);
+			
+		}
+	});
+
+	/*이모티콘 박스 토글	 20140429 기능 삭제
+	$('#imoti_open').toggle(
+		function(){
+			$("#imotiArea").slideDown("fast");
+			$(this).find("img.status").attr("src", $("img.status").attr("src").replace("icn_open@2x.png","icn_close@2x.png"));
+		},
+		function(){
+			$("#imotiArea").slideUp("fast");
+			$(this).find("img.status").attr("src", $("img.status").attr("src").replace("icn_close@2x.png","icn_open@2x.png"));
+		}
+	);*/
+	
+	function pop_vertical(){//팝업 센터 정렬
+		var pop_height = $('.layer_popup .popup').height();
+		var pop_height_device = - (pop_height / 2); 
+		$('.layer_popup .popup').css("top","50%");
+		$('.layer_popup .popup').css("margin-top",pop_height_device);		
+	}
+	pop_vertical();
+
+	$('.view_select input').ezMark();//radio 이미지처리	
+	$("#view_select1").parent().parent().parent().parent().find("label").addClass("view_select_on");			//radio 초기
+	$('.radio_sel input').click(function(){//radio 클릭시
+		if($(this).is(':checked',true)){
+			$('.radio_sel').parent().parent().parent().parent().find("label").removeClass("view_select_on");			
+			$(this).parent().parent().parent().parent().find("label").addClass("view_select_on");			
+		}else{
+			$(this).parent().parent().parent().parent().find("label").removeClass("view_select_on");						
+		}
+	});
+
+
+});
+
+$(window).load(function(){
+
+
+	/* 20140722 스티콘 영역관련 제어 -start*/
+	$('.sticon_slide').slideUp(500);//초기 닫음
+
+	$('.drag_wrap img').click(function(){//그룹 아이콘 클릭시 열림
+		$('.sticon_select').css("display","block");
+		$('.sticon_slide').slideDown(100);	
+		$('.reply_write .write textarea').css("border-top","1px solid #eaeaea");	
+
+		$('.drag_wrap img').each(function(){
+			$(this).attr('src', $(this).attr('src').replace('_sel', '_dim'));
+			$(this).css("border","2px solid #fff");
+		});
+		$(this).attr('src', $(this).attr('src').replace('_dim', '_sel'));
+		$(this).css("border","2px solid #f14b59");
+	});
+
+	$('.reply_namecon a').click(function(){//그룹 아이콘 클릭시 닫힘
+
+		$('.sticon_select .reply_sticon').css("display","none"); //디폴트 스티콘영역 없앱
+		$('.sticon_select .sticon').css("display","block"); //임시용 아이콘 로드로 개발처리*****
+
+		$('.reply_namecon span').removeClass('on');//
+		$(this).parent().addClass('on');//클릭 on클래스
+
+		return false;
+	});
+
+	$('#close_sticon').click(function(){//스티콘 닫기
+
+		$('.sticon_slide').slideUp(100);//닫음
+
+		return false;
+	});
+
+
+	$('.apply .btn_small.red').click(function(){//등록버튼시 초기화
+		$('.sticon_select .reply_sticon').css("display","block"); //디폴트 스티콘영역 없앱
+		$('.sticon_select .sticon').css("display","none"); //임시용 아이콘 로드로 개발처리*****
+
+		$('.drag_wrap img').each(function(){ //그룹 아이콘
+			$(this).attr('src', $(this).attr('src').replace('_sel', '_dim'));
+			$(this).css("border","2px solid #fff");
+		});
+
+		$('.reply_namecon span').removeClass('on');// 슬라이드 아이콘
+		$('.sticon_slide').slideUp(100);//닫음
+
+		return false;
+	});
+
+	$('.drag_wrap img').css("border","2px solid #fff");	
+	/* 20140722 스티콘 영역관련 제어 -end*/
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<!-- 20140528 수정 -->
+	<div class="titleArea opacity_bg">
+		<h2>푸른바람 척준경 - 11회</h2> 
+	</div>
+	<!--// 20140528 수정 -->
+</header>
+
+<!--본문-->
+<article class="contents detail">	
+
+	<section class="toonArea" id="toonArea">
+		<div class="toon"><img src="img/temp/pic.jpg" class="img"></div>
+	</section>
+
+	<section class="infoArea" id="infoArea">
+		<!--bnr_bottom-->
+		<a href="#" class="bnr_bottom"><img src="img/temp/bnr_bottom2.jpg" alt=""/></a>
+		<!--//bnr_bottom-->
+
+		<!--작가의 말-->
+		<div class="view_cont wbtoonist">
+			<h3>버내노 작가님의 말		<!--<a href="#" class="btn">작가소개 <img src="img/bl_tang.png" alt=""/></a> 20140430 삭제--></h3>
+			<div class="text">
+				흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요.흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요.
+			</div>
+		</div>
+		<!--//작가의 말-->
+
+		<!--관련회차 보기-->
+		<div class="view_cont serise">
+			<h3>관련 회차 보기</h3>
+			<ul class="list">
+				<li><a href="#"><img src="img/bl_tang.png" alt=""/> 12화-맘마</a></li>
+				<li><a href="#"><img src="img/bl_tang.png" alt=""/> 80화-맘마</a></li>
+			</ul>
+		</div>
+		<!--//관련회차 보기-->
+
+		<!--공유하기-->
+		<div class="view_cont sns">
+			<h3>공유하기</h3>
+			<div class="share_link">
+				<a href="#" class="icn_fadebook"><img src="img/icn_fadebook.png" alt=""/></a>
+				<a href="#" class="icn_twiter"><img src="img/icn_twiter.png" alt=""/></a>
+				<a href="#" class="icn_line"><img src="img/icn_line.png" alt=""/></a>
+				<a href="#" class="icn_kakao"><img src="img/icn_kakao.png" alt=""/></a>
+				<a href="#" class="icn_kakaostory"><img src="img/icn_kakaostory.png" alt=""/></a>
+				<a href="#" class="icn_band"><img src="img/icn_band.png" alt=""/></a>
+				<a href="#" class="icn_instar"><img src="img/icn_instar.png" alt=""/></a>
+				<a href="#" class="url_copy">URL 복사</a>
+			</div>
+		</div>
+		<!--//공유하기-->
+
+		<!--스티커주기-->
+		<div class="view_cont sticker">
+			<h3>스티커주기 <span>내가 붙이는 스티커 하나에 작가님 에너지 불끈</span></h3>
+			<div class="view_sticker">
+				<ul>
+					<li class="total">
+						<span class="sticker"><img src="img/icn_sticker.png" alt="스티커"/></span>
+						<span class="num">2,356 <span>개</span></span>
+					</li>
+					<li class="apply">
+						<a href="#"><img src="img/icn_sticker.png" alt="스티커"/></a>
+						<a href="#"><img src="img/icn_sticker.png" alt="스티커"/></a>
+						<a href="#"><img src="img/icn_sticker.png" alt="스티커"/></a>
+						<a href="#"><img src="img/icn_sticker_off.png" alt="스티커"/></a>
+						<a href="#"><img src="img/icn_sticker_off.png" alt="스티커"/></a>
+						<!--<span class="btnArea">
+							<a href="#" class="btn_small">취소</a>
+							<a href="#" class="btn_small">붙이기</a>
+						</span>-->
+						<span class="ok_txt">참여완료!</span><!-- 20140526 확인 -->
+					</li>
+				</ul>
+			</div>
+			<ul class="list">
+				<li><a href="#"><img src="img/bl_tang.png" alt=""/> 주부들 살 못빼는 이유 알고 보니...</a></li>
+				<li><a href="#"><img src="img/bl_tang.png" alt=""/> 식품은 역시 엔스몰! 소선 호텔 베이커리 호두파이</a></li>
+				<li><a href="#"><img src="img/bl_tang.png" alt=""/> 주부들 살 못빼는 이유 알고 보니...</a></li>
+			</ul>
+		</div>
+		<!--//스티커주기-->
+
+	</section>
+
+	<!--댓글영역-->
+	<section class="replyArea" id="replyArea">
+
+		<!--댓글 쓰기 20140722 수정 -->
+		<div class="reply_write">
+			<h3>댓글(7) <span class="txt_byte">0/500</span></h3>
+
+			<div class="sticon_select" style="display:none;">
+				<span class="reply_sticon"></span> <!--스티콘 선택전-->
+				<img src="img/temp/sticon2.jpg"  alt="" class="sticon"/> 
+			</div>
+			<div class="write">
+				<textarea  placeholder="">너무너무 재미있어요. 짱!짱!</textarea>
+			</div><!--20140430 텍스트 수정-->
+
+			<!-- namecon_group -->
+			<div class="drag_wrap">
+				<div class="frame" id="basic">
+					<ul class="clearfix">
+						<li><img src="img/temp/sticon_thum_now.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>
+						<li><img src="img/temp/sticon_thum_dim.png" alt=""/></li>					
+						<li><img src="img/temp/sticon_thum_shop.png" alt=""/></li>
+					</ul>
+				</div>
+			</div>
+			<!--// namecon_group -->
+
+			<!-- sticon_slide -->
+			<div class="sticon_slide"> 
+				<div class="sticon_pic" id="sticon_pic">
+					<ul class="slides">
+						<li>
+							<dl class="reply_namecon">
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.png" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.png" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+							</dl>
+						</li>
+						<li>
+							<dl class="reply_namecon">
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.png" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.png" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a></span></dd>
+								<dd><span><!--<a href="#"><img src="img/temp/sticon.jpg" alt="스티콘"/></a>--></span></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="slider_paging">
+					<div class="current_paging">
+						<span class="current-slide">1</span>/<span class="total-slides">0</span>
+						<a href="#" class="btn_close" id="close_sticon"><img src="img/bl_up.png"> 접기</a>
+					</div>
+				</div>
+			</div>
+			<!--// sticon_slide -->
+
+			<div class="apply">
+				<a href="#" class="imoti" id="imoti_open"><img src="img/imoti_default.png" alt="" class="icn"/> 변경<!--<img src="img/icn_open@2x.png" alt="" class="status"/> 20140429 변경으로 대체--></a>
+				<!--<a href="#" class="btn_small">스티콘 댓글</a>-->
+				<a href="#" class="btn_small red">등록</a>
+			</div>
+			<div class="imotiArea" id="imotiArea">
+				<div class="imoti_select">
+					<ul>
+						<li><span><a href="#"><img src="img/imoti_01.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_02.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_03.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_04.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_05.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_06.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_07.png" alt="이모티콘"/></a></span></li>
+					</ul>
+					<ul>
+						<li><span><a href="#"><img src="img/imoti_08.png" alt="이모티콘"/></a></span></li>
+						<li><span><a href="#"><img src="img/imoti_09.png" alt="이모티콘"/></a></span></li>
+						<li><span></span></li>
+						<li><span></span></li>
+						<li><span></span></li>
+						<li><span></span></li>
+						<li><span></span></li>
+					</ul>
+				</div>
+				<div class="page_num">
+					<a href="#" class="btn_pre"><img src="img/btn_pre.png" alt="이전"/></a>
+					<span class="num">0/0</span>
+					<a href="#" class="btn_nxt"><img src="img/btn_nxt.png" alt="다음"/></a>					
+				</div>
+			</div>
+		</div>
+		<!--//댓글 쓰기-->
+
+		<!--댓글 리스트-->
+		<div class="reply_list">
+			<ul>
+				<li>
+					<span class="emoti"><img src="img/imoti_default.png" alt=""/></span>
+					<span class="id">ktof***</span>
+					<span class="date">2014.13.17 15:30</span>
+					<a href="#" class="btn_del"><img src="img/btn_del.png" alt="del"/></a>
+					<span class="best"><img src="img/icn_best.png" alt="best"/></span>
+					<a href="#" class="polis"><img src="img/btn_polis.png" alt="police"/></a>
+					<span class="reply">
+						<img src="img/temp/sticon2.jpg"  alt="" class="sticon"/><!--20140718 추가-->
+						작가님 완전 사라합니다.뿌잉뿌잉
+					</span>
+					<a href="#" class="btn_small re">대댓글 999</a>
+					<a href="#" class="btn_small bichu"><img src="img/icn_bichu.png" alt="비추"/> 1,300</a>
+					<a href="#" class="btn_small chu"><img src="img/icn_chu.png" alt="추천"/> 1,230</a>
+					<!--<span class="secret">비공개 처리된 글입니다.</span>-->
+				</li>
+				<li>
+					<span class="emoti"><img src="img/imoti_default.png" alt=""/></span>
+					<span class="id">ktof***</span>
+					<span class="date">2014.13.17 15:30</span>
+					<!--<a href="#" class="btn_del"><img src="img/btn_del.png" alt="del"/></a>-->
+					<a href="#" class="polis"><img src="img/btn_polis.png" alt="police"/></a>
+					<span class="reply">작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉</span>
+					<a href="#" class="btn_small re">대댓글 72</a>
+					<a href="#" class="btn_small bichu"><img src="img/icn_bichu.png" alt="비추"/> 999</a>
+					<a href="#" class="btn_small chu"><img src="img/icn_chu.png" alt="추천"/> 999</a>
+					<!--<span class="secret">비공개 처리된 글입니다.</span>-->
+				</li>
+				<li>
+					<span class="emoti"><img src="img/imoti_default.png" alt=""/></span>
+					<span class="id">ktof***</span>
+					<span class="date">2014.13.17 15:30</span>
+					<!--<a href="#" class="btn_del"><img src="img/btn_del.png" alt="del"/></a>-->
+					<a href="#" class="polis"><img src="img/btn_polis.png" alt="police"/></a>
+					<span class="reply">작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉 작가님 완전 사라합니다.뿌잉뿌잉</span>
+					<a href="#" class="btn_small re">대댓글 1,972</a>
+					<a href="#" class="btn_small bichu"><img src="img/icn_bichu.png" alt="비추"/> 3</a>
+					<a href="#" class="btn_small chu"><img src="img/icn_chu.png" alt="추천"/> 12</a>
+					<!--<span class="secret">비공개 처리된 글입니다.</span>-->
+				</li>
+				<li>
+					<span class="emoti"><img src="img/imoti_default.png" alt=""/></span>
+					<span class="id">ktof***</span>
+					<span class="date">2014.13.17 15:30</span>
+					<!--<a href="#" class="polis"><img src="img/btn_polis.png" alt="police"/></a>
+					<span class="reply">작가님 완전 사라합니다.뿌잉뿌잉</span>
+					<a href="#" class="btn_small re">대댓글 972</a>
+					<a href="#" class="btn_small bichu"><img src="img/icn_bichu.png" alt="비추"/> 3</a>
+					<a href="#" class="btn_small chu"><img src="img/icn_chu.png" alt="추천"/> 12</a>-->
+					<span class="secret">비공개 처리된 글입니다.</span>
+				</li>
+			</ul>
+			<div class="page_num">
+				<a href="#" class="btn_pre"><img src="img/btn_pre.png" alt="이전"/></a>
+				<span class="num">10/20</span>
+				<a href="#" class="btn_nxt"><img src="img/btn_nxt.png" alt="다음"/></a>
+			</div>
+		</div>
+		<!--//댓글 리스트-->
+	</section>
+	<!--//댓글영역-->
+
+	<!--상세 하단영역-->
+	<section class="bottomArea" id="bottomArea">
+		<!--bnr_bottom-->
+		<a href="#" class="bnr_bottom"><img src="img/temp/bnr_bottom.jpg" alt=""/></a>
+		<!--//bnr_bottom-->
+		<ul>
+			<li class="pre_pic"><a href="#"><img src="img/icn_pre.png" alt="pre"/> 이전화 </a></li>
+			<li class="nxt_pic"><a href="#">다음화 <img src="img/icn_nxt.png" alt="nxt"/></a></li>
+			<li class="btn_top"><a href="#">맨위로 <img src="img/bl_top.png" alt="top"/></a></li>
+		</ul>
+	</section>
+	<!--//상세 하단영역-->
+
+</article>
+<!--//본문-->
+
+<!--상세 플로팅 메뉴 20140716 수정 -->
+<article class="toon_tool">	
+	<div class="toon_btn">
+		<span class="btn_pre_bg"></span>
+		<a href="#" class="btn_pre"><img src="img/btn_view_pre2.png" alt="이전"/></a>
+		<span class="btn_nxt_bg"></span>
+		<a href="#" class="btn_nxt"><img src="img/btn_view_nxt2.png" alt="다음"/></a>
+	</div>
+	<div class="toon_bottom">
+		<span class="btn_bottom_bg"></span>		
+		<a href="#" class="btn_list"><img src="img/btn_list.png" alt="목록"/></a>
+		<a href="#" class="btn_first"><img src="img/btn_first.png" alt="처음"/></a>
+		<a href="#" class="btn_stiker"><img src="img/btn_stiker.png" alt="스티커"/></a>		
+		<a href="#" class="btn_reply"><img src="img/btn_reply.png" alt="댓글"/></a>
+		<a href="#" class="btn_bookmark"><img src="img/btn_bookmark.png" alt="책갈피"/></a>
+		<a href="#" class="btn_top"><img src="img/btn_viewtop.png" alt="상단"/></a>
+	</div>
+</article>
+<!--// 상세 플로팅 메뉴 20140716 수정 -->
+
+<!--레이어팝업 20141103 ~ 아이템 가격 표시 수정-->
+<article class="layer_popup">
+	<div class="layer_bg"></div>
+
+	<div class="popup">
+
+		<div class="basic_pop">
+			<h3 class="tl_pop">회차감상</h3>			
+			<a href="#" class="btn_cls"><img src="img/btn_pop_close.png" alt=""/></a>
+
+			<div class="view_select">
+				<table>
+					<tr class="on">
+						<th><span class="radio_sel"><input type="radio" name="view_select" id="view_select1" checked="checked" /></span></th>
+						<td>
+							<label for="view_select1">
+								<strong>113화-중력-이말년 4컷특급</strong>
+								<!--결제를 블루베리로 할 때-->
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								<span class="bbery">70</span>,
+								<!--//결제를 블루베리로 할 때-->
+								이용기간 : 3일
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th><span class="radio_sel"><input type="radio" name="view_select" id="view_select2"/></span></th>
+						<td>
+							<label for="view_select2">
+								<strong>"제주 날나리 배낭자" 전회 구매 (총 35화)</strong>
+								<!--결제를 블루베리로 할 때-->
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								<span class="bbery">70</span>,
+								<!--//결제를 블루베리로 할 때-->
+								이용기간 : 3일
+							</label>
+						<td>
+					</tr>
+				</table>				
+			</div>
+
+			<div class="btnArea pop">
+				<a href="#" class="btn_small">취소</a>
+				<a href="#" class="btn_small red">감상하기</a>
+			</div>									
+		</div>
+
+	</div>
+</article>
+<!--//레이어팝업-->
+
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<!--20140522 추가/수정-->
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> &copy; KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기 <img src="img/bl_cominfo.png" alt=""/></a>
+	<div class="comInfo_txt">
+		(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945<br/>
+		통신판매업신고 : 2002-경기성남-0048 · Tel 국번없이 100<br/>
+		463-711 경기도 성남시 분당구 불정로 90 (정자동 206번지)
+	</div>
+	<!--//20140522 추가/수정-->
+</footer> 
+
+<link rel="stylesheet" href="common/css/horizontal.css"> <!--20140717 추가-->
+<script type="text/javascript" src="common/js/plugins.js"></script><!-- 20140717 jquery.plugins.js -->
+<script type="text/javascript" src="common/js/sly.js"></script><!-- 20140717 jquery.sly.js -->
+<script type="text/javascript" src="common/js/horizontal.js"></script><!-- 20140717 jquery.horizontal.js -->
+
+</body>
+</html>

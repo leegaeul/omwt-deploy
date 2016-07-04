@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMPrdOptionMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+		INSERT INTO 
+			ow_bm_prd_option 
+			(
+				  prdcode
+				, optionprdseq
+			)
+			VALUES 
+			(
+				  #{prdcode}
+				, #{optionprdseq}
+			);
+    </insert>
+    
+    <delete id="deleteByPK"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+		DELETE FROM
+			ow_bm_prd_option
+		WHERE
+				prdcode 	 = #{prdcode}
+			AND optionprdseq = #{optionprdseq}
+    </delete>
+    
+    <select id="selectByPK"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_prd_option
+    	WHERE
+    			prdcode		 = #{prdcode}
+    		AND optionprdseq = #{optionprdseq}
+    </select>
+    
+    <select id="selectListByPrdcode"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_prd_option
+    	WHERE
+   			prdcode		 = #{prdcode}
+    </select>
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_prd_option
+    </select>
+    
+    <select id="selectListByDate"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+    	SELECT prdseq, sellfg AS prdcode 
+    	FROM ow_prd
+		WHERE 
+		<![CDATA[ 
+			sellfg = #{prdcode} and sellyn = 'Y'
+		    and date_format(now(), '%Y%m%d') >= date_format(sellstartdt, '%Y%m%d')
+		    and date_format(now(), '%Y%m%d') <= date_format(sellenddt, '%Y%m%d')
+		]]>
+    </select>
+    
+    <select id="selectAllListByPrdcode"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdOptionDomain">
+    	SELECT prdseq, sellfg AS prdcode 
+    	FROM ow_prd
+		WHERE sellfg = #{prdcode}
+    </select>
+
+</mapper>

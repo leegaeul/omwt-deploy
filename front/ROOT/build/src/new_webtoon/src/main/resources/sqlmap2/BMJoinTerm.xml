@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMJoinTermMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+			useGeneratedKeys="true"
+			keyProperty="termseq">
+		INSERT INTO 
+			ow_bm_join_term 
+			(
+				  joinseq
+				, prdcode
+				, paymentseq
+				, idfg
+				, userid
+				, startdt
+				, enddt
+				, regdt
+				, regid
+				, moddt
+				, modid
+			)
+			VALUES 
+			(
+				  #{joinseq}
+				, #{prdcode}
+				, #{paymentseq}
+				, #{idfg}
+				, #{userid}
+				, #{startdt}
+				, #{enddt}
+				, #{regdt}
+				, #{regid}
+				, #{moddt}
+				, #{modid}
+			);
+    </insert>
+    
+	<update id="updateByTermseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+		UPDATE
+			ow_bm_join_term
+		SET
+				termseq = termseq
+		<if test="isNotEmpty(joinseq)"		>, joinseq		= #{joinseq}</if>
+		<if test="isNotEmpty(prdcode)"		>, prdcode		= #{prdcode}</if>
+		<if test="isNotEmpty(paymentseq)"	>, paymentseq	= #{paymentseq}</if>
+		<if test="isNotEmpty(idfg)"			>, idfg			= #{idfg}</if>
+		<if test="isNotEmpty(userid)"		>, userid		= #{userid}</if>
+		<if test="isNotEmpty(startdt)"		>, startdt		= #{startdt}</if>
+		<if test="isNotEmpty(enddt)"		>, enddt		= #{enddt}</if>
+		<if test="isNotEmpty(regdt)"		>, regdt		= #{regdt}</if>
+		<if test="isNotEmpty(regid)"		>, regid		= #{regid}</if>
+		<if test="isNotEmpty(regdt)"		>, moddt		= #{moddt}</if>
+		<if test="isNotEmpty(regid)"		>, modid		= #{modid}</if>
+		WHERE
+			termseq = #{termseq}
+    </update>
+    
+    <delete id="deleteByTermseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+		DELETE FROM
+			ow_bm_join_term
+		WHERE
+			termseq = #{termseq}
+    </delete>
+    
+    <select id="selectByTermseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join_term
+    	WHERE
+    		termseq = #{termseq}
+    </select>
+    
+    <select id="selectLastTermForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    			*
+    	FROM
+    			ow_bm_join_term
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    	ORDER BY
+    			termseq DESC
+    	LIMIT
+    			1
+    </select>
+    
+    <select id="selectLastByJoinseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    			*
+    	FROM
+    			ow_bm_join_term
+    	WHERE
+    			joinseq = #{joinseq}
+    	ORDER BY
+    			termseq DESC
+    	LIMIT
+    			1
+    </select>
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join_term
+    </select>
+    
+    <select id="selectLastByPaymentseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join_term
+    	WHERE
+    		paymentseq = #{paymentseq}
+    	ORDER BY
+    		termseq DESC
+    	LIMIT
+    		1
+    	;
+    </select>
+
+
+    <select id="selectCurrentForUser"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinTermDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join_term
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{userid}
+    		AND DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s') BETWEEN startdt AND enddt
+    </select>
+    
+    
+</mapper>

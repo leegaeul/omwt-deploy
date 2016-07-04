@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">     
+  <title>여심루팡 랭킹</title>
+  <style type="text/css">
+  html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video 
+   {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      vertical-align: top;
+      list-style:none;
+   }
+   #event{margin:0 auto; max-width:600px; min-width:320px}
+   #event img{width:100%; height:auto;}
+  </style>
+</head>
+<body>
+  <div id="event">
+    <img src="/yoyozine/20150313/images/yorank_1503_top.jpg" alt="">
+    <ol>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=81"><img src="/yoyozine/20150313/images/yorank_1503_01.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=93"><img src="/yoyozine/20150313/images/yorank_1503_02.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=71"><img src="/yoyozine/20150313/images/yorank_1503_03.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=89"><img src="/yoyozine/20150313/images/yorank_1503_04.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=39"><img src="/yoyozine/20150313/images/yorank_1503_05.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=72"><img src="/yoyozine/20150313/images/yorank_1503_06.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=11"><img src="/yoyozine/20150313/images/yorank_1503_07.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=76"><img src="/yoyozine/20150313/images/yorank_1503_08.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=68"><img src="/yoyozine/20150313/images/yorank_1503_09.jpg" alt=""></a></li>
+      <li><a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=9"><img src="/yoyozine/20150313/images/yorank_1503_10.jpg" alt=""></a></li>
+    </ol>
+  </div>
+</body>
+</html>

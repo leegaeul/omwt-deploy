@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper">
+    
+    <select id="getPayment" parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain" 
+            resultType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain">
+        SELECT /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.getPayment */
+					paymentseq,
+					orgpaymentseq,
+					timesseq,
+					(SELECT webtoonseq FROM ow_times WHERE timesseq = a.timesseq) AS webtoonseq,
+					paymentstep,
+					freeyn,
+					paymentfg,
+					resultcode,
+					resultmsg,
+					opcode,
+					orderno,
+					payno,
+					subscrid,
+					subscridtype,
+					sessionid,
+					paymethod,
+					CASE 
+						WHEN paymethod = 'HP' THEN '휴대폰'
+						WHEN paymethod = 'DP' THEN '휴대폰'
+						WHEN paymethod = 'CD' THEN '신용카드'
+						WHEN paymethod = 'GF' THEN '문화상품권'
+					END AS paymethodnm,
+					payamount,
+					payname,
+					orderamount,
+					displayversion,
+					clienttype,
+					paymentid,
+					paymentdt,
+					idfg,
+					regid,
+					regdt
+		  FROM ow_payment a
+		WHERE orderno = #{orderno}
+			AND paymentfg = #{paymentfg}
+			AND paymentstep = #{paymentstep}
+		    AND paymentid = #{paymentid}
+		    AND idfg = #{idfg}
+    </select>
+    
+    <select id="getOrderSum"  parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain"
+    		resultType="java.lang.Integer">
+        SELECT /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.getOrderSum */
+					IFNULL(SUM(amount), 0) AS amount
+		FROM (
+				SELECT IFNULL(SUM(orderamount), 0) AS amount FROM ow_order WHERE usefg = 'charge' AND orderfg = 'order' AND orderid = #{userid} AND idfg = #{idfg}
+				UNION ALL
+				SELECT IFNULL(SUM(orderamount), 0) * -1 AS amount FROM ow_order WHERE usefg = 'charge' AND orderfg = 'cancel' AND orderid = #{userid} AND idfg = #{idfg}
+				UNION ALL
+				SELECT IFNULL(SUM(orderamount), 0) * -1 AS amount FROM ow_order WHERE usefg = 'charge' AND orderfg = 'refund' AND orderid = #{userid} AND idfg = #{idfg}
+				UNION ALL
+				SELECT IFNULL(SUM(orderamount), 0) * -1 AS amount FROM ow_order WHERE usefg = 'buy' AND orderfg = 'order' AND orderid = #{userid} AND idfg = #{idfg}
+				UNION ALL
+				SELECT IFNULL(SUM(orderamount), 0) AS amount FROM ow_order WHERE usefg = 'buy' AND orderfg = 'cancel' AND orderid = #{userid} AND idfg = #{idfg}
+		) a
+    </select>
+    
+    <select id="getExcCtn"  parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain"
+    		resultType="java.lang.Integer">
+        SELECT /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.getExcCtn */
+					count(1) AS cnt
+		  FROM ow_exclude_ctn 
+		WHERE ctn = #{ctn}
+    </select>
+    
+    <insert id="registPayment" parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain">
+    	<selectKey keyProperty="paymentseq" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID() paymentseq
+        </selectKey>
+        
+        INSERT INTO /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.registPayment */
+	        ow_payment
+	        (
+	        	paymentseq,
+				orgpaymentseq,
+				timesseq,
+				paymentstep,
+				freeyn,
+				paymentfg,
+				resultcode,
+				resultmsg,
+				opcode,
+				orderno,
+				payno,
+				subscrid,
+				subscridtype,
+				custphone,
+				sessionid,
+				paymethod,
+				payamount,
+				payname,
+				orderamount,
+				displayversion,
+				clienttype,
+				paymentid,
+				paymentdt,
+				idfg,
+				regid,
+				regdt
+			) VALUES (
+				#{paymentseq},
+				#{orgpaymentseq},
+				#{timesseq},
+				#{paymentstep},
+				#{freeyn},
+				#{paymentfg},
+				#{resultcode},
+				#{resultmsg},
+				#{opcode},
+				#{orderno},
+				#{payno},
+				#{subscrid},
+				#{subscridtype},
+				#{custphone},
+				#{sessionid},
+				#{paymethod},
+				#{payamount},
+				#{payname},
+				#{orderamount},
+				#{displayversion},
+				#{clienttype},
+				#{paymentid},
+				#{paymentdt},
+				#{idfg},
+				#{regid},
+				#{regdt}
+			)
+    </insert>
+    
+    <update id="modifyPayment" parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain">
+        UPDATE ow_payment /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.modifyPayment */
+	         SET paymentstep = #{paymentstep},
+	         		resultcode = #{resultcode},
+	         		resultmsg = #{resultmsg},
+	         		payno = #{payno}
+		WHERE orderno = #{orderno}
+		    AND paymentstep = 'req'
+    </update>
+    
+    <update id="modifyPaymentByPayno" parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain">
+        UPDATE ow_payment /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.modifyPaymentByPayno */
+	         SET paymentstep = #{paymentstep},
+	         		resultcode = #{resultcode},
+	         		resultmsg = #{resultmsg},
+	         		payno = #{payno}
+		WHERE payno = #{payno}
+		    AND paymentstep = 'req'
+    </update>
+
+    <delete id="deletePayment" parameterType="java.lang.Integer">
+		DELETE /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.deletePayment */ 
+		  FROM ow_payment
+		WHERE paymentseq = #{paymentseq}
+    </delete>
+    
+    <insert id="registOrder" parameterType="com.olleh.webtoon.common.dao.payment.domain.OrderDomain">
+        INSERT INTO /* com.olleh.webtoon.common.dao.payment.persistence.PaymentMapper.registOrder */
+	        ow_order
+	        (
+	        	paymentseq,
+				buyseq,
+				orderno,
+				usefg,
+				orderfg,
+				orderamount,
+				orderid,
+				orderdt,
+				idfg,
+				regid,
+				regdt
+			) VALUES (
+				#{paymentseq},
+				#{buyseq},
+				#{orderno},
+				#{usefg},
+				#{orderfg},
+				#{orderamount},
+				#{orderid},
+				#{orderdt},
+				#{idfg},
+				#{regid},
+				#{regdt}
+			)
+    </insert>
+
+	<update id="deletePrdAvail" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain">
+	    DELETE 
+	      FROM ow_prd_avail 
+		WHERE buyseq = #{buyseq}
+		    AND buyid = #{userid}
+		    AND idfg = #{idfg}
+	</update>
+</mapper>

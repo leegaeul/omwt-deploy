@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.olltoon.mediapack.persistence.MediaPackMapper">
+	
+	<select id="getMediaPackUser" resultType="hashmap">
+		SELECT *
+		FROM ow_media_service
+		WHERE phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'olltoon2015')) AND regid = #{userid} AND idfg = #{idfg}
+	</select>
+	
+	<insert id="registMediaPackUser">
+		INSERT into ow_media_service(regid, idfg, phonenum, chargeyn, regdt)
+			values (#{userid}, #{idfg}, HEX(AES_ENCRYPT(#{phonenum}, 'olltoon2015')), 'N', #{regdt}) 
+	</insert>
+	
+</mapper>

@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.comment.persistence.CommentMapper">
+
+    <cache eviction="LRU" flushInterval="10000" size="1024" readOnly="true"/>    
+    
+	<select id="commentSelectListCnt" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM ow_comment
+		WHERE 
+			articlefg = #{articlefg}
+			and articleseq = #{articleseq}
+			and blindyn = 'N'
+			and delyn = 'N'
+	</select>
+	
+	<select id="commentSelectList" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+		SELECT DISTINCT
+			co.commentseq,
+			co.commentconseq, 
+			co.comment,
+			co.totalgoodcnt,
+			co.totalbadcnt,
+			date_format(co.regdt, '%Y-%m-%d %H:%i') regdate,
+			co.authoryn,
+			co.idfg,
+			name.nameconnm,
+		<![CDATA[
+			case 
+		       when (de.declarecnt >= 3) then 'Y'
+		       else 'N'
+		    end as blindyn,
+		    
+		   case
+          	when(ifnull(re.commentseq, 0)>0) then 'Y'
+           else 'N'
+           end as recomyn,
+           
+           case
+			 when co.idfg = 'olleh' and co.authoryn = 'Y' then concat(concat('<strong>', co.nickname), '</strong>')
+			 when co.idfg = 'olleh' 
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) > 3 
+              then concat(concat(concat(left(substring_index(co.regid, '@', 1), 3), repeat('*', char_length(substring_index(co.regid, '@', 1)) - 3)), '@'), substring_index(co.regid, '@', -1))
+			 when co.idfg = 'olleh'                                                          
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) < 3 
+              then co.regid
+			 when co.idfg = 'olleh' and co.authoryn = 'N' and instr(co.regid, '@') < 1  and char_length(co.regid) > 3 
+			  then concat(left(co.regid, 3), repeat('*', char_length(co.regid) - 3)) 
+			 else co.nickname
+			end as nickname,
+		]]>
+			name.defaultyn,
+			name.nameconurl,
+			name.mnameconurl,
+			icon.commentconurl,
+			format(ifnull(sub.subcommentcnt,0), 0) subcommentcnt,
+		   case
+          	when(#{regid} = co.regid) then 'Y'
+           else 'N'
+           end as regyn
+		FROM ow_comment co
+		LEFT JOIN ow_namecon name ON if(co.nameconseq = 0, 5, co.nameconseq) = name.nameconseq
+		LEFT JOIN ow_comment_recommend re on co.commentseq = re.commentseq and re.regid = #{regid}
+		LEFT JOIN ow_commentcon icon on co.commentconseq = icon.commentconseq
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON co.commentseq = de.commentseq
+		LEFT JOIN 
+			(
+				select commentseq, count(commentseq) as subcommentcnt
+				from ow_subcomment
+				where delyn = 'N'
+				group by commentseq
+				
+			) sub ON co.commentseq = sub.commentseq
+		WHERE
+		<![CDATA[
+			co.articlefg = #{articlefg}
+			and co.articleseq = #{articleseq}
+			and co.blindyn = 'N'
+			and co.delyn = 'N'
+			and co.commentseq NOT IN 
+				(
+					select * 
+					from 
+					(
+						select sub1.commentseq 
+						from ow_comment sub1
+						left join 
+						(
+							select commentseq, (sum(if ((regid in (${musers})), 3, 1))) as declarecnt
+							from ow_declaration
+							group by commentseq		
+						) sub2 on sub1.commentseq = sub2.commentseq
+						where sub1.articlefg = #{articlefg}
+						and sub1.articleseq = #{articleseq}
+						and sub1.totalgoodcnt >= 3 + sub1.totalbadcnt 
+						and sub1.blindyn = 'n'
+						and sub1.delyn = 'n'
+						and ifnull(sub2.declarecnt, 0) < 3
+						order by sub1.totalgoodcnt - sub1.totalbadcnt desc
+						limit 0, 5
+				) as BestNotInCommentList
+		)
+		]]>
+		ORDER BY 
+			co.commentseq desc
+		LIMIT 
+			#{startRowNo}, #{pageSize}
+	</select>
+
+
+	<select id="commentSelectDetail" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+		SELECT
+			co.commentseq,
+			co.comment,
+			co.nameconseq,
+			co.articlefg,
+			co.articleseq,
+			<![CDATA[
+			case
+			 when co.idfg = 'olleh' and co.authoryn = 'Y' then concat(concat('<strong>', co.nickname), '</strong>')
+			 when co.idfg = 'olleh' 
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) > 3 
+              then concat(concat(concat(left(substring_index(co.regid, '@', 1), 3), repeat('*', char_length(substring_index(co.regid, '@', 1)) - 3)), '@'), substring_index(co.regid, '@', -1))
+			 when co.idfg = 'olleh'                                                          
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) < 3 
+              then co.regid
+			 when co.idfg = 'olleh' and co.authoryn = 'N' and instr(co.regid, '@') < 1  and char_length(co.regid) > 3 
+			  then concat(left(co.regid, 3), repeat('*', char_length(co.regid) - 3)) 
+			 else co.nickname
+			end as nickname,
+			]]>
+			co.idfg,
+			co.authoryn,
+			name.nameconnm,
+			name.defaultyn,
+			name.nameconurl,
+			name.mnameconurl,
+			date_format(co.regdt, '%Y-%m-%d %H:%i') regdate
+		FROM
+			ow_comment co
+		LEFT JOIN ow_namecon name ON if(co.nameconseq = 0, 5, co.nameconseq) = name.nameconseq 
+		WHERE
+			commentseq = #{commentseq}
+	
+    </select>
+    
+    
+    <select id="bestCommentSelectListCnt" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.Integer">
+		SELECT if(count(*) > 5, 5, count(*))
+		FROM ow_comment co
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON co.commentseq = de.commentseq
+		WHERE 
+		<![CDATA[
+			co.articlefg = #{articlefg}
+			and co.articleseq = #{articleseq}
+			and co.blindyn = 'N'
+			and co.delyn = 'N'
+			and co.totalgoodcnt >= 3 + totalbadcnt
+			and ifnull(de.declarecnt, 0) < 3
+		]]>
+	</select>
+    
+	
+	<select id="bestCommentSelectList" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+		SELECT DISTINCT
+			co.commentseq, 
+			co.commentconseq, 
+			co.comment,
+			co.totalgoodcnt,
+			co.totalbadcnt,
+			date_format(co.regdt, '%Y-%m-%d %H:%i') regdate,
+			co.authoryn,
+			co.idfg,
+			name.nameconnm,
+			name.defaultyn,
+			name.nameconurl,
+			name.mnameconurl,
+			icon.commentconurl,
+		<![CDATA[
+			case 
+		       when (de.declarecnt >= 3) then 'Y'
+		       else 'N'
+		    end as blindyn,
+		    
+		    case
+				when (re.regid IS NOT NULL) then 'Y'
+			else
+				'N'
+			end as recomyn,
+			
+			 case
+			 when co.idfg = 'olleh' and co.authoryn = 'Y' then concat(concat('<strong>', co.nickname), '</strong>')
+			 when co.idfg = 'olleh' 
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) > 3 
+              then concat(concat(concat(left(substring_index(co.regid, '@', 1), 3), repeat('*', char_length(substring_index(co.regid, '@', 1)) - 3)), '@'), substring_index(co.regid, '@', -1))
+			 when co.idfg = 'olleh'                                                          
+                  and co.authoryn = 'N' 
+                  and instr(co.regid, '@') > 0  
+                  and char_length(substring_index(co.regid, '@', 1)) < 3 
+              then co.regid
+			 when co.idfg = 'olleh' and co.authoryn = 'N' and instr(co.regid, '@') < 1  and char_length(co.regid) > 3 
+			  then concat(left(co.regid, 3), repeat('*', char_length(co.regid) - 3)) 
+			 else co.nickname
+			end as nickname,
+		]]>
+			format(ifnull(sub.subcommentcnt,0), 0) subcommentcnt,
+		   case
+          	when(#{regid} = co.regid) then 'Y'
+           else 'N'
+           end as regyn
+		FROM ow_comment co
+		LEFT JOIN ow_namecon name ON if(co.nameconseq = 0, 5, co.nameconseq) = name.nameconseq
+		LEFT JOIN ow_commentcon icon on co.commentconseq = icon.commentconseq
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON co.commentseq = de.commentseq
+		LEFT JOIN 
+			(
+				select commentseq, regid
+				from ow_comment_recommend
+				where regid = #{regid}
+			) re ON co.commentseq = re.commentseq
+		LEFT JOIN 
+			(
+				select commentseq, count(commentseq) as subcommentcnt
+				from ow_subcomment
+				where delyn = 'N'
+				group by commentseq
+				
+			) sub ON co.commentseq = sub.commentseq
+		WHERE
+		<![CDATA[
+			co.articlefg = #{articlefg}
+			and co.articleseq = #{articleseq}
+			and co.blindyn = 'N'
+			and co.delyn = 'N'
+			and co.totalgoodcnt >= 3 + co.totalbadcnt
+			and ifnull(de.declarecnt, 0) < 3
+		]]>
+		ORDER BY 
+			co.totalgoodcnt - co.totalbadcnt DESC, co.regdt DESC
+		LIMIT 
+			0,5
+	</select>
+
+	
+	<insert id="commentInsert" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+	INSERT INTO ow_comment 
+	(
+		articlefg,
+		articleseq,
+	<if test='commentconseq != null and commentconseq != ""'>
+		commentconseq,
+	</if>
+		nameconseq,
+		comment,
+		delyn,
+		totalgoodcnt,
+		totalbadcnt,
+		blindyn,
+		autoblindyn,
+		idfg,
+		authoryn,
+		regdt,
+		nickname,
+		regid
+	) 
+	VALUES 
+	(
+		#{articlefg},
+		#{articleseq},
+	<if test='commentconseq != null and commentconseq != ""'>
+		#{commentconseq},
+	</if>
+		#{nameconseq},
+		#{comment},
+		'N',
+		0,
+		0,
+		'N',
+		'N',
+		#{idfg},
+		#{authoryn},
+		#{regdate},
+		#{nickname},
+		#{regid}
+	);
+    </insert> 
+
+    
+    <delete id="commentDelete" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+    	UPDATE ow_comment
+    	SET delyn = 'Y'
+		WHERE 
+			commentseq = #{commentseq}
+			and regid = #{regid} 
+    </delete>
+    
+    
+	<select id="subCommentSelectListCnt" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM ow_subcomment
+		WHERE 
+			commentseq = #{commentseq}
+			and blindyn = 'N'
+			and delyn = 'N'
+	</select>
+	
+	
+	<select id="subCommentSelectList" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain">
+		SELECT
+			sub.subcommentseq,
+			sub.commentconseq,  
+			sub.subcomment,
+			date_format(sub.regdt, '%Y-%m-%d %H:%i') regdate,
+			sub.authoryn,
+			sub.idfg,
+			sub.commentseq,
+			name.nameconnm,
+			name.defaultyn,
+			name.nameconurl,
+			name.mnameconurl,
+			icon.commentconurl,
+		<![CDATA[	
+			case 
+		       when (de.declarecnt >= 3) then 'Y'
+		       else 'N'
+		    end as blindyn,
+		    
+		    case
+          	when(#{regid} = sub.regid) then 'Y'
+           else 'N'
+           end as regyn,
+		    
+		     case
+			 when sub.idfg = 'olleh' and sub.authoryn = 'Y' then concat(concat('<strong>', sub.nickname), '</strong>')
+			 when sub.idfg = 'olleh' 
+                  and sub.authoryn = 'N' 
+                  and instr(sub.regid, '@') > 0  
+                  and char_length(substring_index(sub.regid, '@', 1)) > 3 
+              then concat(concat(concat(left(substring_index(sub.regid, '@', 1), 3), repeat('*', char_length(substring_index(sub.regid, '@', 1)) - 3)), '@'), substring_index(sub.regid, '@', -1))
+			 when sub.idfg = 'olleh'                                                          
+                  and sub.authoryn = 'N' 
+                  and instr(sub.regid, '@') > 0  
+                  and char_length(substring_index(sub.regid, '@', 1)) < 3 
+              then sub.regid
+			 when sub.idfg = 'olleh' and sub.authoryn = 'N' and instr(sub.regid, '@') < 1  and char_length(sub.regid) > 3 
+			  then concat(left(sub.regid, 3), repeat('*', char_length(sub.regid) - 3)) 
+			 else sub.nickname
+			end as nickname
+		]]>
+		FROM ow_subcomment sub
+		LEFT JOIN ow_namecon name ON if(sub.nameconseq = 0, 5, sub.nameconseq) = name.nameconseq
+		LEFT JOIN ow_commentcon icon on sub.commentconseq = icon.commentconseq
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON sub.subcommentseq = de.commentseq
+		WHERE
+			sub.commentseq = #{commentseq}
+			and sub.blindyn = 'N'
+			and sub.delyn = 'N'
+		ORDER BY 
+			sub.subcommentseq desc
+	<if test='mobileyn != null and mobileyn == "Y"'>
+		LIMIT 
+			#{startRowNo}, #{pageSize}
+	</if>
+	</select>
+	
+	    
+     <insert id="subCommentInsert" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain">
+	INSERT INTO ow_subcomment 
+	(
+		commentseq,
+		nameconseq,
+	<if test='commentconseq != null and commentconseq != ""'>
+		commentconseq,
+	</if>
+		subcomment,
+		delyn,
+		blindyn,
+		autoblindyn,
+		idfg,
+		authoryn,
+		regdt,
+		nickname,
+		regid
+	) 
+	VALUES 
+	(
+		#{commentseq},		
+		#{nameconseq},
+	<if test='commentconseq != null and commentconseq != ""'>
+		#{commentconseq},
+	</if>
+		#{subcomment},
+		'N',
+		'N',
+		'N',
+		#{idfg},
+		#{authoryn},
+		#{regdate},
+		#{nickname},
+		#{regid}
+	);
+    </insert> 
+    
+    <delete id="commentRecommendDelete" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+    	DELETE FROM ow_comment_recommend
+		WHERE 
+			commentseq = #{commentseq} 
+    </delete>
+    
+    
+    <delete id="subCommentDelete" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain">
+    	UPDATE ow_subcomment
+    	SET delyn = 'Y'
+		WHERE 
+			subcommentseq = #{subcommentseq}
+			and regid = #{regid} 
+    </delete>
+    
+    
+    <delete id="subCommentAllDelete" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+    	UPDATE ow_subcomment
+    	SET delyn = 'Y'
+		WHERE 
+			commentseq = #{commentseq}
+    </delete>
+    
+    
+    <select id="commentRecommendSelectSeq" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.String">
+		SELECT 
+			recommendno
+        FROM 
+        	ow_comment_recommend
+        WHERE 
+        	regid = #{regid}
+            and commentseq = #{commentseq}
+        LIMIT 
+        	0, 1
+	</select>
+	
+	
+	<select id="commentSelectRegId" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.String">
+		SELECT 
+			regid
+        FROM 
+        	ow_comment
+        WHERE 
+            commentseq = #{commentseq}
+        LIMIT 
+        	0, 1
+	</select>
+	
+	
+	<select id="subCommentSelectRegId" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="java.lang.String">
+		SELECT 
+			regid
+        FROM 
+        	ow_subcomment
+        WHERE 
+            subcommentseq = #{subcommentseq}
+        LIMIT 
+        	0, 1
+	</select>
+	
+    
+    <insert id="commentRecommendInsert" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+        INSERT INTO ow_comment_recommend (
+             commentseq,
+             recommendno,
+             recommendfg,
+             idfg,
+             regid,
+             regdt)
+		SELECT
+			co.commentseq,
+			IFNULL(MAX(re.recommendno),0) + 1,
+			#{recommfg},
+			#{idfg},
+			#{regid},
+			#{regdate}
+        from
+			ow_comment co
+		left join ow_comment_recommend re on co.commentseq = re.commentseq
+		where
+			co.commentseq = #{commentseq}
+    </insert>
+    
+    
+    <update id="commentRecommendUpdate" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain">
+        UPDATE ow_comment
+        <if test="recommfg == 'G'.toString()">
+        	SET totalgoodcnt =  totalgoodcnt + 1
+        </if>
+        <if test="recommfg == 'B'.toString()">
+        	SET totalbadcnt = totalbadcnt + 1
+        </if>
+        WHERE commentseq = #{commentseq}
+    </update>
+    
+    <select id="stickerconSelectListCnt" resultType="java.lang.Integer">
+		SELECT 
+			count(*)
+		FROM 
+			ow_sticker_icon
+		WHERE
+			defaultyn = 'Y'
+	</select>
+    
+    <select id="stickerconSelectList" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerIconDomain" resultType="com.olleh.webtoon.common.dao.toon.domain.StickerIconDomain">
+		SELECT 
+			iconseq,
+			oniconurl,
+			officonurl,
+			listiconurl
+		FROM 
+			ow_sticker_icon
+		WHERE
+			defaultyn = 'Y'
+		LIMIT 
+			#{startRowNo}, #{pageSize}		
+	</select>
+	
+	
+	<insert id="commentDeclationInsert" parameterType="com.olleh.webtoon.common.dao.comment.domain.DeclarationDomain">
+	INSERT INTO ow_declaration 
+	(
+		commentfg,
+		commentseq,
+		declarationfg,
+		contents,
+		idfg,
+		regid,
+		regdt
+	) 
+	VALUES 
+	(
+		#{commentfg},
+		#{commentseq},
+		#{declarationfg},
+		#{contents},
+		#{idfg},
+		#{regid},
+		#{regdt}
+	);
+    </insert>
+    
+    <select id="commentSelectBlind" parameterType="com.olleh.webtoon.common.dao.comment.domain.DeclarationDomain" resultType="java.lang.String">
+		SELECT 
+			case 
+				when de.declarecnt >= 3 then "Y"
+				else "N"
+			end as declarecnt
+		FROM 
+			(
+				select ifnull(SUM(IF ((regid in (${musers})), 3, 1)), 0) as declarecnt
+				from ow_declaration
+				where commentseq = #{commentseq}
+				limit 0, 1
+			) de	
+	</select>
+    
+     <select id="declarationSelectSeq" parameterType="com.olleh.webtoon.common.dao.comment.domain.DeclarationDomain" resultType="java.lang.String">
+		SELECT 
+			declarationseq
+		FROM 
+			ow_declaration
+		WHERE
+			commentseq = #{commentseq} 
+			and regid = #{regid}	
+		LIMIT
+		 	0, 1	
+	</select>
+	
+	<select id="selectMyWebtoon" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.String">
+       	SELECT "Y" AS authoryn 
+		FROM ow_copyright a,
+			 	 ow_author b,
+			 	 ow_times c
+		WHERE b.ollehid = #{regid}
+		AND c.timesseq =  #{articleseq}
+		AND a.webtoonseq = c.webtoonseq
+		AND a.authorseq = b.authorseq
+		LIMIT 0, 1
+    </select>
+    
+    <select id="selectMyWebtoonByCommentseq" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="java.lang.String">
+       	SELECT "Y" AS authoryn 
+		FROM ow_copyright a,
+			 	 ow_author b,
+			 	 ow_times c,
+				ow_comment d
+		WHERE b.ollehid = #{regid}
+		AND d.commentseq =  #{commentseq}
+		AND a.webtoonseq = c.webtoonseq
+		AND a.authorseq = b.authorseq
+		AND c.timesseq = d.articleseq
+		LIMIT 0, 1
+    </select>
+    
+    <select id="commentSelectDuplicateyn" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.String">
+       	SELECT "Y" 
+		FROM ow_comment
+		WHERE 
+		<![CDATA[ 
+			regid = #{regid}
+			and date_format(regdt, '%y%m%d%H%i%s') + 5 >= date_format(now(), '%y%m%d%H%i%s')
+		]]>
+		LIMIT 0, 1
+    </select>
+    
+    <select id="subCommentSelectDuplicateyn" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="java.lang.String">
+       	SELECT "Y" 
+		FROM ow_subcomment
+		WHERE 
+		<![CDATA[ 
+			regid = #{regid}
+			and date_format(regdt, '%y%m%d%H%i%s') + 5 >= date_format(now(), '%y%m%d%H%i%s')
+		]]>
+		LIMIT 0, 1
+    </select>
+    
+    <select id="selectDeclareComment" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentDomain" resultType="java.lang.String">
+       	select "Y"
+		from ow_comment co
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON co.commentseq = de.commentseq
+		
+		where 
+			de.declarecnt >= 3
+			and co.comment = #{comment}
+		limit 
+			0, 1	
+    </select>
+    
+    <select id="selectDeclareSubComment" parameterType="com.olleh.webtoon.common.dao.comment.domain.SubCommentDomain" resultType="java.lang.String">
+       	select "Y"
+		from ow_comment co
+		LEFT JOIN 
+			(
+				select commentseq, (SUM(IF ((regid in (${musers})), 3, 1))) as declarecnt
+				from ow_declaration
+				group by commentseq
+				
+			)  de ON co.commentseq = de.commentseq
+		
+		where 
+			de.declarecnt >= 3
+			and co.comment = #{subcomment}
+		limit 
+			0, 1	
+    </select>
+    
+    <select id="selectRecentconList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.user.domain.IconDomain">
+		select distinct iconseq, iconurl
+		from 
+		(
+			select tb1.commentconseq as iconseq, tb2.commentconurl as iconurl , tb1.regdt as regdt
+		    from ow_comment tb1
+		    left join ow_commentcon tb2 on tb1.commentconseq = tb2.commentconseq
+			where tb1.regid = #{param} and tb1.commentconseq != 'null'
+		<![CDATA[
+			and (tb1.commentconseq in(
+					select tb3.iconseq from ow_prd_avail tb1
+					left join ow_prd_his tb2 on tb1.prdhistoryseq = tb2.prdhistoryseq
+					left join ow_prdcon_detail_his tb3 on tb2.prdhistoryseq = tb3.prdhistoryseq and tb3.iconfg = 'comment'
+					where buyid = #{param} and date_format(now(), '%Y%m%d') <= date_format(availdt, '%Y%m%d'))
+				or tb1.commentconseq in (
+					select tb2.iconseq from ow_prd tb1
+					left join ow_prdcon_detail tb2 on tb1.prdseq = tb2.prdseq
+					where tb1.sellyn = 'Y' 
+					and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.sellstartdt, '%Y%m%d%H%i%s')
+					and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.sellenddt, '%Y%m%d%H%i%s')
+					and tb1.prdfg = 'comment'
+					and tb1.sellfg = 'default'))
+		]]>
+		union all	 
+			select tb1.commentconseq as iconseq, tb2.commentconurl as iconurl , tb1.regdt as regdt
+			from ow_comment tb1
+			left join ow_commentcon tb2 on tb1.commentconseq = tb2.commentconseq
+			where 
+			tb1.regid = #{param} and tb1.commentconseq != 'null'
+		<![CDATA[
+			and (tb1.commentconseq in(
+					select tb3.iconseq from ow_prd_avail tb1
+					left join ow_prd_his tb2 on tb1.prdhistoryseq = tb2.prdhistoryseq
+					left join ow_prdcon_detail_his tb3 on tb2.prdhistoryseq = tb3.prdhistoryseq and tb3.iconfg = 'comment'
+					where buyid = #{param} and date_format(now(), '%Y%m%d') <= date_format(availdt, '%Y%m%d'))
+				or tb1.commentconseq in (
+					select tb2.iconseq from ow_prd tb1
+					left join ow_prdcon_detail tb2 on tb1.prdseq = tb2.prdseq
+					where tb1.sellyn = 'Y' 
+					and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.sellstartdt, '%Y%m%d%H%i%s')
+					and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.sellenddt, '%Y%m%d%H%i%s')
+					and tb1.prdfg = 'comment'
+					and tb1.sellfg = 'default'))
+		]]>
+		) a
+		order by a.regdt desc
+		limit 0, 12
+	</select>
+</mapper>

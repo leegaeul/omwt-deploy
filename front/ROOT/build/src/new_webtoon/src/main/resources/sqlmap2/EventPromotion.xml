@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.eventpromotion.persistence.EventPromotionMapper">
+	
+	<select id="selectIceEventDuplicateyn" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select "Y"
+		from ow_member_event
+		where phonenum = #{phonenum} or regid = #{regid}
+		limit 0, 1
+	</select>
+	
+	<insert id="insertIceEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		insert into ow_member_event (regid, phonenum, regdt, winyn)
+		values (#{regid}, #{phonenum}, #{regdt}, 'N');
+    </insert>
+    
+    <select id="selectEventJoinyn" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select "Y"
+		from ow_user
+	<![CDATA[
+		where email = #{regid}
+			  and date_format(joindt, '%Y%m%d%H%i%s') >= date_format(#{startdt}, '%Y%m%d%H%i%s')
+			  and date_format(joindt, '%Y%m%d%H%i%s') <= date_format(#{enddt}, '%Y%m%d%H%i%s')
+	]]>
+	</select> 
+	
+	<select id="selectIceMemberEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select date_format(regdt, '%Y년 %m월 %d일')
+		from ow_member_event
+		where phonenum = #{phonenum} and winyn = 'Y'
+		order by regdt desc
+		limit 0, 1   
+	</select>
+	
+	<select id="selectIceSnsEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.String">
+		select date_format(regdt, '%Y년 %m월 %d일')
+		from ow_sns_event
+		where 
+			eventfg= #{eventfg} and winyn = 'Y'
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014'))
+		order by regdt desc
+	</select> 
+	
+	<select id="selectIceSnsCmtTotalCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.Integer">
+		select  count(*)
+		from ow_sns_event  
+		where eventfg = #{eventfg}
+	</select>
+	
+	<select id="selectIceSnsCmtList" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select  
+			CONVERT(AES_DECRYPT(UNHEX(tb1.phonenum), 'ollehwebtoon2014') using utf8) as phonenum, 
+			tb1.snsfg, tb1.content, tb1.idfg, tb1.regid, date_format(tb1.regdt, '%Y-%m-%d %H:%i') as regdt, 
+			case 
+				when idfg = 'open' then tb2.nickname
+				else tb1.regid
+			end as nickname
+		from ow_sns_event tb1
+			left join ow_user tb2 on tb1.regid = tb2.email and tb2.userstatus = 'use'
+		where tb1.eventfg = #{eventfg} 
+		order by tb1.regdt desc
+		limit #{startRowNo}, #{pageSize}
+	</select>
+	
+	<insert id="insertIceSnsEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		insert into ow_sns_event (phonenum, snsfg, content, winyn, idfg, regid, regdt, eventfg)
+		values(HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014')), #{snsfg}, #{content}, 'N', #{idfg}, #{regid}, #{regdt}, #{eventfg})
+    </insert>
+    
+    <select id="selectIceSnsEventHistory" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="java.lang.Integer">
+		select count(*)
+		from ow_sns_event
+		where phonenum = #{phonenum} and snsfg = #{snsfg}
+		limit 0, 1
+	</select>
+	
+	 <select id="selectContestPnmCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+		select count(*)
+		from ow_contest
+		where contestpnm = #{contestpnm}
+		limit 0, 1
+	</select>
+	      	
+	<insert id="insertContestEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		insert into ow_contest (regdt, contestnm, contestpnm, title, email, phonenm, genretype1, genretype2, synopsis, filepath, filename, statelevel)
+		values (#{regdt}, #{contestnm}, #{contestpnm}, #{title}, #{email}, #{phonenm}, #{genretype1}, #{genretype2}, #{synopsis}, #{filepath}, #{filename}, #{statelevel});
+    </insert>
+	      	
+	<insert id="updateCouponEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		update ow_member_coupon 
+		set idfg=#{idfg}, regid=#{regid}, regdt=#{regdt}, useyn='Y'
+		where couponnum=#{couponnum};
+    </insert>
+    
+    <select id="selectCouponEventByCouponnum" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select couponnum, idfg, regid, regdt, useyn
+		from ow_member_coupon
+		where couponnum = #{couponnum}
+		limit 0, 1
+	</select>
+    
+    <select id="selectCouponEventById" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select couponnum, idfg, regid, regdt, useyn
+		from ow_member_coupon
+		where idfg = #{idfg} and regid = #{regid}
+		limit 0, 1
+	</select>
+	      	
+	<insert id="insertPlusCouponEvent" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		insert into ow_member_event (idfg, regid, phonenum, regdt, winyn)
+		values(#{idfg}, #{regid}, HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014')), #{regdt}, 'N');
+    </insert>
+    
+    <select id="selectPlusCouponEventById" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventCouponDomain">
+		select idfg, regid, phonenum, regdt
+		from ow_member_event
+		where idfg = #{idfg} and regid = #{regid}
+		limit 0, 1
+	</select>
+	
+	<select id="selectContestCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+		select count(*) as totalcount
+		from ow_contest
+	</select>
+	
+	<select id="selectCouponEventPrizeWinner" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain" resultType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventPromotionDomain">
+		select date_format(regdt, '%Y년 %m월 %d일') regdt, winyn
+		from ow_member_event
+		where 
+			winyn != 'N' and winyn is not null
+			and phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2014'))
+		order by regdt desc
+	</select>
+	
+	<insert id="insertContestDefault" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (idfg,regid,phonenum,regdt) 
+		VALUES (#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+	<insert id="insertContestComment" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (commentseq,idfg,regid,phonenum,regdt) 
+		VALUES (#{commentseq},#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+    <insert id="insertContestSticker" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain">
+		INSERT INTO ow_comment_event (timesseq,idfg,regid,phonenum,regdt) 
+		VALUES (#{timesseq},#{idfg},#{regid},#{phonenum},#{regdt});
+    </insert>
+    
+    <select id="selectContestEventHisCnt" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+    	select count(*) from ow_comment_event
+    	where idfg = #{idfg} and regid = #{regid} 
+    </select>
+    
+    <select id="selectContestPhoneNumber" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.String">
+    	select phonenum from ow_comment_event
+    	where idfg = #{idfg} and regid = #{regid} and phonenum is not null
+    	limit 0, 1 
+    </select>
+    
+    <select id="selectRecentCommentseq" parameterType="com.olleh.webtoon.common.dao.eventpromotion.domain.EventContestDomain" resultType="java.lang.Integer">
+    	select commentseq from ow_comment
+    	where idfg = #{idfg} and regid = #{regid}
+    	order by commentseq desc
+    	limit 0, 1 
+    </select>
+    
+</mapper>

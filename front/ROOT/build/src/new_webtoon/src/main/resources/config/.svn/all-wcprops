@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config
+END
+real_log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_log4j.xml
+END
+real_system.properties
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_system.properties
+END
+real_db.properties
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_db.properties
+END
+local_log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/local_log4j.xml
+END
+local_system.properties
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/local_system.properties
+END
+local_db.properties
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/local_db.properties
+END
+real_masterdb.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_masterdb.properties
+END
+real_slave2db.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_slave2db.properties
+END
+real_slave3db.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_slave3db.properties
+END
+dev_system.properties.native
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/dev_system.properties.native
+END
+mybatis.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/mybatis.xml
+END
+dispatcher-servlet.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/dispatcher-servlet.xml
+END
+real_system.properties.native
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_system.properties.native
+END
+dev_log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/dev_log4j.xml
+END
+dev_system.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/dev_system.properties
+END
+local_system.properties.native
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/local_system.properties.native
+END
+dev_db.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/dev_db.properties
+END
+convertAll.bat
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/convertAll.bat
+END
+real_slavedb.properties
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/config/real_slavedb.properties
+END

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="Author" content="Kim nakun" />
+<meta name="content" content="" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>올레마켓웹툰 리뉴얼 이벤트 컷스프레</title>
+<link rel="shortcut icon" type="image/x-icon" href="" />
+<link rel="stylesheet" type="text/css" href="./css/common.css" />
+<link rel="stylesheet" type="text/css" href="./css/cutspress.css" />
+<link rel="stylesheet" type="text/css" href="./css/jquery.selectbox.css" />
+<script type="text/javascript" src="./js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./js/jquery.selectbox-0.2.min.js"></script>
+<script type="text/javascript" src="./js/autosize.min.js"></script>
+<script type="text/javascript" src="./js/cutspress.js"></script>
+</head>
+<body>
+    <!-- start -->
+    <div class="cutspress_intro_wrap">
+        <div class="title_wrap">
+            <h1><img src="./images/intro/cutspress_intro_title.jpg" alt="" /></h1>
+        </div>
+        <!-- 20150921 수정/추가 -->
+        <div class="info_preview_wrap">
+            <div class="preview_box">
+                <ul>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview01.jpg" alt="" /></a></li>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview02.jpg" alt="" /></a></li>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview03.jpg" alt="" /></a></li>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview04.jpg" alt="" /></a></li>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview05.jpg" alt="" /></a></li>
+                    <li><a class="btn_preview" href="#none"><img src="./images/intro/cutspress_intro_preview06.jpg" alt="" /></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="info_method">
+            <p><img src="./images/intro/cutspress_intro_method.jpg" alt="" /></p>
+        </div>
+        <!-- //20150921 수정/추가 -->
+    </div>
+
+
+    <!-- layer image view -->
+    <div class="layer_preview_wrap">
+        <ul class="preview_list">
+            <li>
+                <span class="image_title"># 웹툰컷 - 변신! 후뿌뿝☆</span>
+                <img class="original_image" src="./images/intro/@cutspress_detail_ori_img01.jpg" alt="" />
+            </li>
+            <li>
+                <span class="image_title">#  괴짜컷</span>
+                <img class="edit_image" src="./images/intro/@cutspress_detail_edit_img01.jpg" alt="" />
+            </li>
+        </ul>
+        <p class="preview_txt"><img class="edit_image" src="./images/intro/layer_preview_txt01.jpg" alt="" /></p>
+        <ul class="share_list">
+            <li class="facebook">
+                <a href="#none"><img class="edit_image" src="./images/intro/icon_cutspress_intro_facebook.png" alt="페이스북 공유하기" /></a>
+            </li>
+            <li class="twitter">
+                <a href="#none"><img class="edit_image" src="./images/intro/icon_cutspress_intro_twitter.png" alt="트위터 공유하기" /></a>
+            </li>
+        </ul>
+        <a href="#none" class="btn_preview_close"><img src="./images/intro/btn_preview_close.png" alt="닫기" /></a>
+    </div>
+    <div class="bg_layer">&nbsp;</div>
+    <!-- //layer image view -->
+    <!-- end -->
+</body>
+
+</html>

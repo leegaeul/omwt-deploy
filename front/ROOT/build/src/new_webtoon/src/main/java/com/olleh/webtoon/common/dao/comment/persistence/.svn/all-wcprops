@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/persistence
+END
+CommentMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/persistence/CommentMapper.java
+END
+CommentEventMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/persistence/CommentEventMapper.java
+END

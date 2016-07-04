@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMPaymentMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+			useGeneratedKeys="true"
+			keyProperty="paymentseq">
+		INSERT INTO 
+			ow_bm_payment 
+			(
+				  joinseq
+				, prdcode
+				, idfg
+				, userid
+				, paystatusfg
+				, amount
+				, billmethodfg
+				, pgtid
+				, pgresultcode
+				, pgresultmsg
+				, pgauthcode
+				, pgauthdt
+				, pgcardcode
+				, regdt
+				, moddt
+			)
+			VALUES 
+			(
+				  #{joinseq}
+				, #{prdcode}
+				, #{idfg}
+				, #{userid}
+				, #{paystatusfg}
+				, #{amount}
+				, #{billmethodfg}
+				, #{pgtid}
+				, #{pgresultcode}
+				, #{pgresultmsg}
+				, #{pgauthcode}
+				, #{pgauthdt}
+				, #{pgcardcode}
+				, #{regdt}
+				, #{moddt}
+			);
+    </insert>
+    
+	<update id="updateByPaymentseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+		UPDATE
+			ow_bm_payment
+		SET
+		  		 				  			   paymentseq 	= paymentseq
+		<if test="isNotEmpty(prdcode)"		>, prdcode 		= #{prdcode}		</if>
+		<if test="isNotEmpty(idfg)"			>, idfg 		= #{idfg}			</if>
+		<if test="isNotEmpty(userid)"		>, userid 		= #{userid}			</if>
+		<if test="isNotEmpty(paystatusfg)"	>, paystatusfg 	= #{paystatusfg}	</if>
+		<if test="isNotEmpty(amount)"		>, amount 		= #{amount}			</if>
+		<if test="isNotEmpty(billmethodfg)"	>, billmethodfg = #{billmethodfg}	</if>
+		<if test="isNotEmpty(pgtid)"		>, pgtid 		= #{pgtid}			</if>
+		<if test="isNotEmpty(pgresultcode)"	>, pgresultcode = #{pgresultcode}	</if>
+		<if test="isNotEmpty(pgresultmsg)"	>, pgresultmsg 	= #{pgresultmsg}	</if>
+		<if test="isNotEmpty(pgauthcode)"	>, pgauthcode 	= #{pgauthcode}		</if>
+		<if test="isNotEmpty(pgauthdt)"		>, pgauthdt 	= #{pgauthdt}		</if>
+		<if test="isNotEmpty(pgcardcode)"	>, pgcardcode 	= #{pgcardcode}		</if>
+		<if test="isNotEmpty(regdt)"		>, regdt 		= #{regdt}			</if>
+		<if test="isNotEmpty(moddt)"		>, moddt 		= #{moddt}			</if>
+		WHERE
+			paymentseq = #{paymentseq}
+    </update>
+    
+    <delete id="deleteByPaymentseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+		DELETE FROM
+			ow_bm_payment
+		WHERE
+			paymentseq = #{paymentseq}
+    </delete>
+    
+    <select id="selectByPaymentseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_payment
+    	WHERE
+    		paymentseq = #{paymentseq}
+    </select>
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_payment
+    </select>
+    
+    <select id="selectLastByJoinseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_payment
+    	WHERE
+    		joinseq = #{joinseq}
+    	ORDER BY
+    		paymentseq DESC
+    	LIMIT
+    		1
+	</select>
+	
+	<select id="selectListForUserWithPaging"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+		SELECT
+    		p.*, 
+    		t.startdt as termStartdt,
+    		t.enddt as termEnddt
+    	FROM
+    		ow_bm_payment p
+    	LEFT JOIN
+    		ow_bm_join_term t ON p.paymentseq = t.paymentseq
+    	WHERE
+    			p.idfg = #{idfg}
+    		AND	p.userid = #{userid}
+    		AND p.paystatusfg = 'complete'
+    	ORDER BY
+    		p.paymentseq DESC
+    	LIMIT 
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="selectListByJoinseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain">
+		SELECT
+    		*
+    	FROM
+    		ow_bm_payment
+    	WHERE
+    		joinseq = #{joinseq}
+    	ORDER BY
+    		paymentseq ASC
+	</select>
+	
+	<select id="selectCountForUser"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPaymentDomain"
+    		resultType="java.lang.Integer">
+		SELECT
+    		COUNT(1)
+    	FROM
+    		ow_bm_payment
+    	WHERE
+    			idfg = #{idfg}
+    		AND	userid = #{userid}
+    		AND paystatusfg = 'complete'
+	</select>
+</mapper>

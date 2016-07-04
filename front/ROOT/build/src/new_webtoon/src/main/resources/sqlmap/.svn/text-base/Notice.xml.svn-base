@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.support.persistence.NoticeMapper">
+	<select id="noticeSelectListCount" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain" resultType="java.lang.Integer">
+       SELECT 
+              COUNT(*) 
+	   FROM ow_notice
+	   WHERE
+		<if test='mobileyn == null or mobileyn == "N"'>
+			displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			mdisplayyn = 'Y'
+		</if>	   
+		<![CDATA[
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))	
+		]]>
+		<if test="keyword != null and keyword != ''">
+			AND
+				title LIKE #{keyword} 
+		</if>
+	</select>
+	
+	<select id="noticeSelectList" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+		SELECT
+			noticeseq,
+			title,
+			contents,
+			DATE_FORMAT(regdt, '%Y.%m.%d') REGDATE,
+		<![CDATA[
+			case 
+			  when (DATE_FORMAT(now(), '%Y%m%d') - DATE_FORMAT(regdt, '%Y%m%d') < 7 
+			  and DATE_FORMAT(now(), '%Y%m%d') - DATE_FORMAT(regdt, '%Y%m%d') >= 0) then 'Y'
+			else 'N'
+			end as newyn
+	    ]]>
+		FROM 
+			ow_notice
+		WHERE 
+		<if test='mobileyn == null or mobileyn == "N"'>
+			displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			mdisplayyn = 'Y'
+		</if>	   
+		<![CDATA[
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))	
+		]]>
+		<if test="keyword != null and keyword != ''">
+			AND
+				title LIKE #{keyword} 
+		</if>
+		ORDER BY
+			noticeseq DESC
+		LIMIT 
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="essentialNoticeSelectList" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+		SELECT
+			noticeseq,
+			title,
+			contents,
+			DATE_FORMAT(regdt, '%Y.%m.%d') REGDATE,
+		<![CDATA[
+			case 
+			  when (DATE_FORMAT(now(), '%Y%m%d') - DATE_FORMAT(regdt, '%Y%m%d') < 7 
+			  and DATE_FORMAT(now(), '%Y%m%d') - DATE_FORMAT(regdt, '%Y%m%d') >= 0) then 'Y'
+			else 'N'
+			end as newyn
+	    ]]>
+		FROM 
+			ow_notice
+		WHERE 
+		<if test='mobileyn == null or mobileyn == "N"'>
+			topyn = 'Y'
+			AND displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			mtopyn = 'Y'
+			AND mdisplayyn = 'Y'
+		</if>	
+		   
+		<![CDATA[
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))
+		]]>
+		<if test="keyword != null and keyword != ''">
+			AND
+				title LIKE #{keyword} 
+		</if>
+		ORDER BY
+			noticeseq DESC	
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			LIMIT 
+				0, 2
+		</if>
+	</select>
+	
+	<select id="noticeSelectDetail" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+
+		SELECT
+			noticeseq, 
+			title, 
+			contents,
+			DATE_FORMAT(regdt, '%Y.%m.%d') REGDATE
+		FROM 
+			ow_notice
+		WHERE 
+			 noticeseq = #{noticeseq}
+		<if test='mobileyn == null or mobileyn == "N"'>
+			AND displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			AND mdisplayyn = 'Y'
+		</if>
+			
+	<![CDATA[ 			
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))
+	 ]]>	
+	</select>
+	
+	<select id="prevNoticeSelectDomain" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain" resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+	
+		SELECT 
+			noticeseq, title
+		FROM 
+			ow_notice
+		WHERE 
+		<![CDATA[			
+			noticeseq < #{noticeseq} 
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))
+		]]>	
+			
+		<if test='mobileyn == null or mobileyn == "N"'>
+			AND displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			AND mdisplayyn = 'Y'
+		</if>
+		ORDER BY 
+			noticeseq DESC
+		LIMIT 
+			0,1
+	</select>
+	
+	<select id="nextNoticeSelectDomain" parameterType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain" resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+
+		SELECT 
+			noticeseq, title
+		FROM 
+			ow_notice
+		WHERE 		
+		<![CDATA[	
+			noticeseq > #{noticeseq}			
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))
+		]]>	
+		<if test='mobileyn == null or mobileyn == "N"'>
+			AND displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			AND mdisplayyn = 'Y'
+		</if>	
+		ORDER BY 
+			noticeseq asc
+		LIMIT 
+			0,1 
+	</select>
+	
+	<update id="noticeUpdateReadCnt" parameterType="java.lang.Integer">
+		update
+			ow_notice
+		set readcnt = readcnt + 1
+		where noticeseq = #{noticeseq}
+	</update>
+	
+	<select id="newestNoticeSelectList" parameterType="java.lang.Integer"  resultType="com.olleh.webtoon.common.dao.support.domain.NoticeDomain">
+		select
+			noticeseq,
+			title,
+			contents,
+			date_format(regdt, '%y.%m.%d') regdate
+		from 
+			ow_notice
+		where 
+			displayyn = 'Y'
+			AND (directdisplayyn = 'Y' OR (directdisplayyn = 'N' AND NOW() >= startdt))	
+		order by
+			regdt desc
+		limit 
+			0, #{size}
+	</select>
+	
+	<update id="testlogUpdateCnt" parameterType="hashmap">
+		update
+			ow_test_log
+		set logcnt = logcnt + 1
+		where logdt = #{logdt} and lfg = #{lfg}
+	</update>
+</mapper>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery 20140522 -->
+<script type="text/javascript">
+$(document).ready(function(){
+	/*개인정보 수집 및 이용안내 20140522 delete
+	$('.mem_join_main .policy_tab a').click(function(){
+		$('.mem_join_main .policy_tab li').removeClass('on');
+		$(this).parent().addClass('on');
+		$('.mem_join_main .policy_tab_etc .policy_frame').removeClass('policy_on');
+		$('.mem_join_main .policy_tab_etc .policy_frame').eq($(this).parent().index()).addClass('policy_on');
+		return false;
+	});*/
+
+	$('#sel_email, #sel_birth_year, #sel_birth_month, #sel_birth_day').styledSelect( {innerClass:'select_jssel'} );//셀렉트 박스 20140522
+});
+</script>
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시-->
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시-->
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+		<!-- 본문영역 -->
+
+		<!-- 회원가입 -->
+		<div class="mem_all_wrap">
+			<form action="">
+				<div class="mem_tit_tp01">
+					<img src="img/tit_mem_join01.gif" alt="회원가입" />
+					<div class="right"><img src="img/bg_check.png" alt="check" /> 항목은 필수 입력 항목입니다.</div>
+				</div>
+
+				<ul class="mem_join_tp">
+					<li>
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 아이디(이메일)</div>
+						<div class="frm_define">
+							<input type="text" class="basic_ipt" /> @ <input type="text" class="basic_ipt" />&nbsp;
+							<span class="basic_jsselWr" style="width:110px;">
+								<select name="sel_email" id="sel_email" class="basic_jssel">
+									<option value="">직접입력</option>
+									<option value="">naver.com</option>
+									<option value="">daum.net</option>
+									<option value="">gmail.com</option>
+									<option value="">hanmail.net</option>
+									<option value="">hotmail.com</option>
+									<option value="">nate.com</option>
+									<option value="">yahoo.co.kr</option>
+									<option value="">empas.com</option>
+									<option value="">dreamwiz.com</option>
+									<option value="">freechal.com</option>
+									<option value="">lycos.co.kr</option>
+									<option value="">korea.com</option>
+								</select>
+							</span>
+							<span class="alert">사용 가능한 계정입니다.</span>
+							<div class="check">주의! 회원가입을 위해서는 입력하신 이메일을 통한 인증 과정이 필수 입니다.<br />인증 이메일 수신이 가능한 이메일 주소를 입력해주세요.</div>
+						</div>
+					</li>
+					<li>
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 닉네임</div>
+						<div class="frm_define">
+							<input type="text" class="basic_ipt" /> 
+							<span class="alert">사용 가능한 닉네임입니다.</span>
+							<div class="check">
+								닉네임은 한글, 영문, 숫자 1~10자까지 사용할 수 있습니다.(혼용가능)  
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 생년월일</div>
+						<div class="frm_define">
+							<span class="basic_jsselWr" style="width:60px;">
+								<select name="sel_birth_year" id="sel_birth_year" class="basic_jssel">
+									<option value="">2014</option>
+								</select>
+							</span>&nbsp;
+							<span class="basic_jsselWr" style="width:60px;">
+								<select name="sel_birth_month" id="sel_birth_month" class="basic_jssel">
+									<option value="">1</option>
+									<option value="">2</option>
+									<option value="">3</option>
+									<option value="">4</option>
+									<option value="">5</option>
+									<option value="">6</option>
+									<option value="">7</option>
+									<option value="">8</option>
+									<option value="">9</option>
+									<option value="">10</option>
+									<option value="">11</option>
+									<option value="">12</option>
+								</select>
+							</span>&nbsp;
+							<span class="basic_jsselWr" style="width:60px;">
+								<select name="sel_birth_day" id="sel_birth_day" class="basic_jssel">
+									<option value="">1</option>
+									<option value="">2</option>
+									<option value="">3</option>
+									<option value="">4</option>
+									<option value="">5</option>
+									<option value="">6</option>
+									<option value="">7</option>
+									<option value="">8</option>
+									<option value="">9</option>
+									<option value="">10</option>
+									<option value="">11</option>
+									<option value="">12</option>
+									<option value="">13</option>
+									<option value="">14</option>
+									<option value="">15</option>
+									<option value="">16</option>
+									<option value="">17</option>
+									<option value="">18</option>
+									<option value="">19</option>
+									<option value="">20</option>
+									<option value="">21</option>
+									<option value="">22</option>
+									<option value="">23</option>
+									<option value="">24</option>
+									<option value="">25</option>
+									<option value="">26</option>
+									<option value="">27</option>
+									<option value="">28</option>
+									<option value="">29</option>
+									<option value="">30</option>
+									<option value="">31</option>
+								</select>
+							</span>
+						</div>
+					</li>
+					<li>
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 법정대리인(보호자) 동의</div>
+						<div class="frm_define">
+							<span class="bt_normal_gyline"><button type="button">휴대폰 인증</button></span>
+							<span class="alert">법정대리인(보호자)의 인증이  완료되었습니다.</span>
+							<div class="check">만 14세 미만의 고객이 회원가입 시 법정 대리인(보호자)의 동의가 필요합니다.</div>
+						</div>
+					</li>
+
+					<li class="gubun">
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 비밀번호</div>
+						<div class="frm_define">
+							<input type="password" class="basic_ipt" />
+							<span class="alert">사용가능한 비밀번호입니다.</span>
+							<div class="check">
+								비밀번호는 10~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합하셔야 합니다.
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 비밀번호 확인</div>
+						<div class="frm_define">
+							<input type="password" class="basic_ipt" />
+							<span class="alert">비밀번호가 일치하지 않습니다.</span>
+						</div>
+					</li>
+
+					<!--20141127 자동 입력 방지-->
+					<li class="gubun">
+						<div class="frm_tit"><img src="img/bg_check.png" alt="check" /> 자동 입력 방지</div>
+						<div class="frm_define">
+							<!-- 캡차코드 -->
+							<div class="captcha_input">
+								<img src="img/temp/tmp_captcha.png" alt="" class="thumb" />
+								<div class="thumb_etc">
+									<a href="#" class="refresh_btn">새로고침</a>
+									<input type="text" class="basic_ipt" />
+								</div>
+							</div>
+							<!-- //캡차코드 -->
+						</div>
+					</li>
+					<!--//20141127 자동 입력 방지-->
+				</ul>
+
+				<div class="policy_box_tp2">
+					<input type="checkbox" /> <strong>전체동의</strong> : 이용약관, 개인정보 수집 및 이용, 개인정보의 취급 위탁, 정보 광고 활용(선택)
+				</div>
+
+				<div class="mem_join_bt">
+					<button type="submit" class="bt_com_join">가입</button>
+					<button type="button" class="bt_com_cancel">취소</button>
+				</div>
+
+				<div class="mem_tit_tp02"><img src="img/tit_mem_join02.gif" alt="약관동의" /></div>
+			
+				<div class="policy_tit_tp">이용약관</div>
+				<iframe src="4.5.1.policy01.html" frameborder="0" class="policy_frame_tp"></iframe>
+				<div class="policy_chk_tp">
+					<input type="checkbox" /> 올레마켓 웹툰 이용약관(필수)에 동의합니다.
+				</div>
+
+				<div class="policy_tit_tp">개인정보 수집 및 이용</div>
+				<iframe src="4.5.2.policy02.html" frameborder="0" class="policy_frame_tp"></iframe>
+				<div class="policy_chk_tp">
+					<input type="checkbox" /> 개인정보 수집 &middot; 이용(필수)에 대해 동의합니다.
+				</div>
+
+				<div class="policy_tit_tp">개인정보의 취급 위탁</div>
+				<iframe src="4.5.3.policy03.html" frameborder="0" class="policy_frame_tp"></iframe>
+				<div class="policy_chk_tp">
+					<input type="checkbox" /> 개인정보의 취급 위탁(필수)에 대해 동의 합니다. 
+				</div>
+
+				<div class="policy_tit_tp">정보 광고 활용</div>
+				<iframe src="4.5.4.policy04.html" frameborder="0" class="policy_frame_tp"></iframe>
+				<div class="policy_chk_tp">
+					<input type="checkbox" /> 정보 광고 활용 약관(선택) 에 동의 합니다. 
+				</div>
+
+				<div class="mem_box_tp2">
+					<strong>알려 드립니다.</strong>
+					<ul>
+						<li>가입된 닉네임과 이메일 정보는 변경할 수 없습니다.</li>
+						<li>입력하신 닉네임, 이메일 정보는 올레마켓 웹툰 서비스 이용에만 사용됩니다.</li>
+						<li>정확한 이메일 주소를 입력하지 않으신 경우, 이메일을 수신 받지 못할 수 있습니다.</li>
+						<li>저속하다고 판단되는(욕설, 음란한 단어 등) 닉네임 사용시 운영자에 의해 활동에 제약을 받으실 수 있습니다.</li>
+						<li>비밀번호는 10~16자의 영문 대/소문자, 숫자, 특수문자를 조합하셔야 하며, 아이디, 기존의 비밀번호, 연속된 숫자/문자, 생일 등 쉽게 유추 가능한 문자는 입력하실 수 없습니다.</li>
+					</ul>
+				</div>
+				
+			</form>
+		</div>
+		<!-- //회원가입 -->
+
+		<!-- //본문영역 -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

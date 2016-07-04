@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+	<title> 올레마켓 웹툰 </title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" type="text/css" href="_guide/guide.css" />
+	<style type="text/common/css">
+		body	{background-color:#f9f9f9;}
+	</style>
+	<script type="text/javascript" src="_guide/dtree.js"></script>
+</head>
+<body>
+
+	<div id="content_guide_list">
+		<h1 style="font-weight:26px; line-height:20px;">올레마켓 웹툰<br/>코딩진행표</h1>
+		<h2 style="font-weight:normal;">진행 표시</h2>
+		<ol>
+			<li><span style="color:#57980b;">■ 작업중</span></li>
+			<li><span style="color:#333;">■ 작업완료</span></li>
+			<li><span style="color:#5727ff;">■ 신규</span></li>
+			<li><span style="color:#f55;">■ 수정</span></li>
+		</ol>
+		<span id="t_title"></span>
+	</div>
+
+	<div class="dtree">
+
+		<script type="text/javascript">
+			//<![CDATA[
+			//d = new dTree('d');
+			//d.add(0,-1,'프로젝트 게시판','http://www.w-st.co.kr/bbs/board.php?bo_table=recouronne','완료','targetName:');
+			//document.write(d);
+			//]]>
+		</script>
+
+		<script type="text/javascript">
+			//<![CDATA[
+			c = new dTree('c');
+			c.add(0,-1,'코딩 안내','coding_issue.html','완료','mainFrame');
+			document.write(c);
+			//]]>
+		</script>
+
+<!-- WebPage -->
+		<div class="area_btn">
+			<a href="javascript: b.openAll();"><img src="_guide/img/btn_expand.gif" alt="Expand All" /></a>
+			<a href="javascript: b.closeAll();"><img src="_guide/img/btn_collapse.gif" alt="Collapse All" /></a>
+		</div>
+		<script type="text/javascript">
+			//<![CDATA[
+			b = new dTree('b');
+			b.add(0,-1,'Web');
+			b.add(1,0,'1. 공통');
+			b.add(1.01,1,'1. 레이아웃(로그인)','1.1.layout.html','수정','mainFrame');
+			b.add(1.02,1,'2. 서브 레이아웃(로그인 블루베리0이하)','1.2.layout_sub.html','완료','mainFrame');
+			b.add(1.03,1,'3. 서브 레이아웃(비로그인)','1.3.layout_sub.html','완료','mainFrame');
+
+			b.add(2,0,'2. 기타');
+			b.add(2.01,2,'2.1. 메인','2.1.main.html','완료','mainFrame');
+			b.add(2.02,2,'2.2. 메인2','2.2.main.html','완료','mainFrame');
+			b.add(2.03,2,'2.3. 검색','2.3.search.html','완료','mainFrame');
+			b.add(2.031,2,'2.3.1. 검색 결과 없음','2.3.1.search_nolist.html','완료','mainFrame');//페이지 수에 넣지 않음
+			b.add(2.032,2,'2.3.2. 검색 - 웹툰','2.3.2.search_toon.html','완료','mainFrame');
+			b.add(2.033,2,'2.3.3. 검색 - 아이템','2.3.3.search_item.html','완료','mainFrame');
+			b.add(2.04,2,'2.4. 작가 아이템','2.4.author_item_main.html','완료','mainFrame');
+			b.add(2.041,2,'2.4.1. 작가 아이템 - 스티콘','2.4.1.author_stickon.html','완료','mainFrame');
+			b.add(2.05,2,'2.5. 웹툰 앱 설치안내 팝업','2.5.app_setup_guide.html','완료','mainFrame');
+			b.add(2.06,2,'2.6. 비밀번호 변경안내 팝업','2.6.main_pwchange_popup.html','완료','mainFrame');
+			
+
+			b.add(3,0,'3. TOON');
+			b.add(3.01,3,'3.1. 요일별','3.1.toon_day.html','완료','mainFrame');
+			b.add(3.011,3,'3.1.1. 작가소개','3.1.1.author_view.html','완료','mainFrame');
+			b.add(3.012,3,'3.1.2. 작화보기(이벤트 메인)','3.1.2.toon_view.html','수정','mainFrame');
+			b.add(3.0120,3,'3.1.2.0. 작화보기(이벤트 응모 완료)','3.1.2.0.toon_view.html','신규','mainFrame');
+			b.add(3.0121,3,'3.1.2.1. 네임콘 등록 팝업','3.1.2.1.namecon_regist_popup.html','완료','mainFrame');
+			b.add(3.0122,3,'3.1.2.2. 스티콘 적용 팝업','3.1.2.2.stickon_regist_popup.html','완료','mainFrame');
+			b.add(3.0123,3,'3.1.2.3. 댓글 신고 팝업','3.1.2.3.cmt_report_popup.html','완료','mainFrame');
+			b.add(3.013,3,'3.1.3. 작화별 상품판매','3.1.3.toon_buy_list.html','수정','mainFrame');
+			b.add(3.0131,3,'3.1.3.1. url 복사 팝업','3.1.3.1.url_copy_popup.html','완료','mainFrame');
+			b.add(3.0132,3,'3.1.3.2. 즐겨찾기 추가 팝업','3.1.3.2.favorate_add_popup.html','완료','mainFrame');
+			b.add(3.0133,3,'3.1.3.3. 웹툰 감상하기 팝업','3.1.3.3.toon_view_popup.html','완료','mainFrame');
+			b.add(3.0134,3,'3.1.3.4. 회차감상 팝업','3.1.3.4.toon_view_popup.html','완료','mainFrame');
+			b.add(3.01341,3,'3.1.3.4.1. 회차감상 팝업(베리+블루베리 결제)','3.1.3.4.1.toon_view_pop.html','완료','mainFrame');
+			b.add(3.0135,3,'3.1.3.5. 회차감상','3.1.3.5.toon_view.html','완료','mainFrame');
+			b.add(3.01351,3,'3.1.3.5.1. 회차감상(베리+블루베리 결제)','3.1.3.5.1.toon_view.html','완료','mainFrame');
+			b.add(3.0136,3,'3.1.3.6. 작품감상','3.1.3.6.toon_view.html','완료','mainFrame');
+
+			b.add(3.014,3,'3.1.4. 묶음 상품판매','3.1.4.toon_buyall_list.html','완료','mainFrame');
+			b.add(3.02,3,'3.2. 장르별 - 섬네일형','3.2.toon_genre_thumbnail.html','수정','mainFrame');
+			b.add(3.021,3,'3.2.1 장르별 - 리스트형','3.2.1.toon_genre_list.html','수정','mainFrame');
+			b.add(3.031,3,'3.3.1 작품별 - 섬네일형','3.3.1.toon_work_thumbnail.html','완료','mainFrame');
+			b.add(3.032,3,'3.3.2 작품별 - 리스트형','3.3.2.toon_work_list.html','완료','mainFrame');
+
+			b.add(4,0,'4. MEMBER');
+			b.add(4.01,4,'4.1. 로그인','4.1.login.html','완료','mainFrame');
+			b.add(4.010,4,'4.1.0. 로그인 5회 실패','4.1.0.login_fail.html','완료','mainFrame');
+			b.add(4.011,4,'4.1.1. 로그인 안내 팝업','4.1.1.login_popup.html','완료','mainFrame');
+			b.add(4.012,4,'4.1.2. 이용약관 팝업','4.1.2.login_policy_popup.html','완료','mainFrame');
+			b.add(4.013,4,'4.1.3. 이용 제한 안내 팝업','4.1.3.login_alert_popup.html','완료','mainFrame');
+			b.add(4.02,4,'4.2. 비밀번호 찾기','4.2.pw_find.html','완료','mainFrame');
+			b.add(4.021,4,'4.2.1 비밀번호 찾기 메일 안내','4.2.1.pw_find_email.html','완료','mainFrame');
+			b.add(4.022,4,'4.2.2 비밀번호 찾기 메일','4.2.2.pw_find_email.html','완료','_blank');
+			b.add(4.03,4,'4.3. 회원가입(일반)','4.3.join.html','완료','mainFrame');
+			b.add(4.030,4,'4.3.0. 회원가입(14세미만)','4.3.0.join.html','완료','mainFrame');
+			b.add(4.031,4,'4.3.1. 가입인증 메일 전송후','4.3.1.join_mail.html','완료','mainFrame');
+			b.add(4.032,4,'4.3.2. 회원가입 완료','4.3.2.join_end.html','완료','mainFrame');
+			b.add(4.033,4,'4.3.3. 회원가입 이메일','4.3.3.join_confirm_mail.html','완료','_blank');
+			b.add(4.034,4,'4.3.4. 회원가입 이메일 인증 미완료','4.3.4.join_fail.html','완료','mainFrame');
+			b.add(4.035,4,'4.3.5. 회원가입 이메일 인증 오류','4.3.5.join_error.html','완료','mainFrame');
+			//b.add(4.034,4,'4.3.4. 회원가입 이메일 링크 클릭후','4.3.4.join_confirm_mail2.html','완료','_blank');페이지 없음
+
+			//회원탈퇴는 고객센터에 속함			
+			b.add(4.04,4,'4.4. 회원 탈퇴신청','4.4.mem_out.html','완료','mainFrame');			
+			b.add(4.041,4,'4.4.1. 회원 탈퇴신청 입력','4.4.1.mem_out.html','완료','mainFrame');
+			b.add(4.042,4,'4.4.2. 회원 탈퇴 완료','4.4.2.mem_out_end.html','완료','mainFrame');
+			b.add(4.05,4,'4.5. 약관동의','4.5.policy_main.html','완료','mainFrame');
+			b.add(4.051,4,'4.5.1. 이용약관 iframe','4.5.1.policy01.html','완료','mainFrame');
+			b.add(4.052,4,'4.5.2. 개인정보 수집 및 이용 iframe','4.5.2.policy02.html','완료','mainFrame');
+			b.add(4.053,4,'4.5.3. 개인정보의 취급 위탁 iframe','4.5.3.policy03.html','완료','mainFrame');
+			b.add(4.054,4,'4.5.4. 정보 광고 활용 iframe','4.5.4.policy04.html','완료','mainFrame');
+
+			//b.add(4.051,4,'4.5.1. 환불신청 - 코인결제내역','4.5.1.refund_coin_pay.html','작업중','_blank');
+			//b.add(4.052,4,'4.5.2. 환불신청 - 코인사용내역','4.5.2.refund_coin_use.html','작업중','_blank');
+
+			b.add(5,0,'5. 고객센터');
+			b.add(5.01,5,'5.1. 고객센터 리스트','5.1.cscenter_list.html','완료','mainFrame');
+			b.add(5.02,5,'5.2. 고객센터 상세','5.2.cscenter_view.html','완료','mainFrame');			
+			b.add(5.031,5,'5.3.1 faq 리스트','5.3.1.cscenter_list.html','완료','mainFrame');
+			b.add(5.032,5,'5.3.2 faq 상세','5.3.2.cscenter_view.html','완료','mainFrame');
+			//b.add(5.041,5,'5.4.1. 이용가이드 - 올레마켓 웹툰이란','5.4.1.cscenter_userguide01.html','완료','mainFrame');
+			b.add(5.05,5,'5.5. 1:1 문의','5.5.cscenter_qna.html','완료','mainFrame');
+			b.add(5.061,5,'5.6.1. 이용약관','5.6.1.cscenter_policy01.html','완료','mainFrame');
+			
+
+			b.add(6,0,'6. 요요진');
+			b.add(6.01,6,'6.1. 요요진 메인','6.1.yoyozine_main.html','완료','mainFrame');
+			//b.add(6.02,6,'6.2. 요요진 사심가득 인터뷰 리스트','6.2.yoyozine01_list.html','작업중','mainFrame');//1차 오픈 제외
+			b.add(6.03,6,'6.3. 요요진 사심가득 인터뷰 상세','6.3.yoyozine01_view.html','완료','mainFrame');
+			//b.add(6.04,6,'6.4. 요요진 추천 TOON 리스트','6.4.yoyozine02_list.html','작업중','mainFrame');//1차 오픈 제외
+			//b.add(6.05,6,'6.5. 요요진 추천 TOON 상세','6.5.yoyozine02_view.html','작업중','mainFrame');//1차 오픈 제외
+			//b.add(6.06,6,'6.6. 요요진 APP ZINE 리스트','6.6.yoyozine03_list.html','작업중','mainFrame');//1차 오픈 제외
+			//b.add(6.07,6,'6.7. 요요진 APP ZINE 상세','6.7.yoyozine03_view.html','작업중','mainFrame');//1차 오픈 제외
+			//b.add(6.08,6,'6.8. 요요진 YOYOSPECIAL 리스트','6.8.yoyozine04_list.html','작업중','mainFrame');//1차 오픈 제외
+			//b.add(6.09,6,'6.9. 요요진 YOYOSPECIAL 상세','6.9.yoyozine04_view.html','작업중','mainFrame');//1차 오픈 제외
+			
+			b.add(7,0,'7. ApPLAY');
+			b.add(7.01,7,'7.1. 이벤트 리스트','7.1.applay_event_list.html','완료','mainFrame');
+			b.add(7.02,7,'7.2. 이벤트 상세','7.2.applay_event_view.html','완료','mainFrame');
+			b.add(7.03,7,'7.3. 앱추천 리스트','7.3.applay_recomapp_list.html','완료','mainFrame');
+			b.add(7.04,7,'7.4. 앱추천 상세','7.4.applay_recomapp_view.html','완료','mainFrame');
+			b.add(7.041,7,'7.4.1. 앱추천 상세 팝업','7.4.1.applay_recomapp_viewpop.html','완료','mainFrame');
+
+			b.add(8,0,'8. MY');
+			b.add(8.01,8,'8.1. 최근 본 작품','8.1.toon_recent_list.html','완료','mainFrame');
+			b.add(8.011,8,'8.1.1. 최근 본 작품 없음','8.1.1.toon_recent_nolist.html','완료','mainFrame');
+			b.add(8.02,8,'8.2. 즐겨찾기','8.2.toon_favor_list.html','완료','mainFrame');
+			b.add(8.021,8,'8.2.1. 즐겨찾기 리스트 없음','8.2.1.toon_favor_nolist.html','완료','mainFrame');//페이지 수에 넣지 않음
+			b.add(8.022,8,'8.2.2. 알림 수신 안내 팝업','8.2.2.toon_favor_popup.html','완료','mainFrame');
+			b.add(8.03,8,'8.3. 책갈피','8.3.toon_bookmark_list.html','완료','mainFrame');
+			b.add(8.031,8,'8.3.1. 책갈피 없음','8.3.1.toon_bookmark_nolist.html','완료','mainFrame');//페이지 수에 넣지 않음
+			b.add(8.04,8,'8.4. 설정','8.4.toon_setting_view.html','완료','mainFrame');
+			b.add(8.041,8,'8.4.1. 설정 - 네임콘 수정 팝업','8.4.1.toon_setting_edit.html','완료','mainFrame');
+			b.add(8.05,8,'8.5. 내 문의 내역','8.5.toon_my_qna.html','완료','mainFrame');
+			b.add(8.051,8,'8.5.1. 내 문의 내역 없음','8.5.1.toon_my_qna.html','완료','mainFrame');
+			b.add(8.061,8,'8.6.1. My 베리 - 베리사용내역','8.6.1.buy_history_berry.html','완료','mainFrame');
+			b.add(8.062,8,'8.6.2. My 베리 - 베리사용내역없음(블루멤버십 미가입자)','8.6.2.buy_nohistory_berry.html','완료','mainFrame');
+			b.add(8.0621,8,'8.6.2.1. My 베리 - 베리사용내역없음(블루멤버십 가입자)','8.6.2.1.buy_nohistory_berry.html','완료','mainFrame'); 
+			b.add(8.063,8,'8.6.3. My 베리 - 베리충전내역','8.6.3.charge_history_berry.html','완료','mainFrame');
+			b.add(8.064,8,'8.6.4. My 베리 - 베리충전내역없음','8.6.4.charge_nohistory_berry.html','완료','mainFrame');
+			b.add(8.0711,8,'8.7.1.1. 블루멤버십 이용내역(가입자)','8.7.1.1.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0712,8,'8.7.1.2. 블루멤버십 이용내역(해지예약자)','8.7.1.2.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0713,8,'8.7.1.3. 블루멤버십 이용내역(결제방법변경)','8.7.1.3.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0714,8,'8.7.1.4. 블루멤버십 이용내역(멤버십변경)','8.7.1.4.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0715,8,'8.7.1.5. 블루멤버십 이용내역(해지자)','8.7.1.5.blue_history02.html','완료','mainFrame'); 
+			b.add(8.0716,8,'8.7.1.6. 블루멤버십 이용내역(미가입자)','8.7.1.6.blue_history03.html','완료','mainFrame'); 
+			b.add(8.0717,8,'8.7.1.7. 멤버십 변경','8.7.1.7.blue_change_join.html','완료','mainFrame');
+			b.add(8.0721,8,'8.7.2.1. 블루멤버십 결제내역(가입자)','8.7.2.1.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0722,8,'8.7.2.2. 블루멤버십 결제내역(해지예약자)','8.7.2.2.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0723,8,'8.7.2.3. 블루멤버십 결제내역(해지자)','8.7.2.3.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0724,8,'8.7.2.4. 블루멤버십 결제내역(미가입자)','8.7.2.4.blue_history01.html','완료','mainFrame'); 
+			b.add(8.0725,8,'8.7.2.5. 멤버십 결제방법 변경','8.7.2.5.blue_change_join.html','완료','mainFrame');
+			b.add(8.073,8,'8.7.3. 블루멤버십 쿠폰','8.7.3.blue_coupon.html','완료','mainFrame'); 
+
+			b.add(9,0,'9. 랭킹');
+			b.add(9.01,9,'9. 월간 랭킹','9.monthly_ranking.html','완료','mainFrame');
+			b.add(9.011,9,'9.1. 실시간 랭킹','9.1.live_ranking.html','완료','mainFrame');
+			b.add(9.012,9,'9.2. 월간 Top 10','9.2.monthly_ranking.html','완료','mainFrame');
+			b.add(9.0131,9,'9.3.1. Yo랭킹 리스트','9.3.1.yoranking_list.html','완료','mainFrame');
+			b.add(9.0132,9,'9.3.2. Yo랭킹 상세','9.3.2.yoranking_view.html','완료','mainFrame');
+
+			b.add(10,0,'10. 에러 페이지');
+			b.add(10.11,10,'10.1. 404','10.1.error_404.html','완료','mainFrame');
+			b.add(10.12,10,'10.2. 500','10.2.error_500.html','완료','mainFrame');
+
+			b.add(11,0,'11. 결제 2차');
+			b.add(11.110,11,'11.1. 베리 충전','11.1.berry_pay.html','완료','mainFrame');
+			b.add(11.111,11,'11.2. 베리 충전 완료','11.2.berry_pay_end.html','완료','mainFrame');
+			b.add(11.112,11,'11.3. 본인확인','11.3.mobile_confirm01.html','완료','mainFrame');
+			b.add(11.113,11,'11.4. 법정대리인 결제동의','11.4.mobile_confirm02.html','완료','mainFrame');
+			b.add(11.114,11,'11.5. 성인여부 확인','11.5.mobile_confirm03.html','완료','mainFrame');
+
+			b.add(12,0,'12. 프리미엄');
+			b.add(12.120,12,'12.0. 프리미엄 웹툰 메인','12.0.premium_main.html','완료','mainFrame');
+			b.add(12.121,12,'12.1. 프리미엄 웹툰 리스트','12.1.premium_list.html','완료','mainFrame');
+			b.add(12.122,12,'12.2. 웹소설 메인','12.2.ebook_main.html','완료','mainFrame');
+			b.add(12.123,12,'12.3. 웹소설 상세','12.3.ebook_view.html','완료','mainFrame');
+			b.add(12.124,12,'12.4. 웹소설 회차 상세','12.4.ebook_view.html','완료','mainFrame');
+
+			b.add(13,0,'13. shop');
+			b.add(13.130,13,'13.1. 메인','13.1.shop_main.html','완료','mainFrame');
+			b.add(13.1311,13,'13.2.1 추천 신상 아이템','13.2.1.shop_recom_new.html','완료','mainFrame');
+			b.add(13.1312,13,'13.2.2 추천 인기 아이템','13.2.2.shop_recom_hot.html','완료','mainFrame');
+			b.add(13.1321,13,'13.3.1 스티콘 리스트','13.3.1.shop_stickon_list.html','완료','mainFrame');
+			
+			b.add(13.1322,13,'13.3.2 스티콘 상세','13.3.2.shop_stickon_view.html','완료','mainFrame');
+			b.add(13.13221,13,'13.3.2.1 구매하기 팝업1(베리+블루베리)','13.3.2.1.buy_pop01.html','완료','mainFrame');
+			b.add(13.13222,13,'13.3.2.2 구매하기 팝업2(베리+블루베리)','13.3.2.2.buy_pop01.html','완료','mainFrame');
+			b.add(13.13223,13,'13.3.2.3 베리 부족 알림(베리+블루베리)','13.3.2.3.buy_pop01.html','완료','mainFrame');
+			b.add(13.13224,13,'13.3.2.4 구매하기 팝업1(블루베리)','13.3.2.4.buy_pop02.html','완료','mainFrame');
+			b.add(13.13225,13,'13.3.2.5 블루멤버십 전용 알림(블루베리)','13.3.2.5.buy_pop02.html','완료','mainFrame'); 
+			b.add(13.13226,13,'13.3.2.6 블루베리 지급일 알림(블루베리)','13.3.2.6.buy_pop02.html','완료','mainFrame'); 
+
+			b.add(13.1331,13,'13.4.1 네임콘 리스트','13.4.1.shop_namecon_list.html','완료','mainFrame');
+			b.add(13.1332,13,'13.4.2 네임콘 상세','13.4.2.shop_namecon_view.html','완료','mainFrame');
+
+			b.add(15,0,'15. 블루멤버십 가입');
+			b.add(15.01,15,'15.1. 블루멤버십 안내','15.1.blue_mem_guide.html','완료','mainFrame'); 
+			b.add(15.011,15,'15.1.1. 블루멤버십 안내 팝업(가입자)','15.1.1.blue_mem_guide_pop01.html','완료','mainFrame'); 
+			b.add(15.012,15,'15.1.2. 블루멤버십 가입 안내 팝업(올레준회원)','15.1.2.blue_mem_guide_pop02.html','완료','mainFrame'); 
+			b.add(15.02,15,'15.2. 블루멤버십 가입','15.2.blue_mem_join.html','완료','mainFrame');
+			b.add(15.03,15,'15.3. 블루멤버십 30 가입 완료','15.3.blue_mem_join_end.html','완료','mainFrame');
+			b.add(15.031,15,'15.3.1. 블루멤버십 50 가입 완료','15.3.1.blue_mem_join_end.html','완료','mainFrame');
+			b.add(15.04,15,'15.4. 블루멤버십 결제 실패','15.4.blue_mem_join_fail.html','완료','mainFrame');
+			b.add(15.05,15,'15.5. 블루멤버십 가입 실패','15.5.blue_mem_join_fail.html','완료','mainFrame');
+			b.add(15.06,15,'15.6. 블루멤버십 가입 진행중','15.6.blue_mem_join_ing.html','완료','mainFrame');
+			
+			b.add(14,0,'14. 아이스크림 이벤트');
+			b.add(14.01,14,'14.1. 아이스크림 이벤트 1','14.1.event_0807.html','완료','mainFrame');
+			b.add(14.02,14,'14.2. 아이스크림 이벤트 2 오픈 전','14.2.event_0807.html','완료','mainFrame');
+			b.add(14.03,14,'14.3. 아이스크림 이벤트 당첨 조회','14.3.event_0807.html','완료','mainFrame');
+			b.add(14.04,14,'14.4. 아이스크림 이벤트 당첨','14.4.event_0807.html','완료','mainFrame');
+			b.add(14.05,14,'14.5. 아이스크림 이벤트 꽝','14.5.event_0807.html','완료','mainFrame');
+			b.add(14.06,14,'14.6. 아이스크림 이벤트 2 오픈 후','14.6.event_0807.html','완료','mainFrame');
+
+			/*b.add(16,0,'16. 그 외 이벤트');
+			b.add(16.010,16,'16.1.1. 작가의 꿈 응원 이벤트 메인','16.1.1.event_0107.html','신규','mainFrame');
+			b.add(16.011,16,'16.1.2. 작가의 꿈 응원 이벤트 응모 완료','16.1.2.event_0107.html','신규','mainFrame');*/
+			
+			
+			//b.add(10,0,'TOTAL 28P(레이아웃 제외)');
+			
+			document.write(b);
+			//]]>
+		</script>
+<!-- //WebPage -->
+
+		<div style="height:80px;"></div>
+	</div>
+</body>
+</html>

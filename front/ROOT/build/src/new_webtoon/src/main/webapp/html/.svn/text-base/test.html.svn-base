@@ -1,0 +1,1734 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>올레마켓웹툰</title>
+
+<!-- 페이스북 og 태그 시작 -->
+<meta property="og:title" content="제2회 올레마켓웹툰 공모전 소문내기 비정상 이벤트"/>
+<meta property="og:image" content="https://webtoon.olleh.com/images/pc/event/contest/ic_contest.png"/>
+<meta property="og:url" content="http://webtoon.olleh.com/eventpromotion/contestEvent.kt"/>
+<meta property="og:site_name" content="올레마켓웹툰"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="꿈을 현실로~Dream Comes True 올레마켓웹툰 공모전 열심히 소문내고 비타민 워터 받자!"/>
+<meta property="og:article:author" content="올레마켓웹툰" />
+<meta property="og:article:author:url" content="http://webtoon.olleh.com" />
+<!-- 페이스북 og 태그 끝 -->
+
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!-- 최신 브라우저 랜더링 20140801 추가 -->
+<link href="/images/mobile/olleh_webtooon.ico" rel="shortcut icon" />
+<link rel="stylesheet" href="/css/pc/design.css?dt=2014100800000"type="text/css" /><!-- css -->
+<link rel="stylesheet" href="/css/pc/event.css" type="text/css" /><!-- 201408070 event css 추가 -->
+<link rel="stylesheet" href="/css/pc/event_contest.css" type="text/css" /><!-- 20141017 event css 추가 -->
+<link rel="stylesheet" href="/css/pc/event_contest_common.css" type="text/css" /><!-- 20141017 event css 추가 -->
+
+<script type="text/javascript" src="/js/common/common_paging.js"></script>
+<script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="/js/common/common_util.js?dt=2014100800000"></script>
+<script type="text/javascript" src="/js/common/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/pc/contest_common.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/pc/event/event.jquery.js"></script> 
+<script type="text/javascript" src="/js/pc/event/event.jquery.form.js"></script> 
+    
+<!-- jquery -->
+
+<!-- 올레마켓웹툰 공모전 응모하기 스크립트 -->
+<script type="text/javascript">
+
+window.fbAsyncInit = function() {
+	FB.init({
+		appId : '740093616059342',
+		status     : true, // check login status
+		cookie     : true, // enable cookies to allow the server to access the session
+		xfbml      : true, // parse XFBML
+		oauth      : true  // enable oauth 
+	});
+};
+// Load the SDK Asynchronously
+(function(d){
+	var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+	js = d.createElement('script'); js.id = id; js.async = true;
+	js.src = "//connect.facebook.net/ko_KR/all.js";
+	d.getElementsByTagName('head')[0].appendChild(js);
+}(document));
+
+$(document).ready(function(){
+	
+	//ajax 기본 세팅
+   	jQuery.ajaxSetup({
+   	   	global: false,
+   	    cache: true,
+   	    dataType: 'json',
+   	    timeout: 30000,
+   	    type: 'POST'
+   	});
+	
+	////////////////////////////////////////////////////////////
+	//트위터 이벤트 등록 
+	twttr.events.bind('tweet', function (event) {
+		setTimeout("fncRegistEventProc('twitter')", 1500);
+	});
+	
+	$('#snsPhoneNumber, #comment, #agreecheck1, #agreecheck1').change(function(){
+		
+		if($('input:radio[name=sns_select]:checked').val() != "twitter"){
+			$('#shareLink').attr("href", "#");
+		}else{
+			fncTwitterUrl();
+		}
+		
+	});
+	
+	$('input:radio[name=sns_select]').change(function(){
+		
+		if($(this).val() != "twitter" || loginyn == "N"){
+			$('#shareLink').attr("href", "#");
+		}else{
+			fncTwitterUrl();
+		}
+		
+	});
+	
+/* 	$('#snsPhoneNumber').focusin(function(){
+
+		if($(this).val() == "'-' 제외한 숫자만 입력"){
+			$(this).val("");
+			return false;
+		}
+	}).focusout(function(){
+		if($(this).val().length == 0){
+			$(this).val("'-' 제외한 숫자만 입력");
+			return false;
+		}
+	}); */
+	
+	
+	if(loginyn == "N") {
+		/* $("input[name=sns_select]:radio").attr("disabled", "disabled"); */
+		/* $("input[name=sns_select]:radio").change(function(){
+			fncMoveToLogin();
+			return false;
+		}); */
+	}
+	
+	
+	$("#snsPhoneNumber, #comment").focus(function(){
+				
+		if(loginyn == "N") {
+			$(this).blur();
+			fncMoveToLogin(true);
+			return false;
+		}
+		
+	});
+	
+	//다른 참여자의 응원글 가져오기
+	fncGetSnsComment(startRowNo);
+	
+////////////////////////////////////////////////////////////
+	
+	$(".layer_completition_wrapper").css({"display" : "none"});
+	/* 제목 value 설정 */
+	$(".title_name").focusin(function(){
+		var val = $(this).val();
+        if(val == "1자 이상~20자 이내로 입력해주세요."){
+            $(this).val("");
+        }
+	
+	});
+	$(".title_name").focusout(function(){
+		var val = $(this).val();
+		if(val == ""){
+			$(this).val("1자 이상~20자 이내로 입력해주세요.");
+		}
+	});
+
+    /* 시놉시스 value 설정 */
+	$("#synopsis").focusin(function(){
+		var val = $(this).val();
+        if(val == "50자 이상~1,000자 이내로 작품의 줄거리를 입력해주세요."){
+            $(this).val("");
+        }
+       
+	});
+	$("#synopsis").focusout(function(){
+		var val = $(this).val();
+		if(val == ""){
+			$(this).val("50자 이상~1,000자 이내로 작품의 줄거리를 입력해주세요.");
+		}
+	});
+	
+	/* 작화등록 value 설정 */
+	$(".file_fake").focusin(function(){
+		var val = $(this).val();
+           if(val == "총 3회분을 등록해주세요."){
+               $(this).val("");
+           }
+	
+	});
+	$(".file_fake").focusout(function(){
+		var val = $(this).val();
+		if(val == ""){
+			$(this).val("총 3회분을 등록해주세요.");
+		}
+	});
+
+    /* 디자인 체크박스 */
+    function designCheckbox(){
+        var $radioWrapper = $('.category_list'), //라디오 버튼 전체 영역
+            $radioIist = $('.category_list > li'), //라디오 버튼 리스트
+            $checkInputFake = $('.category_list > li > .design_button'), //라디오 버튼 영역
+            $checkInput = $('.category_list > li > input'), //라디오 버튼 영역
+            $radioLabel = $('.category_list > li > label'), //레이블 버튼 영역
+            $startIdx = 0, //라디오 버튼 초기화
+            onIndex = -1 //현재활성화 라디오 버튼 초기화
+
+        function init(){
+            $checkInput.each(function (idx, entry){
+                $(entry).data('input', idx);
+            });
+            $radioIist.each(function (idx, entry){
+                $(entry).data('label', idx);
+            });
+            startIdx($startIdx); //탭 초기 활성화
+            event(); //이벤트 실행
+        };
+        init(); //초기화
+
+        //처음 이벤트 실행될 함수
+        function startIdx(idx){
+            $radioIist.eq(idx).addClass('select').children("input").attr("checked", "checked");
+                $checkInput.css({position:'absolute', left:-9999});
+            onIndex = idx;
+        };
+
+        //이벤트 실행
+        function event(){
+            //레이블 클릭시
+            $radioLabel.bind({
+                'click' : function(event){
+				
+                    if($(this).parent().hasClass('select') == false){
+                        $(this).parents().addClass('select').children('.design_button').css({outline:'1px dotted'});
+                        $(this).parents().children("input").attr("checked", "checked");
+                    }else{
+                        $(this).parents().removeClass('select').children('.design_button').css({outline:'none'});
+                        $(this).parents().children("input").attr("checked", null);
+                    };
+                    
+                    var checklength = $('input:checkbox:checked').length;
+					
+                    if(checklength > 2){
+                    	alert("장르선택은 최대 2개 까지 가능합니다.");
+                   	  	$(this).parents().removeClass('select').children('.design_button').css({outline:'none'});
+                        $(this).parents().children("input").attr("checked", null);
+                    }
+                }
+            });
+        };
+    };
+    designCheckbox();
+
+
+    /* 글자수 계산 */
+    jQuery('#synopsis').keyup(function() {
+        chkMaxLenDisp(this, 'contentCnt', 1000);
+    });
+
+    function chkMaxLenDisp(obj, targetId, maxLen) {
+        $(obj).attr('maxlength', maxLen);
+        var len = $(obj).val().length;
+
+        if ( len > maxLen ) {
+            try {
+                len = maxLen;
+
+                $('body').focus();
+                obj.value = obj.value.substr(0, maxLen);
+                $("#" + obj.id).focus();
+                $("#" + obj.id).selectRange(len, len);
+            } catch(e) {
+            }
+            alert("작품의 줄거리는 1000글자 이내로 입력 가능합니다");
+            return false;
+        }
+        $('#'+targetId).html(len);
+    };
+    
+    /* 디자인 파일등록 */
+    $(".button_file_find").click(function(){
+        fineUrl = $("")
+        $(".file_real").click();
+    });
+
+    /* 전문보기 슬라이딩-1 */
+    $("a.button_term1_all").bind({
+        "click" : function() {
+            var txtMaxHeight = $(".term_txt1 > p").height() + $(".term_txt1 > ul").height();
+            var txtMinHeight = 52;
+            /* console.log(txtMaxHeight); */
+
+            if($(this).parent().siblings(".term_box").children(".term_txt1").length > 0){
+                if($(this).parent().siblings(".term_box").children(".term_txt1").hasClass("on")){
+                    $(this).parent().siblings(".term_box").children(".term_txt1").removeClass("on");
+                   $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMinHeight});
+                    return false;
+                }else{
+                    $(this).parent().siblings(".term_box").children(".term_txt1").addClass("on");
+                    $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMaxHeight});
+                    return false;
+                };
+            }else{
+                return false;
+            };
+        }
+    });
+
+    /* 전문보기 슬라이딩-2 */
+    $("a.button_term2_all").bind({
+        "click" : function() {
+            var txtMaxHeight = $(".term_txt2 > p").height() + $(".term_txt2 > ul").height();
+            var txtMinHeight = 52;
+            /* console.log(txtMaxHeight); */
+
+            if($(this).parent().siblings(".term_box").children(".term_txt2").length > 0){
+                if($(this).parent().siblings(".term_box").children(".term_txt2").hasClass("on")){
+                    $(this).parent().siblings(".term_box").children(".term_txt2").removeClass("on");
+                   $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMinHeight});
+                    return false;
+                }else{
+                    $(this).parent().siblings(".term_box").children(".term_txt2").addClass("on");
+                    $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMaxHeight});
+                    return false;
+                };
+            }else{
+                return false;
+            };
+        }
+    });
+
+    /* 레이어 닫기 */
+    $(".button_close").click(function(){
+   	 fncResetContestRegisterPopup();
+    });
+
+    /* 레이어 닫기 */
+    $(".complete_close").click(function(){
+        $(".complete_close").parent().parent(".layer_completition_wrapper2").css({"display" : "none"});
+        return false;
+    });
+
+
+    /* 완료레이어 열기 */
+    $(".button_complete").click(function(){
+
+   	 	fncRegist();
+        return false;
+         
+    });
+    
+    //필명 중복체크 버튼에 이벤트 연결
+	 jQuery('#contestpnmCheck').click(function(event) {
+		fncGetExistContestPnm();
+    });
+    
+    //필명 중복체크 버튼에 이벤트 연결
+	jQuery('#fileupload').click(function(event) {
+		jQuery('#fileUploadForm').submit();
+    });
+   
+    //ajax방식으로 파일 업로드
+	$("#fileUploadForm").ajaxForm({
+		dataType		:"json",
+		beforeSubmit	:beforeUpload,
+		success			:onUploadSuccess,
+		error			: function(){alert("파일 업로드중 오류가 발생했습니다.");}
+
+	});
+	
+	fncGetContestCount();
+	  
+});
+	  
+//파일 업로드 validation
+function beforeUpload( formData, jqForm, options )
+{
+	
+	if(jqForm.find("input[type=file]").val()=="" || jqForm.find("input[type=file]").val() == null){
+		alert("업로드할 파일을 선택해 주세요.");
+		return false;
+	}
+
+	return true; 
+}
+
+//파일 업로드 결과 처리
+function onUploadSuccess( uploadData )
+{
+	
+	var filechecktmp = uploadData.fileName;
+	var filecheckarr = filechecktmp.split('.');
+	var filecheck = filecheckarr[1];
+	var filechecksize = uploadData.fileSize;
+	
+	if(filechecksize > 314572800){
+		alert("파일 용량은 300MB까지 입니다.\n파일 사이즈를 좀 더 최적화해주시거나,\n압축 파일로 올려주세요.");
+		return false;
+	}
+
+	if(filecheck != "zip"){
+		alert("파일 형식을\n다시 한번 확인 해주세요.");
+		return false;
+	} 
+	
+	jQuery('#fileoname').val(uploadData.originFileName);
+	jQuery('#filename').val(uploadData.fileName);
+	jQuery('#filepath').val(uploadData.filePath);
+	
+	alert('파일 업로드가 완료되었습니다.');
+	return true;
+	
+}
+
+//==============================================================================================================================
+	var mContent = "";
+	var mPhoneNumber = "";
+	var loginyn = 'Y';
+	var eventyn = 'Y';
+	var idfg = 'open';
+	var startRowNo = 0;
+	var pageSize = 5;
+	var placeHolder = '제2회 올레마켓웹툰 공모전 "꿈에 도전하세요!"';
+	
+	function fncShareSns(){
+
+		
+		
+		if(loginyn == "N"){
+			
+			fncMoveToLogin(true);
+			return false;
+		}
+		
+		var snsfg = $(':radio[name=sns_select]:checked').val();		
+		/* var comment = $('#comment').val(); */
+		var comment = $('#comment').val().replace(/\s+$/, "").length == 0 ? placeHolder : $('#comment').val();
+		var agreecheck1 = $('#agreecheck1').is(':checked');
+		var agreecheck2 = $('#agreecheck2').is(':checked');
+		
+		if(!agreecheck1 || !agreecheck2){
+			alert("약관에 동의해주세요.");
+			$('#shareLink').attr("href", "#");
+			return false;
+		}
+		
+		if($('#snsPhoneNumber').val() == "'-' 제외한 숫자만 입력"){
+			
+			alert("휴대폰 번호를 입력해주세요.");
+			$('#snsPhoneNumber').focus();
+			$('#shareLink').attr("href", "#");
+			return false;
+		}
+		
+		if(isNaN($('#snsPhoneNumber').val()) != 0 || $('#snsPhoneNumber').val().length < 10){
+			alert("휴대폰 번호 형식이 올바르지 않습니다.");
+			$('#snsPhoneNumber').focus();
+			$('#shareLink').attr("href", "#");
+			return false;
+		}
+		
+		/* if(comment.length < 1){
+			alert("공유 내용을 입력해주세요.");
+			$('#comment').focus();
+			return false;
+		} */
+		
+		mPhoneNumber = $('#snsPhoneNumber').val(); 
+		mContent = comment;
+		
+		if(snsfg == "facebook"){
+			fbWrite();
+		}
+		
+		
+	}
+	
+	//이벤트 참여
+	function fncRegistEventProc(snsfg){
+		
+		
+		if(eventyn == "N"){
+			
+			alert("종료된 이벤트 입니다.");
+			return false;
+		}
+		
+		//ajax 방식으로 서버에 처리 요청
+		$.ajax
+		({	
+			url : '/common/snsEventRegistProc.kt',
+			data : 
+			{
+				phonenum : mPhoneNumber,
+				snsfg : snsfg,
+				content : mContent,
+				eventfg : 'contest',
+				preview : 'N'
+			},
+			beforeSend : function(xmlHttpRequest) 
+			{
+			},
+			error : function(xhr, textStatus, errorThrown) 
+			{
+				//에러 메시지 처리
+				alert("요청 중 서버에서 에러가 발생하였습니다.");
+			},
+			success : function(json, textStatus) 
+			{	
+				if(json.erroryn == "Y"){
+					
+					alert(json.errormsg);
+					return false;
+				}
+				
+				alert("이벤트에 응모했습니다.\n당첨자 발표는 매주 목요일! 두둥~~");
+				window.location.reload(true);
+			}
+		}); 
+		
+	}
+	
+	var face_login_check = "fail";
+	var FacebookAccessToken = "";
+	function fbSignIn() {	
+		/* console.log("fbSignIn"); */
+		FB.getLoginStatus(function(response) {
+			if (response.status == 'connected') {
+				if (response.authResponse) {
+					FacebookAccessToken = response.authResponse.accessToken;
+					face_login_check = "success";
+					fbWrite();
+				} else {
+					alert('Facebook 인증이 되지 않았습니다.');
+					return;
+				}
+			} else {  //로그인이 안되 있을 경우 로그인 창과 퍼미션 창을 띄움
+				FB.login(function(response) {
+					if (response.status  == 'connected') {
+						FacebookAccessToken = response.authResponse.accessToken;
+						face_login_check = "success";
+						
+						fbWrite();
+					} else if (response.status == 'not_authorized') {
+						alert("권한요청에 동의해 주셔야 정상적인 이벤트 참여가 가능합니다.");
+						return;
+					}
+				}, {scope: 'public_profile, publish_actions', return_scopes: true, auth_type: 'rerequest'});
+			}
+		});
+	}
+	
+	function fbWrite() {
+
+		
+		if(face_login_check == "fail") {
+			fbSignIn();
+			return;
+		}
+		
+		var result = "success";
+		
+		var publish = {
+		  method: 'feed',
+		  message: mContent,
+		  name: '제2회 올레마켓웹툰 공모전 소문내기 비정상 이벤트',
+		  caption: '올레마켓웹툰 소문내기 이벤트',
+		  description: (
+		      '꿈을 현실로~Dream Comes True 올레마켓웹툰 공모전 열심히 소문내고 비타민 워터 받자!'
+		  ),
+		  link: 'http://webtoon.olleh.com/eventpromotion/contestEvent.kt',
+		  picture: 'https://webtoon.olleh.com/images/pc/event/contest/ic_contest.png',
+		  actions: [
+		    { name: '제2회 올레마켓웹툰 공모전 소문내기 비정상 이벤트', link: 'http://webtoon.olleh.com/eventpromotion/contestEvent.kt' }
+		  ],
+		  user_message_prompt: mContent
+		};
+	
+		FB.ui(publish, function(response) {
+		    if (response && !response.error_code) {
+		    	fncRegistEventProc('facebook');
+		    } else {
+		    	result = "fail";
+		    }
+		  });
+	
+		return result;
+		
+	}
+	
+	function fncTwitterUrl() {
+		var strWeb = '[올레마켓웹툰 이벤트]';
+		var strTitle = $('#comment').val().replace(/\s+$/, "").length == 0 ? placeHolder : $('#comment').val();
+		var strUrl = 'http://bit.ly/1zkpWL1';
+		
+		strWeb = encodeURIComponent(strWeb);
+		strTitle = encodeURIComponent(decodeStr(strTitle));
+		
+		var strSnsUrl = 'https://twitter.com/intent/tweet?url=' + strUrl + '&text=' + strWeb + ' ' + strTitle;
+	    
+		document.getElementById("shareLink").href = strSnsUrl;
+	}
+	
+	function fncGetSnsComment(startRowNo){
+		
+		//ajax 방식으로 서버에 처리 요청
+		$.ajax
+		({	
+			url : '/common/getSnsComment.kt',
+			data : 
+			{
+				eventfg : 'contest',
+				startRowNo : startRowNo,
+				pageSize : pageSize
+			},
+			beforeSend : function(xmlHttpRequest) 
+			{
+			},
+			error : function(xhr, textStatus, errorThrown) 
+			{
+				//에러 메시지 처리
+				alert("요청 중 서버에서 에러가 발생하였습니다.");
+			},
+			success : function(json, textStatus) 
+			{	
+				if( json.totalCnt != 0 )
+	        		jQuery('.com_paging').html(cfGetPagingHtml(json.totalCnt, startRowNo, pageSize, 'fncMovePage'));
+				
+				fncSetCommentResult(json);
+			}
+		}); 
+	}
+	
+	function fncSetCommentResult(json){
+		
+		var html = "";
+		for(var i = 0; i < json.snsCommentList.length; i++)
+		{	
+			html += "<li>";
+			html += "    <dl>";
+			
+			if(json.snsCommentList[i].snsfg == "facebook"){
+				html += "        <dt><img src=\"/images/pc/event/contest/completition_icon_facebook.jpg\" alt=\"페이스북 사용자\" /></dt>";
+			} else if(json.snsCommentList[i].snsfg == "twitter"){
+				html += "        <dt><img src=\"/images/pc/event/contest/completition_icon_twiiwter.jpg\" alt=\"트위터 사용자\" /></dt>";
+			} else if(json.snsCommentList[i].snsfg == "kakaotalk"){
+				html += "        <dt><img src=\"/images/mobile/event/contest/completition_icon_kakaotalk.jpg\" alt=\"카카오톡 사용자\" /></dt>";
+			} else{
+				html += "        <dt><img src=\"/images/mobile/event/contest/completition_icon_kakaostory.jpg\" alt=\"카카오스토리 사용자\" /></dt>";
+			}
+			
+			html += "        <dd style=\"width:85%\">";
+			html += "            <div class=\"comment_top\">";
+			html += "                <span class=\"name\">";
+			html += 					fncChangeId(json.snsCommentList[i]);
+			html += "				  </span>";
+			html += "                <span class=\"date\">" + json.snsCommentList[i].regdt + "</span>";
+			html += "            </div>";
+			html += "            <p class=\"comment_txt\">" + json.snsCommentList[i].content + "</p>";
+			html += "        </dd>";
+			html += "    </dl>";
+			html += "</li>";
+		}
+		
+		$('.board_list').html(html);
+	}
+	
+	function fncMoveToLogin(type){
+		
+		if(loginyn == "Y")
+		{
+			if(idfg == "open") alert("올레마켓웹툰 아이디 로그인 상태입니다.");
+			else if(idfg == "olleh") alert("올레마켓웹툰 아이디로 다시 로그인 해 주세요.");
+			
+			return false;
+		}
+		
+		if(type)
+		{
+			alert("오예~! 이벤트 참여는 로그인이 필요합니다.");
+		}
+			
+		
+		location.href = "https://webtoon.olleh.com/login.kt";
+	}
+	
+	function fncMoveToRegist(){
+		
+		if(loginyn == "Y")
+		{
+			/* if(idfg == "open") alert("올레마켓웹툰 아이디 로그인 상태입니다.");
+			else if(idfg == "olleh") alert("올레마켓웹툰 아이디 로그인 상태입니다."); */
+			
+			alert("올레마켓웹툰 아이디 로그인 상태입니다.");
+			return false;
+		}
+		
+		location.href = "https://webtoon.olleh.com/user/regist.kt";
+	}
+
+	function fncMovePage(no) {
+		startRowNo = no;
+		fncGetSnsComment(no);
+	}
+	
+	
+	//아이디 구분(open, olleh)후 **처리
+	function fncChangeId(domain){
+
+		if(domain.idfg == "olleh")
+		{
+			if(domain.regid.indexOf('@') > -1)
+			{
+				return domain.regid.indexOf('@') > 3 ? domain.regid.substring(0, 3) + addChar(domain.regid.indexOf('@') - 3, '*') + domain.regid.substring(domain.regid.indexOf('@')) : domain.regid;
+			}
+			
+			return domain.regid.length > 3 ? domain.regid.substring(0, 3) + addChar(domain.regid.length - 3, '*') : domain.regid;
+		}
+		
+		return domain.nickname;
+	}
+
+	function addChar(cnt, ch){
+		
+		return cnt == 1 ? ch : ch + addChar(cnt - 1, ch); 
+	}
+     
+//==============================================================================================================================
+	
+	//필명 중복 여부를 ajax 방식으로 조회
+	function fncGetExistContestPnm() {    
+	
+	   	var trimedContestpnm = jQuery('#contestpnm').val();
+	   	var Contestpnmlength = $('#contestpnm').val().length;
+	    
+	   	if(trimedContestpnm == '') {
+	   		alert('필명을 입력하세요.');
+			$('#contestpnm').focus();
+			
+			return;
+		}
+	   	
+	   	if(Contestpnmlength > 10){
+	   		alert('필명은 10자 이내로 기입해주세요.');
+			$('#contestpnm').focus();
+			
+			return;
+	   	}
+	   	
+	    //ajax 방식으로 서버에 처리 요청
+	    $.ajax({
+	        url: '/common/existContestpnm.kt',
+	        data: {contestpnm: trimedContestpnm},           
+	        error: function(xhr, textStatus, errorThrown) {
+	        	//에러 메시지 처리
+	        	alert('요청 중 서버에서 에러가 발생하였습니다.');
+	        },
+	        success: function(json, textStatus) {
+	        	//로그인 체크
+	        	if(json.loginyn && json.loginyn=="N") {
+	        		document.location.href = "/admin/login_form.kt";
+	        		return;
+	        	}
+	        	
+	        	//서버 에러 체크
+	        	if(json.erroryn && json.erroryn=="Y") {
+	        		alert(json.errormsg);
+	        		return;
+	        	}
+	    	    
+	        	if(json.existYn == "Y") {
+	        		alert('이미 다른 분이 쓰고 있는 필명입니다.\n다른 필명으로 입력해주세요~');
+	        	} else {
+	        		jQuery('#checkpnm').val(trimedContestpnm);
+	        		alert('사용할 수 있는 필명입니다.');
+	        	}
+	        }
+	    });        	
+	}
+	
+	//접수현황 카운트 ajax 방식으로 조회
+	function fncGetContestCount() {    
+
+	    //ajax 방식으로 서버에 처리 요청
+	    $.ajax({
+	        url: '/common/getContestCount.kt',
+	        data: {},           
+	        error: function(xhr, textStatus, errorThrown) {
+	        	//에러 메시지 처리
+	        	alert('요청 중 서버에서 에러가 발생하였습니다.');
+	        },
+	        success: function(json, textStatus) {
+	        	//로그인 체크
+	        	if(json.loginyn && json.loginyn=="N") {
+	        		document.location.href = "/admin/login_form.kt";
+	        		return;
+	        	}
+	        	
+	        	//서버 에러 체크
+	        	if(json.erroryn && json.erroryn=="Y") {
+	        		alert(json.errormsg);
+	        		return;
+	        	}
+	    	    
+	        	fncSetResult(json);
+	        }
+	    });        	
+	}
+	
+	
+    //서버에서 온 json 객체로 화면에 내용을 출력해주는 메소드
+    function fncSetResult(json) {
+
+    	if(json.totalcount > 100){
+    		jQuery('#contestcount1').show();
+    		jQuery('#contestcount2').show();
+    		jQuery('#totalcount1').html(json.totalcount);
+           	jQuery('#totalcount2').html(json.totalcount);
+    	}else{
+    		jQuery('#contestcount1').hide();
+    		jQuery('#contestcount2').hide();
+    	}
+       	
+
+    }
+	
+    var checkDoubleSave = true; // 중복 저장 방지
+	//전송데이터 유효성 체크후 ajax방식으로 DB저장.
+	function fncRegist(){
+    	
+		if (checkDoubleSave == false){
+			alert("등록중입니다.");
+			return;
+		}
+
+		var contestnm = $.trim($('#contestnm').val());
+		var contestpnm = $.trim($('#checkpnm').val());
+		var title = $.trim($('#title').val());
+		var email = $.trim($('#email').val());
+		var firstnum  = $('#firstNumber option:selected').val(); 
+		var phonenum1 = $('#middleNumber').val().match(/[0-9\b]/g);
+		var phonenum2 = $('#endNumber').val().match(/[0-9\b]/g);
+		var phoneNumber = "";
+		var tmpgenretype = "";
+		var tmpgenretypearr = "";
+		var genretype1 = "";
+		var genretype2 = "";
+		var synopsis = $('#synopsis').val(); 
+		var submitcheck1 = $('input:radio[name="term_agree1"]:checked').val();
+		var submitcheck2 = $('input:radio[name="term_agree2"]:checked').val();
+		var fileoname = $('#fileoname').val(); 
+		var filename = $('#filename').val(); 
+		var filepath = $('#filepath').val(); 
+		
+		if(contestnm == '') {
+			alert('이름을 입력하세요.');
+			$('#contestnm').focus();
+			return false;
+		}
+		
+		if(contestpnm == '' && $('#contestpnm').val() == '') {
+			alert('필명을 입력하세요.');
+			$('#contestpnm').focus();
+			return;
+		}
+		
+		if(contestpnm == '' && $('#contestpnm').val() != '') {
+			alert('필명 중복확인을 해주세요.');
+			$('#contestpnm').focus();
+			return;
+		}
+		
+		if(title == '') {
+			alert('제목을 입력하세요.');
+			$('#title').focus();
+			return;
+		}
+		
+		if(email == '') {
+			alert('이메일을 입력하세요.');
+			$('#email').focus();
+			return;
+		}else{
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
+			if ( !regExp.test(email) ) {
+			      alert("잘못된 이메일 형식입니다.\n이메일을 재확인 해주세요.");
+			      return false
+			}
+		}
+		
+		
+		if(phonenum1 == null || (firstnum == "010" ? phonenum1.length < 4 : phonenum1.length < 3))
+		{
+			alert("잘못된 휴대폰 번호입니다.\n휴대폰 번호를 확인해 주세요.");
+			$("#middleNumber").focus();
+			
+	    	return false;
+		}
+	    
+	    if(phonenum2 == null || phonenum2.length < 4)
+	    {
+	    	alert("잘못된 휴대폰 번호입니다.\n휴대폰 번호를 확인해 주세요.");
+	    	$("#endNumber").focus();
+	    	
+	    	return false;
+	    }
+	    phoneNumber = $('#firstNumber option:selected').val() + $('#middleNumber').val() + $('#endNumber').val(); 
+	    
+	    if($('input:checkbox:checked').length == null || $('input:checkbox:checked').length == 0){
+	    	
+	    	alert("장르중 한개는 반드시 필수 선택 입니다.");
+	    	$("#chkList").focus();
+	    	return false;
+	    	
+	    }else if($('input:checkbox:checked').length > 2 ){
+	    	
+	    	alert("장르선택은 최대 2개 까지 가능합니다.");
+	    	$("#chkList").focus();
+	    	return false;
+	    	
+	    }else{
+	    	
+	    	if ($('input:checkbox:checked').length == 1){
+	    		genretype1 = get_chked_values();
+	    	}else{
+	    		tmpgenretypearr = get_chked_values();
+	        	tmpgenretype = tmpgenretypearr.split(",");
+	        	genretype1 = tmpgenretype[0];
+	        	genretype2 = tmpgenretype[1];
+	    	}
+	    	
+	    } 
+	    
+	    if(synopsis.length < 51){
+	    	alert("시놉시스는 작품의 이해를 돕는 중요한 정보 입니다.\n최대 50자 이상 입력주세요~");
+	    	$("#synopsis").focus();
+	    	return false;
+	    }else if(synopsis.length > 1000){
+	    	alert("시놉시스는 최대 1000자까지 입력이 가능합니다.");
+	    	$("#synopsis").focus();
+	    	return false;
+	    } 
+	    
+	    if(submitcheck1 == "n"|| submitcheck1 == "" || submitcheck1 == null ){
+	    	alert("개인정보 수집, 활용에 대한 동의를 해주셔야 제출이 가능합니다.");
+	    	$("#term_agree1").focus();
+	    	return false;
+	    }
+	    
+	    if(submitcheck2 == "n"|| submitcheck2 == "" || submitcheck2 == null ){
+	    	alert("개인정보 취급 위탁 동의를 해주셔야 제출이 가능합니다.");
+	    	$("#term_agree2").focus();
+	    	return false;
+	    }
+		
+	    if(filename == "" || filename == null ){
+	    	alert("파일을 업로드 해주세요.");
+	    	$("#zipfilepath").focus();
+	    	return false;
+	    }
+	    
+	    var filesqlname = filename+"^"+fileoname;
+	    
+	    checkDoubleSave = false;
+	  	//ajax 방식으로 서버에 처리 요청
+	    $.ajax({
+	    	url: '/common/contestRegistProc.kt',
+	        data: 
+	        {
+	        	contestnm	: contestnm,
+	        	contestpnm	: contestpnm,
+	        	title		: title,
+	        	email		: email,
+	        	phonenm		: phoneNumber,
+	        	genretype1	: genretype1,
+	         	genretype2	: genretype2,
+	        	synopsis	: synopsis,
+	        	filepath	: filepath,
+	        	filename	: fileoname,
+	        	statelevel	: "1D"
+	        },
+	        error: function(xhr, textStatus, errorThrown) {
+	        	//에러 메시지 처리
+	        	alert('요청 중 서버에서 에러가 발생하였습니다.');
+	        	/* checkDoubleSave = true; */
+	        },
+	        success: function(json, textStatus) {
+	        	//로그인 체크
+	        	if(json.loginyn && json.loginyn=="N") {
+	        		document.location.href = "/admin/login_form.kt";
+	        		return;
+	        	}
+	        	
+	        	//서버 에러 체크
+	        	if(json.erroryn && json.erroryn=="Y") {
+	        		alert(json.errormsg);
+	        		return;
+	        	}
+	    	    	
+	        	popupChange();
+	        	fncGetContestCount();
+	        	
+	        	/* checkDoubleSave = true; */
+	        },
+	        complete: function(xhr, textStatus) {
+	        	checkDoubleSave = true;
+	        }
+	    });
+	
+	}
+	
+	//중복 전송 방지
+	var smsSendBtnDubleSend = true;
+	
+	function fncSendSms(){
+		
+		var firstnum  = $('#firstNumber option:selected').val(); 
+		var phonenum1 = $('#middleNumber').val().match(/[0-9\b]/g);
+		var phonenum2 = $('#endNumber').val().match(/[0-9\b]/g);
+		var contestnm = $.trim($('#contestnm').val());
+		
+		
+	    phoneNumber = "";
+	    phoneNumber = $('#firstNumber option:selected').val() + $('#middleNumber').val() + $('#endNumber').val();
+	    msg = "제2회 올레마켓웹툰 공모전에 성공적으로 응모하였습니다.";
+	    
+	    if(smsSendBtnDubleSend){
+	    	smsSendBtnDubleSend = false;
+			$.ajax
+		    ({
+		        url: '/eventpromotion/sendSms.kt',
+		        data: 
+		        {
+		        	msg: msg,
+		        	destphone: phoneNumber
+		        },
+		        error: function(xhr, textStatus, errorThrown) 
+		        {
+		            //에러 메시지 처리
+		            //cfPrintMsg("ok", "요청 중 서버에서 에러가 발생하였습니다.", null);   
+		        	smsSendBtnDubleSend = true;
+		        },
+		        success: function(json, textStatus) 
+		        { 
+		        	if(json.erroryn == 'Y'){
+		        		
+		        		alert(json.errormsg);
+		        		return false;
+		        	}
+		        	
+		        	/* if(json.linkSmsCnt >= 10 ){
+	        			alert("고객님은, “올레마켓웹툰APP 설치 URL 받기”\n건수를  모두 사용하셨습니다.\n다음 달에 다시 시도해주세요.");
+		        	}else{
+		        		alert("발송이 완료 되었습니다.");
+		        	} */
+		        },
+				complete: function(xhr, textStatus) 
+				{
+					smsSendBtnDubleSend = true;
+		        }
+		    });
+		}
+	}
+	
+	//등록완료. 레이어 교체 
+	function popupChange()
+	{
+		$(".layer_completition_wrapper").css({"display" : "none"});
+		$(".layer_completition_wrapper2").css({"display" : "block"});
+		$('#contestnm').val("");
+		$('#contestpnm').val("");
+		$('#checkpnm').val("");
+		$('#title').val("1자 이상~20자 이내로 입력해주세요.");
+		$('#email').val("");
+		$('select').find('option:first').attr('selected', 'selected');
+		$('#middleNumber').val("");
+		$('#endNumber').val("");
+		$('#synopsis').val("50자 이상~1,000자 이내로 작품의 줄거리를 입력해주세요."); 
+		$(':radio[name="submitcheck"]').removeAttr('checked');
+		$(".file_fake").val("총 3회분을 등록해주세요.");
+		$('#fileoname').val("");
+		$('#filename').val("");
+		$('#filepath').val("");
+		designCheckboxinit();
+		
+		fncSendSms();
+		return false;
+	}
+	
+   
+	//체크박스 value값 배열로 지정.
+	function get_chked_values()
+	{
+		var chked_val = "";
+		
+		$(":checkbox[name='chkList']:checked").each(function(pi,po){
+		  chked_val += ","+po.value;
+		});
+		
+		if(chked_val!="")chked_val = chked_val.substring(1);
+		
+		return chked_val;
+	}
+		
+	//숫자만 입력 체크
+	var telValidate = function(event) 
+	{
+		var key = window.event ? event.keyCode : event.which;
+		var keychar = String.fromCharCode(key);
+		var reg = /[0-9\b]/;
+		return reg.test(keychar);
+	}; 
+	
+	//등록 팝업창 호출
+	function fncOpenContestRegisterPopup(){
+		
+		if(idfg == "olleh"){
+			alert("올레마켓웹툰 아이디로만 접수가 가능합니다.");
+		}else if(idfg == null || idfg == ""){
+			alert("로그인 후 이용이 가능합니다.");
+			location.href = "https://webtoon.olleh.com/login.kt";
+		}else{
+			init_popup('contest_event_popup');
+		}
+		
+		//init_popup('popup_contest_register');
+		//팝업창 이름 변경필요 디자인후
+	}
+	
+	//팝업창 초기화 
+	function init_popup(popup)
+	{	
+	
+		$('.'+popup).fadeIn('fast');
+		var popupY = 0;
+		if ($(window).height() < $('.'+popup).outerHeight())
+		{
+			popupY = $(window).scrollTop();
+		}
+		else
+		{
+			popupY = $(window).scrollTop() + ($(window).height()/2) - ($('.'+popup).outerHeight()/2);
+		}
+		popupY = popupY + 70;
+		$('.'+popup).css({ top: popupY });
+		$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});
+		//$('.com_popup_bglayer').show();
+	
+	}
+	
+	/* 디자인 체크박스 */
+    function designCheckboxinit(){
+        var $radioWrapper = $('.category_list'), //라디오 버튼 전체 영역
+            $radioIist = $('.category_list > li'), //라디오 버튼 리스트
+            $checkInputFake = $('.category_list > li > .design_button'), //라디오 버튼 영역
+            $checkInput = $('.category_list > li > input'), //라디오 버튼 영역
+            $radioLabel = $('.category_list > li > label'), //레이블 버튼 영역
+            $startIdx = 0, //라디오 버튼 초기화
+            onIndex = -1 //현재활성화 라디오 버튼 초기화
+
+        function init(){
+            $checkInput.each(function (idx, entry){
+                $(entry).data('input', idx);
+            });
+            $radioIist.each(function (idx, entry){
+                $(entry).data('label', idx);
+            });
+            startIdx($startIdx); //탭 초기 활성화
+            
+        };
+        init(); //초기화
+
+        //처음 이벤트 실행될 함수
+        function startIdx(idx){
+        	 for (var i = 0; i < 6; i++) {
+        		 
+        		 if(i==0){
+        			 $radioIist.eq(i).addClass('select').children("input").attr("checked", "checked");
+        		 }else{
+        			 $radioIist.eq(i).removeClass('select').children("span").css("outline", "none");
+        			 $radioIist.eq(i).children("input").attr("checked", false);
+        			 
+        		 }
+        		
+                 $checkInput.css({position:'absolute', left:-9999});
+             
+             }
+             
+        };
+
+ 
+    };
+    
+	//팝업창 닫기
+	function fncResetContestRegisterPopup(){
+		//정보 초기화
+		$('#contestnm').val("");
+		$('#contestpnm').val("");
+		$('#checkpnm').val("");
+		$('#title').val("1자 이상~20자 이내로 입력해주세요.");
+		$('#email').val("");
+		$('select').find('option:first').attr('selected', 'selected');
+		$('#middleNumber').val("");
+		$('#endNumber').val("");
+		$('#synopsis').val("50자 이상~1,000자 이내로 작품의 줄거리를 입력해주세요."); 
+		$(':radio[name="submitcheck"]').removeAttr('checked');
+		$(".file_fake").val("총 3회분을 등록해주세요.");
+		$('#fileoname').val("");
+		$('#filename').val("");
+		$('#filepath').val("");
+		designCheckboxinit();
+		
+		
+		//팝업 닫기
+		$('.contest_event_popup').fadeOut('fast');
+		//$('.popup_contest_register').fadeOut('fast');
+		$('.com_popup_bglayer').hide();
+
+	}
+</script>
+<!-- //올레마켓웹툰 공모전 응모하기 스크립트 -->
+
+
+</head>
+<body>
+<div id="fb-root"></div>
+	<!-- wrap -->
+	<div id="wrap">
+
+		<!-- ### container ### -->
+		<div id="container" style="height: 1200px">
+			<h2 class="hidden">본문영역</h2>
+			
+			<div class="completition_app_wrap">
+		        <!-- 네비게이션 -->
+		        <div class="navigation">
+		            <ul>
+		                <li><a class="active" href="#weDreamWrap"><img src="/images/pc/event/contest/completition_nav_menu01.png" alt="우리의 꿈" /></a></li>
+		                <li><a href="#dreamChallengeWrap"><img src="/images/pc/event/contest/completition_nav_menu02.png" alt="꿈에 도전" /></a></li>
+		                <li><a href="#dreamRealizeWrap"><img src="/images/pc/event/contest/completition_nav_menu03.png" alt="꿈의 실현" /></a></li>
+		                <li class="last_nav"><a href="#dreamDivWrap"><img src="/images/pc/event/contest/completition_nav_menu04.png" alt="꿈 나누기" /></a></li>
+		            </ul>
+		            <div class="d_day_box">
+		                <p class="d_day_txt">D-68</p>
+		            </div>
+		        </div>
+		        <!-- //네비게이션 -->
+				<!-- 헬프바 -->
+		        <div class="help_bar">
+		            <ul>
+		                <li><a class="help_button" href="#none"><img src="/images/pc/event/contest/completition_help_menu01.png" alt="HELP" /></a></li>
+		                <li><a href="http://webtoon.olleh.com/support/faqList.kt"><img src="/images/pc/event/contest/completition_help_menu02.png" alt="FAQ" /></a></li>
+		                <li><a href="https://webtoon.olleh.com/support/qnaRegist.kt"><img src="/images/pc/event/contest/completition_help_menu03.png" alt="1:1 문의" /></a></li>
+		                <li><a href="mailto:webtoon@kt.com"><img src="/images/pc/event/contest/completition_help_menu04.png" alt="E-mail" /></a></li>
+		            </ul>
+		        </div>
+		        <!-- //헬프바 -->
+				<!-- 01. 우리의 꿈 영역 -->
+		        <div id="weDreamWrap" class="we_dream_wrap">
+		            <h1 class="title"><img src="/images/pc/event/contest/completition_title.jpg" alt="DREAM COME TRUE 2th 올레마켓웹툰 공모전 여러분과 함께 성장하는 올레마켓웹툰에서 작가의 꿈을 현실로  만들어가고자 합니다. 단 한번으로 끝나는 반짝 행운이 아닌, 행복하고 오랫동안 사랑 받는 웹툰 작가의 길을 함께 달려 갈 작가님을 기다립니다." /></h1>
+		            <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title01.jpg" alt="올레마켓웹툰 공모전 일정" /></h2>
+		            <p class="schedule_info"><img src="/images/pc/event/contest/completition_sub_info01.jpg" alt="응모접수 및 1차 심사(2014년 10월 20일부터 12월 31일까지) → 1차 심사(2015년 1월 1일부터 1월 11일까지) → 2차 심사(전문가+사용자)(2015년 1월 12일부터 1월 31일까지) → 최종 발표(2015년 2월 1일)" /></p>
+		            <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title02.jpg" alt="수상 혜택 및 후원사" /></h2>
+		            <p class="gift_spon_info"><img src="/images/pc/event/contest/completition_sub_info02.jpg" alt='수상작가 6명 전원에게 "작품의 필수품 와콤 타블렛, 기쁨을 기념할 트로피, 올레마켓웹툰 정식 연재"혜택을 드립니다. 대상 1명, 최우수상 2명, 우수상 2명, 인기상 1명 ●와콤 및 기타 후원사 협조로 제세공과금은 전액 KT가 부담합니다. ●수상작의 올레마켓 연재는 필수입니다.(연재 불가 시 수상이 취소될 수 있습니다) 후원사:케이티, 교보문고' /></p>
+		        </div>
+		        <!-- //01. 우리의 꿈 영역 -->
+				<!-- 02. 꿈에 도전 -->
+		        <div id="dreamChallengeWrap" class="dream_challenge_wrap">
+		            <!-- 작가 심사단 영역 -->
+		            <div class="audit_wrap">
+		                <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title03.jpg" alt="꿈의 도전을 함께할 전설의 작가 심사단" /></h2>
+		                <ul>
+		                    <li class="audit01">
+		                        <a href="#none"><img src="/images/pc/event/contest/completition_audit01.jpg" alt="개그 이말년 코드명:유머! 나를 넘어라" /></a>
+		                        <div class="audit_comment">
+		                            <p><img src="/images/pc/event/contest/completition_audit01_on.jpg" alt="g하는데까지 해보고 안되면 포기하자 -이말년" /></a></p>
+		                        </div>
+		                    </li>
+		                    <li><img src="/images/pc/event/contest/completition_audit02.jpg" alt="상상에 한계를 두지마라" /></li>
+		                    <li class="audit03">
+		                        <a href="#none"><img src="/images/pc/event/contest/completition_audit03.jpg" alt="일상 김양수 일상툰에도 정석은 있다" /></a>
+		                        <div class="audit_comment">
+		                            <p><img src="/images/pc/event/contest/completition_audit03_on.jpg" alt="재미있는 생각을 해본다 생각날 때까지. -김양수" /></a></p>
+		                        </div>
+		                    </li>
+		                    <li class="audit04">
+		                        <a href="#none"><img src="/images/pc/event/contest/completition_audit04.jpg" alt="드라마 강도하 국민 타이틀을 얻고 싶은가" /></a>
+		                        <div class="audit_comment">
+		                            <p><img src="/images/pc/event/contest/completition_audit04_on.jpg" alt="무서운 신인의 등장을 기대합니다! -강도하" /></a></p>
+		                        </div>
+		                    </li>
+		                    <li class="audit05">
+		                        <a href="#none"><img src="/images/pc/event/contest/completition_audit05.jpg" alt="판타지 주호민 작품으로 여운을 남겨라" /></a>
+		                        <div class="audit_comment">
+		                            <p><img src="/images/pc/event/contest/completition_audit05_on.jpg" alt="일단 펜을 드세요! 주호민" /></a></p>
+		                        </div>
+		                    </li>
+		                    <li><img src="/images/pc/event/contest/completition_audit06.jpg" alt="스토리 중심에서 나를 외쳐라" /></li>
+		                </ul>
+		            </div>
+		            <!-- //작가 심사단 영역 -->
+		
+		            <!-- 응모 요건 및 응모하기 영역 -->
+		            <div class="needs_app_wrap">
+		                <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title04.jpg" alt="꿈의 도전을 함께할 전설의 작가 심사단" /></h2>
+		                <div class="app_area">
+		                    <p><img src="/images/pc/event/contest/completition_sub_info03.jpg" alt="자유롭게! 누구나! 제한없음!" /></p>
+		                    <a href="#none"><img onclick="javascript:fncOpenContestRegisterPopup(); return false;" src="/images/pc/event/contest/completition_btn01.jpg" alt="꿈의 도전 START!" /></a>
+		                </div>
+		                <div class="app_info">
+		                    <img src="/images/pc/event/contest/completition_sub_info04.jpg" alt="○다른 공모전 출품작이어도 정식 연재를 하시지 않으셨다면, 응모하실 수 있습니다. ○작품 파일, 시놉시스와 공모전 진행을 위한 기본 정보(이메일, 연락처)가 필요합니다. ○응모 접수는 오직 PC 웹에서만 가능합니다." usemap="#app_info" />
+		                    <map name="app_info" id="app_info">
+		                        <area shape="rect" coords="166,106,537,127" href="#" onclick="javascript:fncMoveToLogin(false); return false;"alt="응모를 위해서는 올레마켓웹툰 아이디로 로그인 해주세요." />
+		                        <area shape="rect" coords="167,130,774,152" href="#" onclick="javascript:fncMoveToRegist(); return false;" alt="아직, 올레마켓웹툰 아이디가 없으신 분은 초간단 웹툰 아이디 만들기 위해 옆의 화살표를 눌러 주세요." />
+		                    </map>
+		                </div>
+		            </div>
+		            <!-- //응모 요건 및 응모하기 영역 -->
+		        </div>
+		        <!-- //02. 꿈에 도전 -->
+				<!-- 03. 꿈의 실현 -->
+		        <div id="dreamRealizeWrap" class="dream_realize_wrap">
+		            <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title05.jpg" alt="제 1회 공모전 당선 작가들의 공감 이야기" /></h2>
+		            <p><img src="/images/pc/event/contest/completition_sub_info05.jpg" alt="제 1회 올레마켓웹툰 공모전을 통해, 현재 작가로서의 꿈을 실현하고 있는 올레마켓웹툰 등단작가 6인의 좌충우돌 희로애락 가득한 이야기로 쓩~" /></p>
+		            <a href="http://webtoon.olleh.com/yoyozine/detail.kt?yoyozineseq=50" target="_blank"><img src="/images/pc/event/contest/completition_btn02.jpg" alt="GO" /></a>
+		        </div>
+		        <!-- //03. 꿈의 실현 -->
+		
+		        <!-- 04. 꿈 나누기 -->
+		        <div id="dreamDivWrap" class="dream_div_wrap">
+		            <h2 class="sub_title"><img src="/images/pc/event/contest/completition_sub_title06.jpg" alt="소문난 비정상 이벤트" /></h2>
+		            <p><img src="/images/pc/event/contest/completition_sub_info06.jpg" alt="올레마켓웹툰 2회 공모전은 여러분의 힘이 필요합니다. 힘 내서 널리널리 알리GO, 비타민 워터로 에너지 보충하GO! ○올레마켓웹툰사용자라면 누구나, ○이벤트 기간: 2014.10.20~11.16(매주 월요일마다 혜택), ○참여방법: 페이스북, 카카오스토리, 트위터 등에 SNS 보내기만 하면 끄읏~!" /></p>
+		            <ul class="step_list">
+		                <li class="step01">
+		                    <p><img src="/images/pc/event/contest/completition_step_info01.jpg" alt="STEP1.비타민워터를 받으실 휴대폰 번호를 입력해주세요" /></p>
+		                    <input class="phone_input" id="snsPhoneNumber" type="text" value="'-' 제외한 숫자만 입력" maxlength="11" onkeypress="return telValidate(event);" style="ime-mode:disabled"/>
+		                </li>
+		                <li class="step02">
+		                    <p><img src="/images/pc/event/contest/completition_step_info02.jpg" alt="STEP2.공유하실 sns를 선택해주세요" /></p>
+		                    <ul class="radio_list_main">
+		                        <li>
+		                            <input type="radio" id="sns1" name="sns_select" checked="checked" value="facebook">
+		                            <span class="design_radio">&nbsp;</span>
+		                            <label for="sns1"><img src="/images/pc/event/contest/completition_icon_facebook.jpg" alt="페이스북" /></label>
+		                        </li>
+		                        <li class="last_list">
+		                            <input type="radio" id="sns2" name="sns_select" value="twitter">
+		                            <span class="design_radio">&nbsp;</span>
+		                            <label for="sns2"><img src="/images/pc/event/contest/completition_icon_twiiwter.jpg" alt="트위터" /></label>
+		                        </li>
+		                    </ul>
+		                </li>
+		                <li class="step03">
+		                    <p><img src="/images/pc/event/contest/completition_step_info03.jpg" alt="STEP3.공유할 내용을 입력해주세요" /></p>
+		                    <textarea name="" id="comment" class="comment_txt" cols="30" rows="10" placeholder="제2회 올레마켓웹툰 공모전 '꿈에 도전하세요!'"></textarea>
+		                </li>
+		            </ul>
+		
+		            <!-- 개인정보 동의 영역 -->
+		            <div class="term_agree_box">
+		                <ul>
+		                    <li>
+		                        <dl class="term_box1">
+		                            <dt>
+		                                <input type="checkbox" name="agreecheck1" id="agreecheck1">
+		                                <span class="design_radio">&nbsp;</span>
+		                                <label for="agree1"><img src="/images/pc/event/contest/completition_sub_title07.jpg" alt="개인정보 수집, 활용에 대한 동의" /></label>
+		                            </dt>
+		                            <dd class="preview_txt">고객님이 입력한 개인정보는 ‘정보통신망 이용촉진 및 정보보호 등에 관한 법률’에 따라 KT가 수집, 활용 및 취급 위탁 시 본인의 동의를  얻어야 하는 정보입니다.</dd>
+		                            <dd class="all_view"><a href="#layerAgree1" class="btn_click_prv"><img src="/images/pc/event/contest/completition_btn03.jpg" alt="전문보기" /></a></dd>
+		                        </dl>
+		                    </li>
+		                    <li>
+		                    
+		                        <dl class="term_box2">
+		                            <dt>
+		                                <input type="checkbox" name="agreecheck2" id="agreecheck2">
+		                                <span class="design_radio">&nbsp;</span>
+		                                <label for="agree2"><img src="/images/pc/event/contest/completition_sub_title08.jpg" alt="개인정보 취급 위탁 동의" /></label>
+		                           </dt>
+		                            <dd class="preview_txt">회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</dd>
+		                            <dd class="all_view"><a href="#layerAgree2" class="btn_click_prv"><img src="/images/pc/event/contest/completition_btn03.jpg" alt="전문보기" /></a></dd>
+		                        </dl>         
+		                    </li>
+		                </ul>
+		            </div>
+		            <!-- //개인정보 동의 영역 -->
+		
+		            <a href="#" id="shareLink" class="btn_rumors" onclick="javascript:fncShareSns(); return false;"><img src="/images/pc/event/contest/completition_btn04.jpg" alt="소문내기" /></a>
+		
+		            <!-- 응원글 영역 -->
+		            <div class="cheer_post_board">
+		                <h3 class="board_title"><img src="/images/pc/event/contest/completition_sub_title09.jpg" alt="다른 참여자의 응원글!" /></h3>
+		                <ul class="board_list">
+		                </ul>
+		            </div>
+		            <!-- //응원글 영역 -->
+		
+		            <!-- paging -->
+		            <div class="com_paging">
+		            <!-- <ul class="paging"> -->
+		                <!-- <li class="first"><a href="#"><img src="/images/pc/event/contest/completition_page01.jpg" alt="처음으로" /></a></li>
+		                <li class="prev"><a href="#"><img src="/images/pc/event/contest/completition_page02.jpg" alt="이전페이지" /></a></li>
+		                <li class="page_count on"><a href="#">1</a></li>(D)활성화 페이지 class="on" 추가
+		                <li class="page_count"><a href="#">2</a></li>
+		                <li class="page_count"><a href="#">3</a></li>
+		                <li class="page_count"><a href="#">4</a></li>
+		                <li class="page_count"><a href="#">5</a></li>
+		                <li class="page_count"><a href="#">6</a></li>
+		                <li class="page_count"><a href="#">7</a></li>
+		                <li class="page_count"><a href="#">8</a></li>
+		                <li class="page_count"><a href="#">9</a></li>
+		                <li class="page_count"><a href="#">10</a></li>
+		                <li class="next"><a href="#"><img src="/images/pc/event/contest/completition_page03.jpg" alt="다음페이지" /></a></li>
+		                <li class="end"><a href="#"><img src="/images/pc/event/contest/completition_page04.jpg" alt="마지막으로" /></a></li> -->
+		            <!-- </ul> -->
+		            <!-- //paging -->
+		        </div>
+		        <!-- //04. 꿈 나누기 -->
+				<!-- 레이어 첫번째 -->
+		        <div id="layerAgree1" class="layer_first">
+		            <div class="layer_top">
+		                <h3 class="layer_title"><img src="/images/pc/event/contest/layer_title.jpg" alt="올레마켓웹툰" /></h3>
+		                <a href="#none" class="layer_top_btn btn_layer_close"><img src="/images/pc/event/contest/layer_close.jpg" alt="레이어 닫기" /></a>
+		            </div>
+		            <div class="layer_content">
+		                <h4 class="layer_sub_title">개인정보 수집, 활용에 대한 동의</h4>
+		                <div class="layer_txt_area">
+		                    <p class="txt">고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등에 관한 법률'에 따라 kt가 수집, 이용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다.</p>
+                            <p>입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 이용되지 않습니다.</p>
+                            <ul>
+                                <li>1) 개인정보 수집 및 이용목적 - 이벤트 대상 여부 및 본인 확인, 경품 배송</li>
+                                <li>가. 이벤트 대상 여부 및 본인 확인, 경품 배송 </li>                                            
+                                
+                                <li>2) 수집하는 개인정보 항목</li>
+                                <li>가. 이벤트 응모자의 이메일</li> 
+                                <li>나. 이벤트 응모자의 핸드폰 번호</li>
+                                <li>다. 이벤트 응모자의 아이디</li>                                                                                                                                                                                
+                                
+                                <li>3) 개인정보 보유 및 이용기간</li>
+                                <li>4) 이벤트 종료 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)</li>
+                                <li>5) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다. </li>
+
+                            </ul>
+		                </div>
+
+		                <a href="#none" class="btn_layer_close"><img src="/images/pc/event/contest/layer_check.jpg" alt="레이어 닫기" /></a>
+		            </div>
+		        </div>
+		        <!-- //레이어 첫번째 -->
+		
+		        <!-- 레이어 두번째 -->
+		        <div id="layerAgree2" class="layer_first">
+		            <div class="layer_top">
+		                <h3 class="layer_title"><img src="/images/pc/event/contest/layer_title.jpg" alt="올레마켓웹툰" /></h3>
+		                <a href="#none" class="layer_top_btn btn_layer_close"><img src="/images/pc/event/contest/layer_close.jpg" alt="레이어 닫기" /></a>
+		            </div>
+		            <div class="layer_content">
+		                <h4 class="layer_sub_title">개인정보 취급 위탁 동의</h4> <!--20141023-->
+		                <div class="layer_txt_area">
+		                    <p class="txt">회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+		                    <ul>
+		                    	<li>1) 개인정보 취급위탁을 받는 자<br />  - 업체명 : 케이티하이텔(주), 케이티엠하우스㈜, 투니드엔터테인먼트㈜<br />  - 문의: 올레마켓 웹툰 이벤트 담당자 (02)3289-4133 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외) </li>
+		                    	<li>2) 위탁목적 - 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송</li>
+		                    	<li>3) 위탁범위 - 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보</li>
+		                    	<li>4) 위탁기간 - 이벤트 종료 후 10일 이내 폐기</li>
+		                    </ul>
+		                </div>
+
+		                <a href="#none" class="btn_layer_close"><img src="/images/pc/event/contest/layer_check.jpg" alt="레이어 닫기" /></a>
+		            </div>
+		        </div>
+		        <!-- //레이어 두번째 -->
+			</div>
+		    <!-- //start -->
+
+			<!-- 20141016 레이어 추가 -->
+			<!-- ###[레이어]올레마켓웹툰 공모전 응모하기### -->
+			<div class="com_popup_bglayer"></div><!-- 팝업 배경 레이어 -->
+			<div class="layer_completition_wrapper contest_event_popup">
+				<!-- 레이어 상단 -->
+				<div class="layer_top">
+					<h3 class="layer_title">제2회 올레마켓웹툰 공모전 응모하기</h3>
+				</div>
+				<!-- //레이어 상단 -->
+
+				<!-- 레이어 중단 -->
+				<div class="layer_middle">
+					<p class="comment_middle">작가의 꿈! 꿈으로만 두지 말고 지금 도전하세요</p>
+					<div id ="contestcount1">
+						<p class="reception_situation_now">
+							현재 접수상황 <span class="count" id="totalcount1" name="totalcount1">0</span>명
+						</p>
+					</div>
+					<dl>
+						<dt>이름</dt>
+						<dd>
+							<input class="name" type="text" id="contestnm" name="contestnm" maxlength="20"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt>필명</dt>
+						<dd>
+							<input class="name" type="text" id="contestpnm" name="contestpnm"/> <a href="#none" id="contestpnmCheck" name="contestpnmCheck" class="button_duplicate_check">중복 확인</a>
+							<p class="comment_name">작가로 활동하실 필명을 입력해주세요.(1자 이상~10자 이내)</p>
+							<input type="hidden" id="checkpnm" name="checkpnm" value="" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>제목</dt>
+						<dd>
+							<input type="text" class="title_name" id="title" name="title" maxlength="20" value="1자 이상~20자 이내로 입력해주세요." />
+						</dd>
+					</dl>
+					<dl>
+						<dt>이메일</dt>
+						<dd>
+							<input type="text" class="e_mail" id="email" name="email"/>
+						</dd>
+					</dl>
+					<dl class="phone">
+						<dt>휴대전화번호</dt>
+						<dd>
+							<select name="firstNumber" id="firstNumber"  class="phone_first_number">
+								<option value="010" selected="selected">010</option>
+								<option value="011">011</option>
+								<option value="016">016</option>
+								<option value="017">017</option>
+								<option value="018">018</option>
+								<option value="019">019</option>
+							</select> 
+							<span class="dash">-</span> 
+							<input type="text" class="phone_number" id="middleNumber" name="middleNumber" maxlength="4" onkeypress="return telValidate(event);" style="ime-mode:disabled"/> 
+							<span class="dash">-</span> 
+							<input type="text" class="phone_number" id="endNumber" name="endNumber" maxlength="4" onkeypress="return telValidate(event);" style="ime-mode:disabled"/>
+						</dd>
+					</dl>
+					<dl class="category">
+						<dt>
+							도전 작가 장르<span class="comment_category">1개는 필수! 2개까지 복수 선택이 가능합니다.</span>
+						</dt>
+						<dd>
+							<ul class="category_list">
+								<li class="txt2">
+									<input type="checkbox" id="chkList" name="chkList" value="1"> 
+									<span class="design_button">&nbsp;</span> <label for="gag">개그</label>
+								</li>
+								<li class="txt2">
+									<input type="checkbox" id="chkList" name="chkList" value="2">
+									<span class="design_button">&nbsp;</span> <label for="life">일상</label>
+								</li>
+								<li class="txt3">
+									<input type="checkbox" id="chkList" name="chkList" value="3">
+									<span class="design_button">&nbsp;</span> <label for="drama">드라마</label>
+								</li>
+								<li class="txt2">
+									<input type="checkbox" id="chkList" name="chkList" value="4">
+									<span class="design_button">&nbsp;</span> <label for="action">액션</label>
+								</li>
+								<li class="txt3">
+									<input type="checkbox" id="chkList" name="chkList" value="5">
+									<span class="design_button">&nbsp;</span> <label for="fantasy">판타지</label>
+								</li>
+								<li class="txt3 last_list">
+									<input type="checkbox" id="chkList" name="chkList" value="7"> 
+									<span class="design_button">&nbsp;</span> <label for="unlimited">무제한</label>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<dl class="synopsis">
+						<dt>시놉시스</dt>
+						<dd>
+							<p class="count_text">
+								<span id="contentCnt" name="contentCnt">0</span> / 1,000
+							</p>
+							<div class="txt">
+								<textarea id="synopsis" name="synopsis" maxlength="1000">50자 이상~1,000자 이내로 작품의 줄거리를 입력해주세요.</textarea>
+							</div>
+						</dd>
+					</dl>
+					<dl class="drawing">
+						<dt>작화등록</dt>
+						<dd>
+							<form id="fileUploadForm" name="fileUploadForm" method="post" target="blankIframe" action="/file/ajaxUpload.kt" enctype="multipart/form-data">
+								<input type="file" name="zipfilepath" class="file_real" onchange="document.getElementById('fileApp').value=this.value;" />
+								<input class="file_fake" type="text" name="file" id="fileApp" value="총 3회분을 등록해주세요." /> 
+								<a href="#none" class="button_file_find">찾아보기</a>
+								<a href="#none" class="button_file_upload" name="fileupload" id="fileupload">업로드</a>							
+							</form>
+							<input type="hidden" id="fileoname" name="fileoname" value="" />
+							<input type="hidden" id="filename" name="filename" value="" />
+							<input type="hidden" id="filepath" name="filepath" value="" />
+							<p class="comment_file_red">파일 형식: zip | 용량: 300MB이하 | 작화 사이즈: 600 * 세로 자유</p>
+							<p class="comment_file_gray">
+								한 회당 20컷, 총 3회 등록 시 80컷 이상을 권고 드립니다.<br />단, 작품의 구성상 권고가 제한이
+								된다면, 자유롭게 올려주세요~
+							</p>
+						</dd>
+					</dl>
+					<dl class="term_agree">
+						<dt>
+							개인정보 수집, 활용에 대한 동의<a href="#none" class="button_term1_all">전문보기</a>
+						</dt>
+						<dd class="radio_box">
+							<ul class="radio_list">
+								<li><input type="radio" id="agree1" name="term_agree1" value="p" checked>
+									<span class="design_radio">&nbsp;</span> <label for="agree1">동의</label>
+								</li>
+								<li class="last_list"><input type="radio" id="agree2" name="term_agree1" value="n"> <span class="design_radio">&nbsp;</span>
+									<label for="agree2">동의 안함</label></li>
+							</ul>
+						</dd>
+						<dd class="term_box">
+							<div class="term_txt1">
+								<p>고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등에 관한 법률'에 따라 kt가 수집, 이용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다.</p>
+	                            <p>입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 이용되지 않습니다.</p>
+	                            <ul>
+	                                <li>1) 개인정보 수집 및 이용목적 - 이벤트 대상 여부 및 본인 확인, 경품 배송</li>
+	                                <li>가. 이벤트 대상 여부 및 본인 확인, 경품 배송 </li>                                            
+	                                
+	                                <li>2) 수집하는 개인정보 항목</li>
+	                                <li>가. 이벤트 응모자의 이메일</li> 
+	                                <li>나. 이벤트 응모자의 핸드폰 번호</li>
+	                                <li>다. 이벤트 응모자의 아이디</li>                                                                                                                                                                                
+	                                
+	                                <li>3) 개인정보 보유 및 이용기간</li>
+	                                <li>4) 이벤트 종료 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)</li>
+	                                <li>5) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다. </li>
+								</ul>								
+							</div>
+						</dd>
+					</dl>
+					<dl class="term_agree">
+						<dt>
+							개인정보 수집 및 위탁 동의<a href="#none" class="button_term2_all">전문보기</a>
+						</dt>
+						<dd class="radio_box">
+							<ul class="radio_list2">
+								<li><input type="radio" id="agree3" name="term_agree2" value="p" checked>
+									<span class="design_radio">&nbsp;</span> <label for="agree3">동의</label>
+								</li>
+								<li class="last_list"><input type="radio" id="agree4" name="term_agree2" value="n"> <span class="design_radio">&nbsp;</span>
+									<label for="agree4">동의 안함</label></li>
+							</ul>
+						</dd>
+						<dd class="term_box">
+							<div class="term_txt2">
+								<p>회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+			                    <ul>
+			                    	<li>1) 개인정보 취급위탁을 받는 자<br />  - 업체명 : 케이티하이텔(주), 케이티엠하우스㈜, 투니드엔터테인먼트㈜<br />  - 문의: 올레마켓 웹툰 이벤트 담당자 (02)3289-4133 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외) </li>
+			                    	<li>2) 위탁목적 - 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송</li>
+			                    	<li>3) 위탁범위 - 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보 
+									</li>
+			                    	<li>4) 위탁기간 - 이벤트 종료 후 10일 이내 폐기</li>
+			                    </ul>
+									
+							</div>
+						</dd>
+					</dl>
+
+				</div>
+				<!-- //레이어 중단 -->
+
+				<!-- 레이어 하단 -->
+				<div class="layer_bottom">
+					<p class="comment_bottom">모든 입력과 등록이 끝나셨다면, 자신 있게 눌러주세요.</p>
+					<a href="#" class="button_complete"><img src="/images/pc/event/contest/button_completition_complete.gif" alt="꿈의 도전 준비 완료! GO~" /></a> 
+					<a href="#" class="button_close" onclick="return false;"><img src="/images/pc/event/contest/button_completition_close.gif" alt="레이어닫기"></a>
+				</div>
+				<!-- //레이어 하단 -->
+			</div>
+			<!-- //###[레이어]올레마켓웹툰 공모전 응모하기### -->
+
+			<!-- ###[레이어]올레마켓웹툰 공모전 응모완료### -->
+			<div class="layer_completition_wrapper2">
+				<!-- 레이어 상단 -->
+				<div class="layer_top">
+					<h3 class="layer_title">제2회 올레마켓웹툰 공모전 응모하기</h3>
+				</div>
+				<!-- //레이어 상단 -->
+
+				<!-- 레이어 중단 -->
+				<div class="layer_middle">
+					<p class="comment_middle">
+						Dream come true!<br />제 2회 올레마켓웹툰 공모전에<br />성공적으로 응모하였습니다.<br />
+						<br />꿈의 실현을 위해 모두 함께 기원하겠습니다.
+					</p>
+					<a href="#none" class="button_complete_check complete_close">확인</a>
+					<div id ="contestcount2">
+						<p class="reception_situation_now">
+							현재 접수상황 <span class="count" id="totalcount2" name="totalcount2">0</span>명
+						</p>
+					</div>
+					<a href="#none" class="button_complete_close complete_close"><img
+						src="/images/pc/event/contest/button_completition_close.gif" alt="레이어닫기"></a>
+				</div>
+				<!-- //레이어 중단 -->
+			</div>
+			<!-- //###[레이어]올레마켓웹툰 공모전 응모완료### -->
+			<!-- //20141016 레이어 추가 -->
+		</div>
+		<!-- ### //container ### -->
+		<!-- ### footer ### -->
+		
+
+
+	
+	<!-- //wrap -->
+	<!-- url 복사 팝업 -->
+	<div class="popup_copyURL" style="position:fixed;">
+		<div class="copy_txt">
+			아래 URL을 복사(Ctrl+C)해서 블로그, 게시판 등 원하시는 곳에<br />붙여넣기(Ctrl+V) 넣으세요.
+		</div>
+		<div class="copy_box">
+			 <textarea class="txt" id="copy_box_txt" readonly="readonly"></textarea>
+		</div>
+		<div class="copy_btn">
+			<button type="button" class="bt_normal_confirm">확인</button>
+		</div>
+		<div class="copy_close">
+			<a href="#"><img src="/images/pc/btn_close02.png" alt="close" /></a>
+		</div>
+	</div>
+	<!-- //url 복사 팝업 -->
+		
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="http://www.kt.com/main.jsp" target="_blank">회사소개</a> |</li>
+			<li><a href="http://webtoon.olleh.com/support/rule.kt?tab=1">이용약관</a> |</li>
+			<li><strong><a href="http://webtoon.olleh.com/support/rule.kt?tab=2">개인정보취급방침</a></strong> |</li>
+			<li><a href="http://webtoon.olleh.com/support/rule.kt?tab=3">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+		<!-- ### //footer ### -->
+
+	</div>
+	<!-- //wrap -->
+</body>
+
+</html>

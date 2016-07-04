@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.shop.persistence.ShopMapper">
+	
+	<select id="shopSelectCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select
+			count(*)
+		from 
+			ow_prd		
+		where
+		<if test='shopfg == null or shopfg == "recommend"'>
+			(prdfg = 'name' or prdfg = 'comment')
+		</if>
+		<if test='shopfg != null and shopfg == "name"'>
+			prdfg = 'name'
+		</if>
+		<if test='shopfg != null and shopfg == "comment"'>
+			prdfg = 'comment'
+		</if>
+			and sellyn = 'Y'
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[
+		    and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+	</select>
+	
+	<select id="shopSelectList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select
+			tb1.prdseq, tb1.prdfg, tb1.prdnm, tb1.thumbpath, tb1.sellfg, tb1.purchasefg,
+			
+			<![CDATA[
+			case
+				when tb1.sellfg = 'sale' 
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			case
+				when tb1.sellfg = 'sale'
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.discountsellenddt, '%Y%m%d%H%i%s') then Floor((tb1.prdprice - tb1.prddiscountprice)/IF(tb1.prdprice = 0, 1, tb1.prdprice) * 100)
+			    else ''
+			end as discountpercent,
+			case
+				when tb1.prdprice = 0 then '무료' 
+			    else format(tb1.prdprice, 0)
+			end as prdprice,
+			case
+				when tb1.prddiscountprice = 0 then '무료' 
+			    else format(tb1.prddiscountprice, 0)
+			end as prddiscountprice,
+			]]>
+			ifnull(tb3.buycnt, 0) as buycnt
+		from 
+			ow_prd tb1
+		left join ow_prd_his tb2 on tb1.prdseq = tb2.prdseq
+		left join ow_author author on tb1.refauthorseq1 = author.authorseq
+		left join( 
+			select sub1.prdseq, count(*) as buycnt from ow_prd sub1, ow_prd_his sub2, ow_buy sub3
+			where (sub1.prdfg = 'comment' or sub1.prdfg = 'name')
+				  and sub1.prdseq = sub2.prdseq
+	              and sub2.prdhistoryseq = sub3.prdhistoryseq
+	        group by prdseq	
+		) tb3 on tb2.prdseq = tb3.prdseq
+		where
+		<if test='shopfg == null or shopfg == "recommend"'>
+			(tb1.prdfg = 'name' or tb1.prdfg = 'comment')
+		</if>
+		<if test='shopfg != null and shopfg == "name"'>
+			tb1.prdfg = 'name'
+		</if>
+		<if test='shopfg != null and shopfg == "comment"'>
+			tb1.prdfg = 'comment'
+		</if>
+			and tb1.sellyn = 'Y'
+			and (tb1.sellfg = 'sell' or tb1.sellfg = 'sale' or tb1.sellfg = 'promotion')
+		<![CDATA[
+		    and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		group by 
+			tb1.prdseq
+		order by
+		<if test='order == null or order == "regdt"'>
+			IF(ifnull(tb1.recentorder, 0) = 0, 11, tb1.recentorder) ASC, tb1.regdt DESC
+		</if>
+		<if test='order != null and order == "buycnt"'>
+			IF(ifnull(tb1.popularorder, 0) = 0, 11, tb1.popularorder) ASC, tb3.buycnt DESC, tb1.regdt DESC
+		</if>
+		<if test='order != null and order == "prdnm"'>
+			tb1.prdnm asc
+		</if>
+		<if test='order != null and order == "author"'>
+			author.authornm
+		</if> 
+			
+		limit
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="shopSelectRefListCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_prd 
+		where
+			sellyn ='Y' 
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		<if test='prdfg != null and prdfg == "comment"'>
+			AND	prdfg='comment'
+		</if>
+		
+		<if test='prdfg != null and prdfg == "name"'>
+			AND	prdfg = 'name'
+		</if>
+		
+		<if test='prdfg == null '>
+			AND	(prdfg = 'name' OR prdfg='comment')
+		</if>
+		
+		<if test='category != null and category == "webtoon"'>
+			AND (refwebtoonseq1=#{categoryseq} or refwebtoonseq2=#{categoryseq} or refwebtoonseq3=#{categoryseq})
+		</if> 
+		
+		<if test='category != null and category == "authory"'>
+			AND (refauthorseq1=#{categoryseq} or refauthorseq2=#{categoryseq} or refauthorseq3=#{categoryseq})
+		</if> 
+		
+	</select>
+	
+	<select id="shopSelectRefList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select
+			prdnm, prdfg, prdseq, thumbpath, sellfg, recommyn, purchasefg,
+			case
+				when prdprice = 0 then '무료' 
+			    else format(prdprice, 0)
+			end as prdprice,
+			case
+				when prddiscountprice = 0 then '무료' 
+			    else format(prddiscountprice, 0)
+			end as prddiscountprice,
+		<![CDATA[
+			case
+				when sellfg = 'sale' 
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			case
+				when sellfg = 'sale'
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then Floor((prdprice - prddiscountprice)/IF(prdprice = 0, 1, prdprice) * 100)
+			    else ''
+			end as discountpercent
+		]]>
+		from 
+			ow_prd 
+		where
+			sellyn ='Y' 
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		<if test='prdfg != null and prdfg == "comment"'>
+			and	prdfg='comment'
+		</if>
+		
+		<if test='prdfg != null and prdfg == "name"'>
+			and	prdfg = 'name'
+		</if>
+		
+		<if test='prdfg == null '>
+			and	(prdfg = 'name' OR prdfg='comment')
+		</if>
+		
+		<if test='category != null and category == "webtoon"'>
+			and (refwebtoonseq1=#{categoryseq} or refwebtoonseq2=#{categoryseq} or refwebtoonseq3=#{categoryseq})
+		</if>
+		
+		<if test='category != null and category == "authory"'>
+
+			and (refauthorseq1=#{categoryseq} or refauthorseq2=#{categoryseq} or refauthorseq3=#{categoryseq})
+		</if> 
+			order by 
+				regdt desc, 
+				prdseq desc
+			
+		<if test='categoryprdfg == null '>
+			limit 0, 10	
+		</if>
+				
+		<if test='categoryprdfg != null '>
+			limit
+			#{startRowNo}, #{pageSize}	
+		</if>
+			
+	</select>
+	
+	<select id="shopSelectDetail" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select 
+			tb1.prdseq, tb1.prdfg, tb1.prdnm, tb1.prdterm, tb1.sellfg, tb1.purchasefg,
+			tb1.refauthorseq1, tb1.refauthorseq2, tb1.refauthorseq3,
+			tb1.refwebtoonseq1, tb1.refwebtoonseq2, tb1.refwebtoonseq3,
+			ifnull(tb2.authornm, '') authornm1, 
+		    ifnull(tb3.authornm, '') authornm2, 
+		    ifnull(tb4.authornm, '') authornm3,
+		    ifnull(tb5.purchaseyn, 'N') as purchaseyn,
+			tb1.thumbpath,
+		<![CDATA[
+			case
+				when tb1.prdprice = 0 then '무료' 
+			    else format(tb1.prdprice, 0)
+			end as prdprice,
+			case
+				when tb1.prddiscountprice = 0 then '무료' 
+			    else format(tb1.prddiscountprice, 0)
+			end as prddiscountprice,
+			case
+				when tb1.sellfg = 'sale' 
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			case
+				when tb1.sellfg = 'sale'
+				     and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.discountsellstartdt, '%Y%m%d%H%i%s')
+				     and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.discountsellenddt, '%Y%m%d%H%i%s') then Floor((tb1.prdprice - tb1.prddiscountprice)/IF(tb1.prdprice = 0, 1, tb1.prdprice) * 100)
+			    else ''
+			end as discountpercent,
+			case 
+				when tb1.sellyn = 'Y' 
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.sellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.sellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as sellyn  
+		from
+			ow_prd_his tb1
+		left join ow_author tb2 on tb1.refauthorseq1 = tb2.authorseq
+		left join ow_author tb3 on tb1.refauthorseq2 = tb3.authorseq
+		left join ow_author tb4 on tb1.refauthorseq3 = tb4.authorseq
+		left join 
+		(
+			select "Y" as purchaseyn, prdhistoryseq
+			from ow_prd_avail
+			where buyid = #{buyid} and date_format(now(), '%Y%m%d') <= date_format(availdt, '%Y%m%d')
+		) tb5 on tb1.prdhistoryseq = tb5.prdhistoryseq 
+		]]>
+		where
+			tb1.prdseq = #{prdseq}
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			and tb1.prdhistoryseq = #{prdhistoryseq}
+		</if>
+		order by 
+			tb1.prdhistoryseq desc
+		limit 
+			0, 1
+	</select>
+	
+	<select id="shopSelectNameconTotalCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select count(*)
+		from
+		<if test="prdhistoryseq == null or prdhistoryseq == ''">
+			ow_prdcon_detail tb1
+		</if>
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			ow_prdcon_detail_his tb1
+		</if>  
+		left join ow_namecon tb2 on tb1.iconseq = tb2.nameconseq
+		where 
+			tb1.prdseq = #{prdseq}
+			and tb2.defaultyn = 'N'
+			and tb2.delyn = 'N'
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			and tb1.prdhistoryseq = #{prdhistoryseq}
+		</if>
+	</select>
+	
+	<select id="shopSelectNameconList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.user.domain.IconDomain">
+		select 
+		   nameconseq  as iconseq,
+		   mnameconurl as miconurl,
+		   nameconurl  as iconurl,
+		   nameconnm   as nameconnm
+		from 
+		<if test="prdhistoryseq == null or prdhistoryseq == ''">
+			ow_prdcon_detail tb1
+		</if>
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			ow_prdcon_detail_his tb1
+		</if> 
+		left join ow_namecon tb2 on tb1.iconseq = tb2.nameconseq
+		where 
+			tb1.prdseq = #{prdseq}
+			and tb2.defaultyn = 'N'
+			and tb2.delyn = 'N'
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			and tb1.prdhistoryseq = #{prdhistoryseq}
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+		limit #{startRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="shopSelectCommentconTotalCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select count(*)
+		from
+		<if test="prdhistoryseq == null or prdhistoryseq == ''">
+			ow_prdcon_detail tb1
+		</if>
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			ow_prdcon_detail_his tb1
+		</if> 
+		left join ow_commentcon tb2 on tb1.iconseq = tb2.commentconseq
+		where 
+			tb1.prdseq = #{prdseq}
+			and tb2.defaultyn = 'N'
+			and tb2.delyn = 'N'
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			and tb1.prdhistoryseq = #{prdhistoryseq}
+		</if>
+	</select>
+	
+	<select id="shopSelectCommentconList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.user.domain.IconDomain">
+		select 
+			commentconseq as iconseq,
+			commentconurl as miconurl,
+			commentconurl as iconurl,
+			commentconnm  as nameconnm
+		from
+		<if test="prdhistoryseq == null or prdhistoryseq == ''">
+			ow_prdcon_detail tb1
+		</if>
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			ow_prdcon_detail_his tb1
+		</if> 
+		left join ow_commentcon tb2 on tb1.iconseq = tb2.commentconseq
+		where 
+			tb1.prdseq = #{prdseq}
+			and tb2.defaultyn = 'N'
+			and tb2.delyn = 'N'
+		<if test="prdhistoryseq != null and prdhistoryseq != ''">
+			and tb1.prdhistoryseq = #{prdhistoryseq}
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+		limit #{startRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="selectPrdfg" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.String">
+		select prdfg
+		from ow_prd
+		where prdseq = #{prdseq}
+	</select>
+	
+	<select id="shopSelectReftoonTotalCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select count(*)
+		from ow_webtoon toon
+		left join ow_prd prd on toon.webtoonseq = prd.refwebtoonseq1 or toon.webtoonseq = prd.refwebtoonseq2 or toon.webtoonseq = prd.refwebtoonseq3
+		where prd.prdseq = #{prdseq}
+	</select>
+	
+	<select id="shopSelectRefToonList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	select 
+		toon.thumbpath,
+		toon.webtoonnm,
+		toon.webtoonseq, 
+		toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+		sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+		format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+		ifnull(genre1.genrenm, '') genrenm1, 
+		ifnull(genre2.genrenm, '') genrenm2, 
+		ifnull(genre3.genrenm, '') genrenm3
+	from ow_webtoon toon
+	left join ow_prd prd on toon.webtoonseq = prd.refwebtoonseq1 or toon.webtoonseq = prd.refwebtoonseq2 or toon.webtoonseq = prd.refwebtoonseq3
+	left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+	left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+	left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+	left join 
+        (
+			select 
+				a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.startdt
+			from (
+				select 
+					timesseq,timestitle,totalstickercnt, webtoonseq, startdt
+				from ow_times 
+				where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+				order by publishdt desc, timesseq desc 
+			) as a 
+			group by a.webtoonseq
+        ) times on toon.webtoonseq = times.webtoonseq
+	where prd.prdseq = #{prdseq}
+	order by times.startdt desc
+	</select>
+	
+	<select id="shopSelectRefprdTotalCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">
+		select count(*) 
+		from ow_prd
+		<![CDATA[
+		where sellyn = 'Y' 
+			  and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			  and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+			  and prdseq != #{prdseq}
+			  and prdfg in ('comment', 'name')
+			  and sellfg in ('sale', 'sell', 'promotion')
+		]]>  
+			  and ((refauthorseq1 =  (select refauthorseq1 from ow_prd where prdseq = #{prdseq})  or refauthorseq1 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq1 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq1 != 0
+			    or (refauthorseq2 =  (select refauthorseq2 from ow_prd where prdseq = #{prdseq})  or refauthorseq2 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq2 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq2 != 0
+				or (refauthorseq3 =  (select refauthorseq3 from ow_prd where prdseq = #{prdseq})  or refauthorseq3 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq3 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq3 != 0
+				or (refwebtoonseq1 = (select refwebtoonseq1 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq1 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq1 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq1 != 0
+				or (refwebtoonseq2 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq2 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq2 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq2 != 0
+				or (refwebtoonseq3 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq3 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq3 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq3 != 0)
+	</select>
+	
+	<select id="shopSelectRefprdList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select prdseq, prdfg, prdnm, thumbpath, sellfg, purchasefg,
+	<![CDATA[
+		case
+			when prdprice = 0 then '무료' 
+		    else format(prdprice, 0)
+		end as prdprice,
+		case
+			when prddiscountprice = 0 then '무료' 
+		    else format(prddiscountprice, 0)
+		end as prddiscountprice,
+		case
+			when sellfg = 'sale' 
+				 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+				 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+			else 'N'
+		end as discountyn,
+		case
+			when sellfg = 'sale'
+			     and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+			     and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then Floor((prdprice - prddiscountprice)/IF(prdprice = 0, 1, prdprice) * 100)
+		    else ''
+		end as discountpercent
+		from ow_prd
+		where sellyn = 'Y' 
+			  and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			  and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+			  and prdseq != #{prdseq}
+			  and prdfg in ('comment', 'name')
+			  and sellfg in ('sale', 'sell', 'promotion')
+			  and ((refauthorseq1 =  (select refauthorseq1 from ow_prd where prdseq = #{prdseq})  or refauthorseq1 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq1 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq1 != 0
+			    or (refauthorseq2 =  (select refauthorseq2 from ow_prd where prdseq = #{prdseq})  or refauthorseq2 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq2 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq2 != 0
+				or (refauthorseq3 =  (select refauthorseq3 from ow_prd where prdseq = #{prdseq})  or refauthorseq3 = (select refauthorseq2 from ow_prd where prdseq = #{prdseq})   or refauthorseq3 = (select refauthorseq3 from ow_prd where prdseq = #{prdseq})) and refauthorseq3 != 0
+				or (refwebtoonseq1 = (select refwebtoonseq1 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq1 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq1 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq1 != 0
+				or (refwebtoonseq2 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq2 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq2 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq2 != 0
+				or (refwebtoonseq3 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq3 = (select refwebtoonseq2 from ow_prd where prdseq = #{prdseq}) or refwebtoonseq3 = (select refwebtoonseq3 from ow_prd where prdseq = #{prdseq})) and refwebtoonseq3 != 0)
+	]]> 
+		order by regdt desc
+		<if test='mobileyn != null and mobileyn == "Y"'>
+		limit #{startRowNo}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="searchSelectListCnt" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="java.lang.Integer">	
+		select 
+		  count(*)
+		from ow_prd prd
+		  left join ow_author author1 on prd.refauthorseq1 = author1.authorseq
+		  left join ow_author author2 on prd.refauthorseq2 = author2.authorseq
+		  left join ow_author author3 on prd.refauthorseq3 = author3.authorseq
+		where 
+			(prdfg = 'name' or prdfg='comment') 
+		  and sellyn ='Y'
+		  and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+		and (date_format(now(), '%Y%m%d%H%i') >= date_format(sellstartdt, '%Y%m%d%H%i') AND date_format(now(), '%Y%m%d%H%i') <= date_format(sellenddt, '%Y%m%d%H%i'))	
+		]]>
+		<if test='query != null and query != ""'>
+		and (prdnm like #{query} or author1.authornm like #{query} or author2.authornm like #{query} or author3.authornm like #{query})
+		</if>
+		<if test='query == null or query == ""'>
+		and 1=2
+		</if>		
+	</select>
+	
+	<select id="searchSelectList" parameterType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">	
+		select 
+		  prdseq,
+		  prdfg,
+		  prdnm,
+		  purchasefg,
+		  <![CDATA[ 
+		  case
+			when sellfg = 'sale' 
+				 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+				 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+			else 'N'
+		  end as discountyn,
+		  
+	  	  case
+			when prdprice = 0 then '무료' 
+		    else format(prdprice, 0)
+		  end as prdprice,
+		  
+		  case
+			when prddiscountprice = 0 then '무료' 
+		    else format(prddiscountprice, 0)
+		  end as prddiscountprice,
+		  ]]>
+		  
+		  thumbpath,
+		  sellfg,
+		  refauthorseq1,
+		  refauthorseq2,
+		  refauthorseq3,
+		  author1.authornm as authornm1,
+		  author2.authornm as authornm2,
+		  author3.authornm as authornm3
+		from ow_prd prd
+		  left join ow_author author1 on prd.refauthorseq1 = author1.authorseq
+		  left join ow_author author2 on prd.refauthorseq2 = author2.authorseq
+		  left join ow_author author3 on prd.refauthorseq3 = author3.authorseq
+		where 
+			(prdfg = 'name' or prdfg='comment') 
+		  and sellyn ='Y'
+		  and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+		and (date_format(now(), '%Y%m%d%H%i') >= date_format(sellstartdt, '%Y%m%d%H%i') AND date_format(now(), '%Y%m%d%H%i') <= date_format(sellenddt, '%Y%m%d%H%i'))	
+		]]>
+		<if test='query != null and query != ""'>
+		and (replace(prdnm, ' ', '') like #{query} or replace(author1.authornm, ' ', '') like #{query} or replace(author2.authornm, ' ', '') like #{query} or replace(author3.authornm, ' ', '') like #{query})
+		</if>
+		<if test='query == null or query == ""'>
+		and 1=2
+		</if>
+		limit #{startRowNo}, #{pageSize}
+	</select>
+
+	<select id="commentconSelectList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select a.* 
+		from
+		(
+			select prd2.prdhistoryseq, prd1.thumbactpath, prd1.thumbinactpath, prd1.regdt, 'a' as type, prd1.prdseq 
+			from ow_prd prd1
+			left join
+			(
+				select * from ow_prd_his
+				order by prdhistoryseq desc
+			) prd2 on prd1.prdseq = prd2.prdseq
+			where
+			<![CDATA[  
+				prd1.prdfg = 'comment' and prd1.sellfg = 'default'
+				and prd1.sellyn = 'Y'
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(prd1.sellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(prd1.sellenddt, '%Y%m%d%H%i%s')
+			]]>  
+			union all
+	    	select tb2.prdhistoryseq, tb2.thumbactpath, tb2.thumbinactpath, tb1.regdt, 'b' as type, tb2.prdseq
+			from ow_prd_avail tb1
+			left join ow_prd_his tb2 on tb1.prdhistoryseq = tb2.prdhistoryseq
+			where
+			<![CDATA[ 
+				tb1.buyid = #{param}
+				and tb2.prdfg = 'comment' and tb2.sellfg != 'default'
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.availdt, '%Y%m%d%H%i%s')
+			]]>
+			order by prdhistoryseq desc
+		) a
+		group by prdseq
+		order by a.type, a.regdt desc, prdhistoryseq desc 
+    </select>
+    
+    <select id="iconImageSelectList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.user.domain.IconDomain">
+       	select tb2.commentconnm as iconnm , tb2.commentconurl as iconurl, tb2.commentconseq as iconseq, tb2.delyn
+		from ow_prdcon_detail_his tb1
+		left join ow_commentcon tb2 on tb1.iconseq = tb2.commentconseq
+		where tb1.prdhistoryseq = #{param}
+    </select>
+	
+</mapper>

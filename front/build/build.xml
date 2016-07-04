@@ -28,7 +28,6 @@
 	<target name="rollback.development"><ant antfile="${basedir}/deploy.dev.xml" target="rollback"/></target>
 
 	<target name="test">
-		<ant antfile="${build.root}/web/build/build.xml" target="build"/>
-		<ant antfile="${build.root}/web/build/deploy.dev.xml" target="deploy"/>
+		<ant antfile="${build.root}/ROOT/build/build.xml" target="project-import"/>
 	</target>
 </project>	

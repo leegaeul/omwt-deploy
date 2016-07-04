@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js" type="text/javascript"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="common/css/event.css" rel="stylesheet" type="text/css"/> <!-- 20140807 이벤트용 css 추가 -->
+<script type="text/javascript" >
+$(document).ready(function(){
+	$('.ev_select input').ezMark();//checkbox 이미지처리
+	$('.query_kt .one select').styledSelect( {innerClass:'select_add2'} ); //셀렉트바
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<!-- 20140715 네비수정-->
+	<nav class="navi">
+		<ul>
+			<li class="toon"><a href="#">Toon</a></li>
+			<li class="premium"><a href="#" class="on">Premium</a></li>
+			<li class="applay"><a href="#">ApPlay</a></li>
+			<li class="yoyo"><a href="#">Yoyozine</a></li>
+			<li class="yoshop"><a href="#">Shop</a></li>
+		</ul>		
+	</nav>
+	<!--// 20140715 네비수정-->
+	<div class="ap_top_title">
+		<a href="#"><img src="img/bl_btn_pre.png" alt=""/> 이전</a>
+		<h2>홀딱 반한 아이스크림 이벤트</h2> 		
+	</div>
+</header>
+
+<!--본문-->
+<article class="contents">	
+	<!-- 20140807 이벤트 -->
+	<section class="eventArea">
+		<div class="tab">
+			<img src="img/event/ev0807_tab03.jpg" alt=""/>
+			<a href="13.1.1.ev0807.html" class="tab1">1. 지금당장</a>
+			<a href="13.1.2.ev0807.html" class="tab2">2. 소문내기</a>
+		</div>
+		<div class="ev_pic one"><img src="img/event/ev0807_06.jpg" alt=""/></div>
+		<div class="inquery_contct">
+			<div class="query_kt">
+				<!--당첨 확인-->
+				<table class="txt_phone2">
+					<tr>
+						<td><img src="img/event/pic09.jpg" alt=""/></td>
+						<td>
+							<strong>당첨된 내역이 없습니다.</strong><br/>
+							<span>다시 한번 이벤트에 도전해 주세요.</span>
+						</td>
+					</tr>
+				</table>
+				<!--//당첨 확인-->
+			</div>
+		</div>
+		<div class="btn_area pricebt">
+			<a href="#"  class="btn_small">이벤트 자세히 보기</a>
+			<a href="#"  class="btn_small">1:1 문의하기</a>
+		</div>
+		<div class="ev_pic one"><img src="img/event/ev0807_07.jpg" alt=""/></div>
+		<!--공유하기-->
+		<div class="view_cont sns">
+			<h3>공유하기</h3>
+			<div class="share_link">
+				<a href="#" class="icn_fadebook"><img src="img/icn_fadebook.png" alt=""/></a>
+				<a href="#" class="icn_twiter"><img src="img/icn_twiter.png" alt=""/></a>
+				<a href="#" class="icn_line"><img src="img/icn_line.png" alt=""/></a>
+				<a href="#" class="icn_kakao"><img src="img/icn_kakao.png" alt=""/></a>
+				<a href="#" class="icn_kakaostory"><img src="img/icn_kakaostory.png" alt=""/></a>
+				<a href="#" class="icn_band"><img src="img/icn_band.png" alt=""/></a>
+				<a href="#" class="icn_instar"><img src="img/icn_instar.png" alt=""/></a>
+				<a href="#" class="url_copy">URL 복사</a>
+			</div>
+		</div>
+		<!--//공유하기-->
+	</section>
+	<!--// 20140807 이벤트 -->
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<!--20140522 추가/수정-->
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> &copy; KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기 <img src="img/bl_cominfo.png" alt=""/></a>
+	<div class="comInfo_txt">
+		(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945<br/>
+		통신판매업신고 : 2002-경기성남-0048 · Tel 국번없이 100<br/>
+		463-711 경기도 성남시 분당구 불정로 90 (정자동 206번지)
+	</div>
+	<!--//20140522 추가/수정-->
+</footer>
+
+<!--20140522-->
+<div class="bottom_bnrArea">
+	<a href="#" class="bt_list_bnr">
+		<img src="img/icn_market_app.png" alt=""/>
+		<span>올레마켓 웹툰 <strong>홈화면에 바로가기 추가</strong></span>
+	</a>
+</div>
+<!--//20140522-->
+
+ 
+
+</body>
+</html>

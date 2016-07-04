@@ -1,0 +1,88 @@
+<html>
+<head>
+<title> 올레마켓 웹툰 &gt; 비밀번호 변경 안내 </title>
+</head>
+<body>
+
+<table border="0" cellpadding="0" cellspacing="1" width="700" bgcolor="#dfdfdf" align="center">
+	<tr>
+		<td bgcolor="#ffffff"><a href="#"><img src="img/email/tit_email.gif" alt="이메일" border="0" /></a></td><!-- 모든 (배경)이미지 경로는 url 경로로 해주세요. -->
+	</tr>
+	<tr>
+		<td bgcolor="#ffffff" style="padding:0 32px;"><table border="0" cellpadding="0" cellspacing="0" width="634" align="center">
+			<tr>
+				<td height="45"><font size="3" face="돋움" color="#2e2e2e" style="font-size:16px;"><b>제목 : 올레마켓 웹툰 회원가입을 위한 이메일 인증입니다.</b></font></td>
+			</tr>
+		</table></td>
+	</tr>
+	<tr>
+		<td bgcolor="#ffffff"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td style="padding:0 47px;"><table border="0" cellpadding="0" cellspacing="0" width="606" align="center">
+					<tr>
+						<td height="30"></td>
+					</tr>
+					<tr>
+						<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+							환영합니다.
+						</font></td>
+					</tr>
+					<tr>
+						<td height="10"></td>
+					</tr>
+					<tr>
+						<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+							올레마켓 웹툰 회원가입이 완료되었습니다.
+						</font></td>
+					</tr>
+					<tr>
+						<td height="30"></td>
+					</tr>
+					<tr>
+						<td><a href="#"><img src="img/email/btn_gosite.gif" alt="올레마켓 웹툰 가기" border="0" /></a></td>
+					</tr>
+					<tr>
+						<td height="140"></td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td style="padding:0 32px;"><table border="0" cellpadding="0" cellspacing="0" width="634" align="center">
+					<tr>
+						<td>
+							<font size="2" face="돋움" color="#2e2e2e" style="font-size:11px; line-height:20px;">
+								- 본메일은 발신전용으로 회신되지 않습니다. 궁금한 사항은 <b>[상담문의하기]</b>로 문의하여 주시기 바랍니다.
+							</font><br />
+							<font size="2" face="돋움" color="#f14b59" style="font-size:11px; line-height:20px;">
+								- 이메일 피싱 피해가 증가되고 있습니다. 이로 인한 피해가 발생하지 않도록 주의바랍니다. 
+								<a href="#" target="_blank"><font color="#f14b59"><b>▶ 이메일 피싱 예방안내</b></font></a>
+							</font>
+						</td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td height="20"></td>
+			</tr>
+			<tr>
+				<td background="img/email/bg_email.gif" height="1"></td>
+			</tr>
+			<tr>
+				<td><table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+					<tr>
+						<td width="32"></td>
+						<td><font size="2" face="돋움" color="#777777" style="font-size:11px; line-height:16px;">
+							Copyright ⓒ 2010 kt corp. All rights reserved.<br />
+							463-711 경기도 성남시 분당구 불정로 90 (정자동 206번지)<br />
+							문의전화 : (유료)1588-0010 ｜ (무료) 핸드폰에서 114 또는 100번 ｜ E-MAIL 상담 
+						</font></td>
+						<td align="right"><img src="img/email/logo_email.gif" alt="alleh O" /></td>
+					</tr>
+				</table></td>
+			</tr>
+		</table></td>
+	</tr>
+</table>
+
+</body>
+</html>

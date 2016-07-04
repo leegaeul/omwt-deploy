@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<script src="common/js/jquery.flexslider.js" type="text/javascript"></script><!--slider-->
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" >
+$(document).ready(function(){
+	$('#premium_pic').flexslider({//슬라이더
+		animation: "slide",
+		slideshow: false,
+		directionNav: false
+	});
+	//$('.ridio_sort input').ezMark();//radio 이미지처리
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<h2 class="caption">사이트 메뉴</h2>
+	<!--네비-->
+	<nav class="navi">
+		<ul>
+			<li class="toon"><a href="#">Toon</a></li>
+			<li class="applay"><a href="#">ApPlay</a></li>
+			<li class="yoyo"><a href="#">Yoyozine</a></li>
+			<li class="premium"><a href="#">Premium</a></li>
+			<li class="yoshop"><a href="#" class="on">Shop</a></li>
+		</ul>		
+	</nav>
+	<!--//네비-->
+
+	<!--20141017 top_sort 수정 ~ B고객전용 추가-->
+	<div class="top_sort">
+		<ul class="sort_shop">
+			<li><a href="#" class="on">추천</a></li>
+			<li><a href="#">스티콘</a></li>
+			<li><a href="#">네임콘</a></li>
+			<li><a href="#">B고객전용</a></li>
+		</ul>
+	</div>
+	<!--//20141017-->
+</header>
+
+<!--본문-->
+<article class="contents">	
+
+	<!-- 상단 슬라이더 -->
+	<section class="shop_slide"> 
+		<div class="app_pic premium" id="premium_pic">
+			<ul class="slides">
+				<li>
+						<span class="pic3"><img src="img/temp/bnr_topimg4.jpg" alt="" /></span>
+				</li>
+				<li>
+						<span class="pic3"><img src="img/temp/bnr_topimg5.jpg" alt="" /></span>
+				</li>
+				<li>
+						<span class="pic3"><img src="img/temp/bnr_topimg6.jpg" alt="" /></span>
+				</li>
+			</ul>
+		</div>
+	</section>
+	<!--// 상단 슬라이더 -->
+
+	<!-- Shop 리스트 20141017 ~ 베리 타입 추가(베리만/블루베리만/베리,블루베리 같이)/B한정 아이콘 추가 -->
+	<section class="shop_list_area">
+		<h3>신상 아이템 <a href="#" class="more">전체보기 &gt;</a></h3>
+		<ul class="shop_list">
+			<li>
+				<a href="#">
+					<span class="thum">
+						<span class="mark"><img src="img/sp_mark_event.png" alt="event"/></span>						
+						<img src="img/temp/sticon2.jpg" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 일이삼사오육칠팔구십...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<!-- 20140826 수정 -->
+						<span class="mark dsc"> 32% </span>						
+						<!-- 20140826 수정 -->
+						<img src="img/temp/sticon2.jpg" alt="" class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<span class="mark"><img src="img/sp_mark_blue.png" alt="B한정"/></span><!--B한정 아이콘 추가-->
+						<img src="img/temp/namecon.jpg" alt=""  class="namecon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_namecon">네임콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/sticon1.png" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--allbery ~ 베리/블루베리-->
+				<span class="allbery">
+					<img src="img/icn_bery_list.png" alt=""/> 
+					<img src="img/icn_bbery_list.png" alt=""/> 
+					1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/sticon1.png" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bbery ~ 블루베리-->
+				<span class="bbery">
+					<img src="img/icn_bbery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/namecon.png" alt=""  class="namecon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_namecon">네임콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+		</ul>
+	</section>
+	<section class="shop_list_area">
+		<h3>인기 아이템 <a href="#" class="more">전체보기 &gt;</a></h3>
+		<ul class="shop_list">
+			<li>
+				<a href="#">
+					<span class="thum">
+						<span class="mark"><img src="img/sp_mark_event.png" alt="event"/></span>						
+						<img src="img/temp/sticon2.jpg" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 일이삼사오육칠팔구십...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<!-- 20140826 수정 -->
+						<span class="mark dsc"> 51% </span>						
+						<!-- 20140826 수정 -->
+						<img src="img/temp/sticon2.jpg" alt="" class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<span class="mark"><img src="img/sp_mark_blue.png" alt="B한정"/></span><!--B한정 아이콘 추가-->
+						<img src="img/temp/namecon.jpg" alt=""  class="namecon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_namecon">네임콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/sticon1.png" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--allbery ~ 베리/블루베리-->
+				<span class="allbery">
+					<img src="img/icn_bery_list.png" alt=""/>
+					<img src="img/icn_bbery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/sticon1.png" alt=""  class="sticon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_stickon">스티콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bbery ~ 블루베리-->
+				<span class="bbery">
+					<img src="img/icn_bbery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+			<li>
+				<a href="#">
+					<span class="thum">
+						<img src="img/temp/namecon.png" alt=""  class="namecon"/>
+					</span>
+				</a>
+				<span class="subject">
+					<strong class="icn_namecon">네임콘</strong> 아기자기 표정이 가득 ...
+				</span>
+
+				<!--bery ~ 베리-->
+				<span class="bery">
+					<img src="img/icn_bery_list.png" alt=""/> 1,200
+				</span>
+			</li>
+		</ul>
+	</section>
+	<!-- //Shop 리스트 20141017 -->
+
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> &copy; KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기 <img src="img/bl_cominfo.png" alt=""/></a>
+	<div class="comInfo_txt">
+		(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945<br/>
+		통신판매업신고 : 2002-경기성남-0048 · Tel 국번없이 100<br/>
+		463-711 경기도 성남시 분당구 불정로 90 (정자동 206번지)
+	</div>
+</footer>
+
+</body>
+</html>

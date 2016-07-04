@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor
+END
+BluemembershipInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor/BluemembershipInterceptor.java
+END
+ApiInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor/ApiInterceptor.java
+END
+CookieInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor/CookieInterceptor.java
+END
+AppInfoInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor/AppInfoInterceptor.java
+END
+RenewalInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/interceptor/RenewalInterceptor.java
+END

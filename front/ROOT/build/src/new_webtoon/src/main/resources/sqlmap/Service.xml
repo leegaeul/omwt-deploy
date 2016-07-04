@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.service.persistence.ServiceMapper">
+
+	<select id="selectTimesList" parameterType="com.olleh.webtoon.common.dao.service.domain.ServiceTimesDomain" 
+						        resultType="com.olleh.webtoon.common.dao.service.domain.ServiceTimesDomain">
+	<![CDATA[
+		SELECT
+			t3.webtoonseq,
+			t3.free,
+			times.timesseq,
+			times.timestitle,
+			times.thumbpath,
+			date_format(times.publishdt, '%Y%m%d') publishdt,
+			concat('http://m.webtoon.olleh.com/service/timesDetail.kt?webtoonseq=', times.webtoonseq ,'&timesseq=', times.timesseq) as linkurl,
+			format(t2.sale_price / (select count(*) from ow_service_times where displayyn = 'Y' AND service_webtoonseq = t2.service_webtoonseq),0) sale_price
+		FROM ow_service t1
+		LEFT JOIN ow_service_webtoon t2 ON t1.serviceseq = t2.serviceseq
+		LEFT JOIN ow_service_times t3 ON t2.service_webtoonseq = t3.service_webtoonseq
+		LEFT JOIN ow_times times ON t3.timesseq = times.timesseq
+		WHERE
+			t3.displayyn = 'Y'
+			AND t3.webtoonseq = #{webtoonseq}
+			AND #{publishdt} >= DATE_FORMAT(t3.startdt, '%Y%m')
+			AND #{publishdt} <= DATE_FORMAT(t3.enddt, '%Y%m')	    
+	]]>
+			<!-- AND t1.servicefg = #{servicefg} --> 
+	</select>
+	
+
+	<select id="selectToonList" parameterType="com.olleh.webtoon.common.dao.service.domain.ServiceDomain"
+						        resultType="com.olleh.webtoon.common.dao.service.domain.ServiceDomain">
+		SELECT
+			if(toon.agefg = 'adult',1, 0) adult_content,
+			(
+			  SELECT
+			    if(times.lastyn = 'Y', 1, 0)
+			  FROM ow_service s1
+			    LEFT JOIN ow_service_webtoon s2 ON s1.serviceseq = s2.serviceseq
+				LEFT JOIN ow_service_times s3 ON s2.service_webtoonseq = s3.service_webtoonseq
+				LEFT JOIN ow_times times ON s3.timesseq = times.timesseq
+			  WHERE
+			    s3.displayyn = 'Y'
+				AND s3.webtoonseq = t2.webtoonseq
+			    <![CDATA[
+			    AND #{publishdt} >= DATE_FORMAT(s3.startdt, '%Y%m')
+			    AND #{publishdt} <= DATE_FORMAT(s3.enddt, '%Y%m') 
+			    ]]>
+			  order by times.timesseq desc 
+			  limit 1
+			) series_completed,
+      		format(t2.sale_price, 0) sale_price,
+			t2.webtoonseq, toon.thumbpath, t2.webtoonnm,
+		    ifnull(author1.authornm, '') authornm1,
+		    if(author1.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author1.authorseq),'') authorurl1,
+			ifnull(author2.authornm, '') authornm2,
+			if(author2.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author2.authorseq),'') authorurl2,
+			ifnull(author3.authornm, '') authornm3,
+			if(author3.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author3.authorseq),'') authorurl3,
+		    ifnull(genre1.genrenm, '') genrenm1,
+			ifnull(genre2.genrenm, '') genrenm2,
+			ifnull(genre3.genrenm, '') genrenm3,
+			toon.webtoondesc,
+			ifnull((
+				select 
+				  concat('http://m.webtoon.olleh.com/m/yoyozine/yoyozineDetail.kt?yoyozineseq=',yoyozineseq)
+				from ow_refwebtoon ref
+				where (ref.authorseq1 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1) or
+					  (ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1) or
+                      (ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1)
+				order by yoyozineseq desc limit 1
+			), '') episodeurl,
+			(select date_format(times.publishdt, '%Y%m%d') as publishdt from ow_times times where times.webtoonseq = toon.webtoonseq order by timesseq desc limit 0, 1) as publishdt
+		FROM ow_service t1
+		LEFT JOIN ow_service_webtoon t2 ON t1.serviceseq = t2.serviceseq
+		LEFT JOIN ow_webtoon toon ON t2.webtoonseq = toon.webtoonseq
+		LEFT JOIN ow_author author1 ON toon.authorseq1 = author1.authorseq
+		LEFT JOIN ow_author author2 ON toon.authorseq2 = author2.authorseq
+		LEFT JOIN ow_author author3 ON toon.authorseq3 = author3.authorseq
+		LEFT JOIN ow_genre genre1 ON toon.genreseq1 = genre1.genreseq
+		LEFT JOIN ow_genre genre2 ON toon.genreseq2 = genre2.genreseq
+		LEFT JOIN ow_genre genre3 ON toon.genreseq3 = genre3.genreseq
+		WHERE
+			t2.displayyn = 'Y'
+			<!-- AND t1.servicefg = #{servicefg} --> 
+		  <![CDATA[
+		  	AND #{publishdt} >= DATE_FORMAT(t2.startdt, '%Y%m')
+		    AND #{publishdt} <= DATE_FORMAT(t2.enddt, '%Y%m')
+		  ]]>
+	</select>
+	
+	<select id="selectToonDetail" parameterType="com.olleh.webtoon.common.dao.service.domain.ServiceDomain" 
+						        resultType="com.olleh.webtoon.common.dao.service.domain.ServiceDomain">
+		SELECT
+			if(toon.agefg = 'adult',1, 0) adult_content,
+			(
+			  SELECT
+			    if(times.lastyn = 'Y', 1, 0)
+			  FROM ow_service s1
+				LEFT JOIN ow_service_webtoon s2 ON s1.serviceseq = s2.serviceseq
+			    LEFT JOIN ow_service_times s3 ON s2.service_webtoonseq = s3.service_webtoonseq
+			    LEFT JOIN ow_times times ON s3.timesseq = times.timesseq
+			  WHERE
+			    s3.displayyn = 'Y'
+			    AND s3.webtoonseq = t2.webtoonseq
+			   <![CDATA[
+			    AND #{publishdt} >= DATE_FORMAT(s2.startdt, '%Y%m')
+			    AND #{publishdt} <= DATE_FORMAT(s2.enddt, '%Y%m') 
+			   ]]>    
+			  order by times.timesseq desc 
+			  limit 1
+			) series_completed,
+			
+			t2.webtoonseq, toon.thumbpath, t2.webtoonnm,
+		    ifnull(author1.authornm, '') authornm1,
+		    if(author1.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author1.authorseq),'') authorurl1,
+			ifnull(author2.authornm, '') authornm2,
+		    if(author2.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author2.authorseq),'') authorurl2,
+			ifnull(author3.authornm, '') authornm3,
+		    if(author3.authorseq is not null, concat('http://m.webtoon.olleh.com/m/toon/authorDetail.kt?authorseq=',author3.authorseq),'') authorurl3,
+		    ifnull(genre1.genrenm, '') genrenm1,
+			ifnull(genre2.genrenm, '') genrenm2,
+			ifnull(genre3.genrenm, '') genrenm3,
+		    toon.webtoondesc,
+		    ifnull((
+				select 
+				  concat('http://m.webtoon.olleh.com/m/yoyozine/yoyozineDetail.kt?yoyozineseq=',yoyozineseq)
+				from ow_refwebtoon ref
+				where (ref.authorseq1 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1) or
+					  (ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1) or
+                      (ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1)
+				order by yoyozineseq desc limit 1
+			), '') episodeurl,
+			(select date_format(times.publishdt, '%Y%m%d') as publishdt from ow_times times where times.webtoonseq = toon.webtoonseq order by timesseq desc limit 0, 1) as publishdt
+		FROM ow_service t1
+		LEFT JOIN ow_service_webtoon t2 ON t1.serviceseq = t2.serviceseq
+		LEFT JOIN ow_webtoon toon ON t2.webtoonseq = toon.webtoonseq
+		LEFT JOIN ow_author author1 ON toon.authorseq1 = author1.authorseq
+		LEFT JOIN ow_author author2 ON toon.authorseq2 = author2.authorseq
+		LEFT JOIN ow_author author3 ON toon.authorseq3 = author3.authorseq
+		LEFT JOIN ow_genre genre1 ON toon.genreseq1 = genre1.genreseq
+		LEFT JOIN ow_genre genre2 ON toon.genreseq2 = genre2.genreseq
+		LEFT JOIN ow_genre genre3 ON toon.genreseq3 = genre3.genreseq
+		WHERE
+			t2.displayyn = 'Y'and t2.webtoonseq = #{webtoonseq}
+		  <![CDATA[
+			AND #{publishdt} >= DATE_FORMAT(t2.startdt, '%Y%m')
+			AND #{publishdt} <= DATE_FORMAT(t2.enddt, '%Y%m')
+		  ]]>
+	</select>
+	
+	<select id="toonImageSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.service.domain.ServiceToonImageDomain">
+	<![CDATA[ 
+		SELECT image.imagepath, image.width, image.height
+		FROM ow_service_times times
+        LEFT JOIN ow_webtoon_image image ON times.timesseq = image.timesseq
+		WHERE 
+			times.displayyn = 'Y' AND times.timesseq = #{timesseq}
+			AND DATE_FORMAT(NOW(), '%Y%m') >= DATE_FORMAT(times.startdt, '%Y%m')
+		    AND DATE_FORMAT(NOW(), '%Y%m') <= DATE_FORMAT(times.enddt, '%Y%m')	
+		ORDER BY image.displayorder ASC
+	]]>	
+	</select>
+	
+	<select id="timesSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	<![CDATA[ 
+	select 
+		t.*,
+		(select timestitle from ow_times pt1 where pt1.timesseq = t.prevtimesseq) prevtimestitle,
+		(select timestitle from ow_times pt2 where pt2.timesseq = t.nexttimesseq) nexttimestitle
+	from (	
+		SELECT 
+			times.timesseq, times.timesno, times.timestitle, times.thumbpath, times.comments,
+			times.bgmdisplayyn, times.bgmpath1, times.bgmpath2,
+			toon.webtoonnm, toon.webtoondesc, toon.webtoonseq,
+        	toon.authorseq1, toon.authorseq2, toon.authorseq3,
+        	toon.agefg, toon.toonfg, toon.bgcolor,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			(
+				select timesseq
+				from ow_service_times prevtimes 
+				where prevtimes.webtoonseq = stimes.webtoonseq 
+					  and prevtimes.displayyn = 'Y' 
+					  and prevtimes.timesseq < stimes.timesseq
+					  and DATE_FORMAT(NOW(), '%Y%m') >= DATE_FORMAT(prevtimes.startdt, '%Y%m')
+		    		  and DATE_FORMAT(NOW(), '%Y%m') <= DATE_FORMAT(prevtimes.enddt, '%Y%m')
+					  and (prevtimes.free = '1' or (date_format(now(), '%Y%m%d') >= date_format(prevtimes.startdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(prevtimes.enddt, '%Y%m%d'))) 
+				order by prevtimes.timesseq desc limit 0,1
+			) prevtimesseq,
+			(
+				select timesseq 
+				from ow_service_times nexttimes 
+				where nexttimes.webtoonseq = stimes.webtoonseq 
+					  and nexttimes.displayyn = 'Y'
+					  and nexttimes.timesseq > stimes.timesseq
+					  and DATE_FORMAT(NOW(), '%Y%m') >= DATE_FORMAT(nexttimes.startdt, '%Y%m')
+		    		  and DATE_FORMAT(NOW(), '%Y%m') <= DATE_FORMAT(nexttimes.enddt, '%Y%m')
+					  and (nexttimes.free = '1' or (date_format(now(), '%Y%m%d') >= date_format(nexttimes.startdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(nexttimes.enddt, '%Y%m%d'))) 
+				order by nexttimes.timesseq asc limit 0,1
+			) nexttimesseq
+		FROM ow_service_times stimes
+		  LEFT JOIN ow_times times    ON stimes.timesseq = times.timesseq
+	      LEFT JOIN ow_webtoon toon   ON times.webtoonseq = toon.webtoonseq
+		  LEFT JOIN ow_author author1 ON toon.authorseq1 = author1.authorseq
+		  LEFT JOIN ow_author author2 ON toon.authorseq2 = author2.authorseq
+		  LEFT JOIN ow_author author3 ON toon.authorseq3 = author3.authorseq
+      	
+		WHERE
+			stimes.displayyn = 'Y' AND times.timesseq = #{timesseq} AND times.webtoonseq = #{webtoonseq}
+			AND DATE_FORMAT(NOW(), '%Y%m') >= DATE_FORMAT(stimes.startdt, '%Y%m')
+		    AND DATE_FORMAT(NOW(), '%Y%m') <= DATE_FORMAT(stimes.enddt, '%Y%m')
+	) t
+	limit 1; 
+	]]>
+	</select>
+	
+	<select id="selectTimesFreeyn" parameterType="com.olleh.webtoon.common.dao.service.domain.ServiceTimesDomain" 
+						        resultType="java.lang.String">
+	<![CDATA[ 
+		SELECT 
+			CASE 
+				WHEN free = '1' THEN 'Y'
+				ELSE 'N'
+			END AS freeyn
+		FROM ow_service_times
+		WHERE 
+			timesseq = #{timesseq}
+			AND date_format(now(), '%Y%m') >= date_format(startdt, '%Y%m') 
+			AND date_format(now(), '%Y%m') <= date_format(enddt, '%Y%m')
+		limit 1; 
+		]]>
+	</select>
+	
+</mapper>

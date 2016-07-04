@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.dcb.persistence.DcbMapper">
+	
+	<select id="selectDcbCoupon" 
+		parameterType="java.lang.String" 
+		resultType="java.lang.String">
+		SELECT couponnum
+		FROM ow_dcb_coupon
+		WHERE deviceid = #{deviceid}
+	</select>
+	
+	<update id="updateDcbCoupon" parameterType="com.olleh.webtoon.common.dao.dcb.domain.DcbDomain">
+		UPDATE ow_dcb_coupon
+		SET deviceid = #{deviceid}, issuedt = #{issuedt}
+		WHERE
+			couponnum = (select * from (select couponnum from ow_dcb_coupon where deviceid is null limit 0, 1) as a)
+	</update>
+	
+	<select id="selectCouponInfoByCouponnum" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.dcb.domain.DcbDomain">
+		SELECT couponnum, idfg, regid, regdt
+		FROM ow_dcb_coupon
+		WHERE couponnum = #{couponnum} and deviceid is not NULL
+		LIMIT 0, 1
+	</select>
+	
+	<select id="selectCouponInfoById" parameterType="com.olleh.webtoon.common.dao.dcb.domain.DcbDomain" resultType="com.olleh.webtoon.common.dao.dcb.domain.DcbDomain">
+		SELECT couponnum, idfg, regid, regdt
+		FROM ow_dcb_coupon
+		WHERE idfg = #{idfg} and regid = #{regid}
+		LIMIT 0, 1
+	</select>
+	
+	<insert id="updateCouponEvent" parameterType="com.olleh.webtoon.common.dao.dcb.domain.DcbDomain">
+		UPDATE ow_dcb_coupon 
+		SET idfg=#{idfg}, regid=#{regid}, regdt=#{regdt}
+		WHERE couponnum=#{couponnum};
+    </insert>
+    
+</mapper>

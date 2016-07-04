@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/premium/domain
+END
+CategoryDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/premium/domain/CategoryDomain.java
+END
+ProductAvailDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/premium/domain/ProductAvailDomain.java
+END
+PremiumDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/premium/domain/PremiumDomain.java
+END
+ProductHistoryDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/premium/domain/ProductHistoryDomain.java
+END

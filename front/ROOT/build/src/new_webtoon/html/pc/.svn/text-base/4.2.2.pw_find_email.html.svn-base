@@ -1,0 +1,95 @@
+<html>
+<head>
+<title> 올레마켓 웹툰 &gt; 비밀번호 변경 안내 </title>
+</head>
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="620" bgcolor="#ffffff" align="center">
+	<!-- header -->
+	<tr>
+		<td bgcolor="#2e2e2e"><a href="http://webtoon.olleh.com/main.kt" target="_blank"><img src="img/email/logo.gif" alt="올레마켓 웹툰" border="0" /></a></td>
+	</tr>
+	<!-- //header -->
+
+	<tr>
+		<td style="padding:0 25px;"><table border="0" cellpadding="0" cellspacing="0" width="570" align="center">
+			<tr>
+				<td height="80"><font size="3" face="돋움" color="#2e2e2e" style="font-size:16px;"><b>[올레마켓 웹툰] 비밀번호 변경</b></font></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+					안녕하세요.<br />
+					올레마켓 웹툰 관리자입니다.
+				</font></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+					고객님의 임시 비밀번호가 발급되었습니다.<br />
+					발급된 임시비밀번호로 로그인을 하신 후 <b>올레마켓 웹툰 MY TOON > 설정</b>에서<br />
+					비밀번호 재설정이 가능합니다.<br />
+				</font></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><table border="0" cellpadding="0" cellspacing="1" bgcolor="#dfdfdf" width="100%">
+					<tr>
+						<td bgcolor="#f7f7f7" height="50"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td width="80" style="padding:0 20px;"><font size="2" face="돋움" color="#555555" style="font-size:12px;">임시비밀번호</font></td>
+								<td style="padding:0 20px; border-left:1px solid #dfdfdf;"><font size="3" face="돋움" color="#f14b59" style="font-size:16px;"><b>
+									NEW1234!
+								</b></font></td>
+							</tr>
+						</table></td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">고맙습니다.</font></td>
+			</tr>
+			<tr>
+				<td height="35"></td>
+			</tr>
+			<tr>
+				<td><a href="#"><img src="img/email/btn_gosite.gif" alt="올레마켓 웹툰 가기" border="0" /></a></td>
+			</tr>
+			<tr>
+				<td height="70"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:11px; line-height:20px;">- 발신전용 메일입니다. 궁금하신 사항은 <a href="http://webtoon.olleh.com/support/qnaRegist.kt" target="_blank" style="color:#f14b59"><font color="#f14b59">고객센터 >1:1 문의</font></a> 로 문의해주시기 바랍니다.</font></td>
+			</tr>
+		</table></td>
+	</tr>
+
+	<!-- footer -->
+	<tr>
+		<td height="20"></td>
+	</tr>
+	<tr>
+		<td background="img/email/bg_email.gif" height="1"></td>
+	</tr>
+	<tr>
+		<td height="80" style="padding:0 25px;"><table border="0" cellpadding="0" cellspacing="0" width="570" align="center">
+			<tr>
+				<td><font size="2" face="돋움" color="#999999" style="font-size:11px; line-height:16px;">
+					(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+					463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100<br />
+					Copyright &copy; 2011 kt corp. all rights reserved.
+				</font></td>
+			</tr>
+		</table></td>
+	</tr>
+	<!-- //footer -->
+</table>
+
+</body>
+</html>

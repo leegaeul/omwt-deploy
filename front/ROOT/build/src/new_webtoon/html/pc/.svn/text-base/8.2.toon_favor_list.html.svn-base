@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript">
+$(document).ready(function(){
+
+	//웹툰 알림 on/off
+	$('.mytoon_chkList .ic_alarmoff').click(function(){
+		$(this).removeClass('ic_on');
+		$(this).parent().find('.ic_alarmon').addClass('ic_on');
+	});
+	$('.mytoon_chkList .ic_alarmon').click(function(){
+		$(this).removeClass('ic_on');
+		$(this).parent().find('.ic_alarmoff').addClass('ic_on');
+	});
+
+	//20140526 체크박스 체크했을 때
+	$('.mytoon_chkList li input:checkbox').click(function(){
+		 var chk = $(this).is(":checked");
+		 if (chk)
+		 {
+			$(this).parent().parent().addClass('checked');
+		 } else{
+			$(this).parent().parent().removeClass('checked');
+		 }
+	});
+
+	//20140526 전체 체크박스 체크했을 때
+	$('.catelist_top_area input:checkbox').click(function(){
+		 var chk = $(this).is(":checked");
+		 if (chk)
+		 {
+			$('.mytoon_chkList li input:checkbox').attr('checked', true);
+			$('.mytoon_chkList li').addClass('checked');
+		 } else{
+			$('.mytoon_chkList li input:checkbox').attr('checked', false);
+			$('.mytoon_chkList li').removeClass('checked');
+		 }
+	});
+
+	//팝업 닫기 20140801
+	$('.popup_service_alarm .popup_close a').click(function(){
+		$(this).parent().parent().fadeOut('fast');
+		$('.com_popup_bglayer').hide();
+		return false;
+	});
+
+});
+
+//팝업 실행 20140801
+$(window).load(function(){
+	//init_popup('popup_service_alarm');
+});
+function init_popup(popup){
+	$('.'+popup).fadeIn('fast');
+	var popupY = 0;
+	if ($(window).height() < $('.'+popup).outerHeight())
+	{
+		popupY = $(window).scrollTop();
+	} else {
+		popupY = $(window).scrollTop() + ($(window).height()/2) - ($('.'+popup).outerHeight()/2);
+	}
+	$('.'+popup).css({ top: popupY });
+	$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});
+	$('.com_popup_bglayer').show();
+}
+</script>
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 수정 20140718 ~ 메인메뉴 추가 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#">
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+			<!-- 베리 충전소 링크 추가 -->
+			<div class="topMenuEtc">
+				<a href="#"><img src="img/top_menu_bnr.png" alt="베리 충전소" /></a>
+			</div>
+			<!-- //베리 충전소 링크 추가 -->
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 20140507 수정 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">실시간 랭킹</a> |</li>
+					<li><a href="#">월간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 20140507 수정 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 2차 오픈 범위
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>-->
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 -->
+		<div class="subMenu subMenu06"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">추천</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li><a href="#">스티콘</a> |</li>
+					<li><a href="#">네임콘</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //Shop 하위메뉴 -->
+<!-- //메뉴 수정 20140718 ~ 메인메뉴 추가 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+		<!-- 본문영역 -->
+		
+		<!-- layout_left -->
+		<div class="layout_left">
+
+			<!-- mytoon 상단영역 20141110-->
+			<div class="mytoon_com_top mytoon_com_top2nd">
+				<div class="tit">
+					<img src="img/mytoon_tit.gif" alt="MY TOON" />
+					<a href="#" class="bt_mytoon_setting">설정</a>
+				</div>
+				<ul class="tab">
+					<li class="favor"><a href="#" class="on"><span>즐겨찾기</span></a></li><!-- 현재 페이지에 해당하는 탭의 a태그에 on 클래스 붙임 -->
+					<li class="bookmark"><a href="#"><span>책갈피</span></a></li>
+					<li class="recent"><a href="#"><span>최근 본 작품</span></a></li><!--20141124 텍스트 수정-->
+					<li class="myberry"><a href="#"><span>My 베리</span></a></li>
+					<li class="bluemem"><a href="#"><span>블루멤버십</span></a></li>
+					<li class="myqna"><a href="#"><span>내 문의 내역</span></a></li>
+				</ul>
+			</div>
+			<!-- //mytoon 상단영역-->
+
+			<!-- 리스트 상단 20140526-->
+			<div class="catelist_top_area">
+				<div class="cate_left">
+					<span class="chk"><input type="checkbox" /></span> 전체<strong>1</strong>건
+				</div>
+				<div class="cate_right">
+					<span class="bt_normal_gyline"><button type="button">삭제</button></span>
+				</div>
+			</div>
+			<!-- //리스트 상단 20140526-->
+
+			<!--mytoon_chkList 20141128 ~ 웹소설 삽화가명 추가-->
+			<ul class="mytoon_chkList">
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="ico_gray_txt">웹소설</span>
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<span class="ic_up">UP</span>
+							<!--<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고, 할미새</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon ic_on">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<span class="ic_stop">휴재</span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<span class="ic_end">완결</span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!--리스트-->
+				<li>
+					<span class="li_chk"><input type="checkbox" name="webtoonseqlist" value="36" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+						</a>
+					</span>
+					<a href="#">
+						<span class="li_tit">
+							<span class="nm">사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 사이렌 </span>
+							<!--<span class="ic_up">UP</span>
+							<span class="ic_stop">휴재</span>
+							<span class="ic_end">완결</span>-->
+							<span class="li_cnt"><span>
+								<img src="img/temp/tmp_icn02.png" alt="" /> 15,722
+							</span></span>
+						</span>
+						<span class="li_author">이도고</span>
+					</a>					
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+					</span>
+					<a href="#">	
+						<span class="li_cur">
+							<span class="cur">연재일 : 목</span>
+						</span>
+					</a>
+				</li>
+				<!--//리스트-->
+				<!-- list ~ 기존 백업 
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" />
+							<span class="bg_img"></span>
+							<span class="ic_19">19금</span>
+						</a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>
+				<li>
+					<span class="li_chk"><input type="checkbox" /></span>
+					<span class="li_thumb">
+						<a href="#"><img src="img/temp/tmp_genre_toon01.jpg" alt="병맛극장" /><span class="bg_img"></span></a>
+					</span>
+					<span class="li_tit">
+						<a href="#">병맛극장 병맛극장 병맛극장 병맛극장 병맛극장병맛극장 병맛극장 병맛극장 병맛극장 병맛극장</a>
+					</span>
+					<span class="li_author">하율이 아부지</span>
+					<span class="li_date">
+						<button type="button" class="ic_alarm ic_alarmoff ic_on">알림 OFF</button>
+						<button type="button" class="ic_alarm ic_alarmon">알림 ON</button>
+					</span>
+					<span class="li_cur">
+						<span class="cur">연재일 : 화</span>
+						<span class="date2">2014.04.25 13:22</span>
+					</span>
+				</li>-->
+				<!-- //list -->
+			</ul>
+			<!--//mytoon_chkList-->
+
+			<!-- 페이징 -->
+			<div class="com_paging">
+				<a href="#" class="direction prev_first">이전 10개</a>
+				<a href="#" class="direction prev">이전 페이지</a>
+				<div class="pageNum">
+					<a href="#" class="cur">1</a>
+					<a href="#">2</a>
+					<a href="#">3</a>
+					<a href="#">5</a>
+					<a href="#">6</a>
+					<a href="#">7</a>
+					<a href="#">8</a>
+					<a href="#">9</a>
+					<a href="#">10</a>
+				</div>
+				<a href="#" class="direction next">다음 페이지</a>
+				<a href="#" class="direction next_last">다음 10개</a>
+			</div>
+			<!-- //페이징 -->
+			
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- mytoon_infoList -->
+			<div class="mytoon_infoList">
+				<div class="info_tit">
+					붉은매 <img src="img/mytoon_info_txt.gif" alt="님 환영합니다." />
+				</div>
+
+				<div class="info_list">
+					<div class="tit">현재 보유 코인 <strong>500코인</strong> 
+						<a href="#" class="bts_normal_gyline"><span>코인구매</span></a>
+					</div>
+				</div>
+				<div class="info_list">
+					<div class="tit">최근 본 TOON <strong>3</strong></div>
+					<div class="cont">- 코난 김전일 10화</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">즐겨찾기 <strong>5</strong></div>
+					<div class="cont">- 즐거우리 우리네 인생</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">책갈피 <strong>10</strong></div>
+					<div class="cont">- 아만자</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">구매내역 <strong>15</strong></div>
+					<div class="cont">- 개천고 10화</div>
+					<a href="#" class="more">+</a>
+				</div>
+			</div>
+			<!-- //mytoon_infoList -->
+			
+			<!-- mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+			<div class="mytoon_quickbtn">
+				<a href="#" class="faq">FAQ 자주 묻는 질문</a>
+				<!--<a href="#" class="userguide">이용가이드</a> 삭제 -->
+				<a href="#" class="qna">1:1 문의</a>
+				<a href="#" class="app">APP 다운로드</a>
+			</div>
+			<!-- //mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+		</div>
+		<!-- //layout_right -->
+
+
+		<!-- //본문영역 -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+<!-- 20140801 추가 -->
+<div class="com_popup_bglayer"></div><!-- 팝업 배경 레이어 -->
+<div class="com_popup_layout popup_service_alarm">
+	<div class="popup_tit01">
+		<img src="img/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+	<div class="popup_com_cont">
+		<div class="tit1dth">서비스 알림 받기 동의 </div>
+		<p class="policy_txt">올레마켓 웹툰 서비스에서 즐겨찾기 하신 웹툰 알림을 받으시려면<br />
+		아래의 <strong>정보/광고 수신</strong>에 동의하셔야 합니다. </p>
+
+		<p class="policy_box_top">정보/광고 수신동의 전문</p>
+		<div class="policy_box">
+			<div class="tit3dth">주식회사 케이티(이하 '회사')가 운영하는 올레마켓, 웹툰의 정보/광고 수신 동의(선택동의)</div>
+			<p>본인은 올레마켓, 웹툰이 제공하는 서비스 관련 정보 및 광고 수신, 고객 만족도 조사에 동의하며, 올레마켓, 웹툰은 본인이 본 동의를 철회할 때까지 정보/광고를 제공합니다. </p>
+			<br />
+			<div class="tit3dth">1. 정보/광고 제공 내용</div>
+			<p>
+				가) 올레마켓, 웹툰의 상품, 서비스 또는 타사, 제휴사가 제공하는 상품, 서비스의 정보제공, 홍보, 가입 권유 활동과 제반 프로모션 이벤트 활동<br />
+				나) 고객설문 및 고객혜택 이벤트 안내, 시장조사 및 고객만족도 조사 등 <br />
+				다) 고객의 선호도, 라이프 스타일, 사회적 관계 등의 분석을 통한 개인 최적화된 정보/광고<br />
+			</p>
+			<br />
+			<p>
+				본인은 상기 내용에 대하여 내용을 읽어보았으며, 이를 이해하여 동의합니다. <br />
+				(동의를 거부할 수 있으며 거부에 따른 불이익은 없습니다.) 
+			</p>
+		</div>
+		<div class="policy_btn">
+			<button type="button" class="bt_nm_agree">동의함</button>
+			<button type="button" class="bt_nm_disagree">동의안함</button>
+		</div>
+	</div>
+
+	<div class="popup_close"><a href="#"><img src="img/btn_close01.gif" alt="close" /></a></div>
+</div>
+<!-- //20140801 추가 -->
+
+</body>
+</html>

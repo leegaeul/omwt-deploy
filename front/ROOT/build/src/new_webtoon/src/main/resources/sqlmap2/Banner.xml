@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.banner.persistence.BannerMapper">
+	
+    <cache eviction="LRU" flushInterval="30000" size="36" readOnly="true"/>    
+	
+	<select id="bannerSelectList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.banner.domain.BannerDomain">
+		select 
+			title, imagepath, startdt, enddt, newwindowyn, linkfg, linkurl, bannerorder
+		from 
+			ow_banner
+		where
+		<![CDATA[
+			bannerfg = #{param}
+			AND displayyn = 'Y' 
+			AND (
+			      (directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i') >= date_format(startdt, '%Y%m%d%H%i') AND date_format(now(), '%Y%m%d%H%i') <= date_format(enddt, '%Y%m%d%H%i'))
+					OR  (directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i') <= date_format(directdisplayenddt, '%Y%m%d%H%i'))
+			    )
+		]]>
+		order by 
+			bannerorder ASC
+	</select>
+</mapper>

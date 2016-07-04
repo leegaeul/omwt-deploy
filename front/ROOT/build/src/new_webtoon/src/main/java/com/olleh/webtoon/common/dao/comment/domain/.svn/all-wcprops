@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain
+END
+SubCommentDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain/SubCommentDomain.java
+END
+CommentReportDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain/CommentReportDomain.java
+END
+CommentDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain/CommentDomain.java
+END
+CommentEventDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain/CommentEventDomain.java
+END
+DeclarationDomain.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/comment/domain/DeclarationDomain.java
+END

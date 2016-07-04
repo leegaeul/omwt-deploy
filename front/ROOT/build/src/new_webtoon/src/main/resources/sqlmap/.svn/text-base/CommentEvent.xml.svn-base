@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.comment.persistence.CommentEventMapper">
+	    
+    <select id="commentSelectEventseq" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain">
+		SELECT 
+			eventseq, eventfg, commentseq, timesseq, idfg, regid, regdt, winyn,
+			CONVERT(AES_DECRYPT(UNHEX(phonenum), 'ollehwebtoon2015') using utf8) as phonenum
+		FROM
+			ow_comment_event
+		WHERE
+			regid = #{regid} 
+			AND idfg = #{idfg} 
+			AND eventfg = #{eventfg} 
+		LIMIT
+		 	0, 1
+	</select>
+	
+	<insert id="commentEventInsert" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain">
+	INSERT INTO ow_comment_event 
+	(
+		commentseq,
+		idfg,
+		regid,
+		phonenum,
+		eventfg,
+		regdt,
+		winyn
+	) 
+	VALUES 
+	(
+		#{commentseq},
+		#{idfg},
+		#{regid},
+		HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015')),
+		#{eventfg},
+		#{regdt},
+		'N'
+	);
+    </insert>
+    
+    <select id="commentseqSelect" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain" resultType="java.lang.String">
+		SELECT 
+			commentseq
+		FROM 
+			ow_comment
+		WHERE
+			regid = #{regid}
+			and idfg = #{idfg}
+		ORDER BY
+			commentseq desc
+		LIMIT
+		 	0, 1	
+	</select>
+	
+	<select id="selectPrizeWinner" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain" resultType="java.lang.String">
+		SELECT 
+			winyn
+		FROM 
+			ow_comment_event
+		WHERE
+			phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015'))
+			and winyn = "Y"
+		LIMIT
+		 	0, 1	
+	</select>
+	
+	<select id="prizeWinnerSelectList" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain" resultType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain">
+		SELECT 
+			winyn, 
+			date_format(regdt, '%Y년 %m월 %d일') regdt
+		FROM 
+			ow_comment_event
+		WHERE
+			phonenum = HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015'))
+			and winyn = "Y"
+		ORDER BY
+			regdt asc
+		LIMIT 
+			0, 5
+	</select>
+	    
+</mapper>

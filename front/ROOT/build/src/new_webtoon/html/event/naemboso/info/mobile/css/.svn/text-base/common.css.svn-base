@@ -1,0 +1,82 @@
+@charset "utf-8";
+*{margin:0;padding:0}
+h2{text-align:left}
+h3{text-align:left}
+h1,h2,h3,h4,h5,h6,strong{font-weight:bold}
+h1,h2,h3,h4,h5,h6{font-size:100%}
+abbr,acronym{border-bottom:1px dotted #000;cursor:help}
+em{font-style:normal}
+ol li{list-style:none}
+ul li{list-style:none}
+th,td{padding:0}
+th{font-weight:bold;text-align:center}
+fieldset{border:0 none}
+.accessibility,legend{visibility:hidden;overflow:hidden;position:absolute;width:0;height:0;font-size:0}
+caption,.invisible{visibility:hidden !important;overflow:hidden !important;position:static;width:0 !important;height:0 !important;margin:0 !important;padding:0 !important;font-size:0 !important;line-height:0 !important;text-indent:-9999px !important}
+
+input[type=text],input[type=password],textarea{width:12.25em;*width:11.9em}
+label,.btn{cursor:pointer}
+
+body{margin-left:auto;margin-right:auto;/* font-size:small;  for IE */
+/* font:x-small; /* for IE in quirks mode */
+/* center the page */
+background-color:#fff;font-family:Dotum,'돋움',AppleGothic,Lucida Grande,Verdana,Arial,Tahoma,sans-serif;font-size:11px;color:#69696B}
+
+/**
+ * Nudge down to get to 13px equivalent for these form elements
+ */
+input,button,textarea{font-family:Dotum,'돋움',AppleGothic,Lucida Grande,Verdana,Arial,Tahoma,sans-serif;font-size:11px;color:#4D4D4D;vertical-align:middle}/*201303 명도대비 수정*/
+select{font-family:Dotum,'돋움',AppleGothic,Lucida Grande,Verdana,Arial,Tahoma,sans-serif;font-size:12px;vertical-align:middle}
+
+input.txt,input.sum,input.sum-f{width:auto;height:18px;margin:-1px 0;padding:0 0 0 5px;border:1px solid #ccc;line-height:18px;color:#4D4D4D}/*201303 명도대비 수정*/
+input.chk{width:13px;height:13px;margin:0 2px 0 0}
+
+/**
+ * To help tables remember to inherit
+ */
+table{border-collapse:collapse;font-size:inherit;font:100%;text-align:left;border-spacing:0}
+
+/**
+ * Bump up IE to get to 13px equivalent for these fixed-width elements
+ */
+pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%}
+
+form,img,a,iframe{border-style:none}
+img{vertical-align:top}
+
+/* link css */
+a:link{color:#4d4d4d;text-decoration:none}
+a:visited{color:#4d4d4d;text-decoration:none}
+a:hover{color:#4d4d4d;text-decoration:underline}
+a:active{color:#4d4d4d;text-decoration:none}
+a:focus{text-decoration:underline}
+
+hr{height:1px;border-style:none;background-color:#EDEFF5;color:#EDEFF5}
+
+.clearfix:after{display:block;visibility:hidden;clear:both;height:0;content:'.'}
+.clearfix{display:inline-block}
+
+/* Hides from IE-mac \ */
+* html .clearfix{height:1%}
+.clearfix{display:block}
+
+/* End hide from IE-mac */
+
+.ellipsis{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis}
+
+/* png */
+/*
+* html img,
+* html .png{
+ behavior: expression((this.runtimeStyle.behavior="none")&&(this.pngSet?this.pngSet=true:(this.nodeName == "IMG" && this.src.toLowerCase().indexOf('.png')>-1?(this.runtimeStyle.backgroundImage = "none",
+ this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
+ this.src = "http://image.lotte.com/lotte/images/common/clear.gif"):(this.origBg = this.origBg? this.origBg :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
+ this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
+ this.runtimeStyle.backgroundImage = "none")),this.pngSet=true)
+ );
+}
+*/
+* html .png24{tmp:expression(setPng24(this))}
+
+/* 입력 서식 */
+input, textarea, select{background-color:#fff;border:1px solid #cacaca;-webkit-border-radius:0;-webkit-appearance:none;} /* 20140324 수정 */

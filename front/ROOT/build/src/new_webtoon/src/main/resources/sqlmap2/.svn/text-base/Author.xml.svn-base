@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.toon.persistence.AuthorMapper">		
+
+	<cache eviction="LRU" flushInterval="30000" size="128" readOnly="true"/>
+	
+	<select id="authorSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.AuthorDomain">
+		select 
+			author.authorseq,
+			authornm,
+			ifnull(authordesc, '') authordesc,
+			ifnull(blogurl, '') blogurl,
+			ifnull(facebookurl, '') facebookurl,
+			ifnull(twitterurl, '') twitterurl,
+			ifnull(kakaourl, '') kakaourl,
+			imagepath,
+			imagefilenm,
+			displayyn,
+			nickname,
+	        namecon.nameconurl,
+	        namecon.mnameconurl
+		from ow_author author
+		left join ow_namecon namecon on author.nameconseq = namecon.nameconseq
+		where displayyn = 'Y' and authorseq = #{authorseq}
+	</select>
+	
+	<select id="authorToonSelectListCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select
+			count(toon.webtoonseq)
+		from ow_webtoon toon
+	    left join 
+        (
+			select 
+				a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt, a.publishdt, a.lastyn, a.comments, a.displayorder
+			from (
+				select 
+					timesseq,timesno,timestitle,thumbpath,startdt,totalstickercnt, webtoonseq, regdt, publishdt, lastyn, comments, displayorder
+				from ow_times 
+				where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+				order by timesseq asc 
+			) as a 
+			group by a.webtoonseq
+        ) times on toon.webtoonseq = times.webtoonseq
+		where (toonyn = 'Y' or premiumyn = 'Y' or toon.toonfg = 'novel')
+		<if test='pcdisplayyn == "Y"'>
+		  and pcdisplayyn = 'Y'
+		</if>
+		<if test='mdisplayyn == "Y"'>
+		  and mdisplayyn = 'Y'
+		</if>
+      	  and times.timesseq is not null 
+		  and (authorseq1=#{authorseq} or authorseq2=#{authorseq} or authorseq3=#{authorseq})
+	</select>	
+	
+	<select id="authorToonSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+		  toon.webtoonseq, toon.webtoonnm, toon.subtitle, toon.webtoondesc, toon.thumbpath, toon.sthumbpath, toon.imagepath, toon.serialfg, 
+		  toon.genreseq1, toon.genreseq2, toon.genreseq3, toon.toonfg,
+		  sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+		  ifnull(grenre1.genrenm, '') genrenm1, ifnull(grenre2.genrenm, '') genrenm2, ifnull(grenre3.genrenm, '') genrenm3,
+		  toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+		  times.timesseq,
+		  format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt
+		from ow_webtoon toon
+		  left join ow_genre grenre1 on toon.genreseq1 = grenre1.genreseq
+		  left join ow_genre grenre2 on toon.genreseq2 = grenre2.genreseq
+		  left join ow_genre grenre3 on toon.genreseq3 = grenre3.genreseq		
+     	  left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq  
+	      left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt, a.publishdt, a.lastyn, a.comments, a.displayorder
+				from (
+					select 
+						timesseq,timesno,timestitle,thumbpath,startdt,totalstickercnt, webtoonseq, regdt, publishdt, lastyn, comments, displayorder
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by timesseq asc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where (toonyn = 'Y' or premiumyn = 'Y' or toon.toonfg = 'novel')
+		<if test='pcdisplayyn == "Y"'>
+		  and pcdisplayyn = 'Y'
+		</if>
+		<if test='mdisplayyn == "Y"'>
+		  and mdisplayyn = 'Y'
+		</if>
+      	  and times.timesseq is not null 
+		  and (authorseq1=#{authorseq} or authorseq2=#{authorseq} or authorseq3=#{authorseq})
+		order by
+			toon.serialfg DESC, times.timesseq desc
+		<if test="toonStartRowNo != null and pageSize != null">
+		limit #{toonStartRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="authorYoyozineSelectListCount" parameterType="hashmap" resultType="java.lang.Integer">
+	<![CDATA[
+		select
+			count(*)
+		from (
+			select 
+			  distinct zine.yoyozineseq
+			from ow_refwebtoon ref
+			  left join ow_yoyozine zine on ref.yoyozineseq = zine.yoyozineseq
+			where zine.displayyn = 'Y'
+				and zine.tempsaveyn = 'N'
+				and zine.startdt <= DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			    and (authorseq1=#{authorseq} or authorseq2=#{authorseq} or authorseq3=#{authorseq})
+		) x
+    ]]>
+	</select>	
+	
+	<select id="authorYoyozineSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+	<![CDATA[ 
+		select 
+		  distinct
+		  zine.yoyozineseq, zine.subject, ifnull(zine.storynum, '') storynum, 
+		  zine.title, zine.subtitle, zine.thumbpath, zine.mthumbpath, DATE_FORMAT(zine.publishdt,'%Y.%m.%d') publishdt,
+		  (
+		    select count(commentseq) 
+		    from ow_comment 
+		    where delyn = 'N' and blindyn = 'N' 
+		      and articlefg = 'yoyozine' and articleseq = zine.yoyozineseq
+		  ) commentcnt
+		from ow_refwebtoon ref
+		  left join ow_yoyozine zine on ref.yoyozineseq = zine.yoyozineseq
+		where zine.displayyn = 'Y'
+			and zine.tempsaveyn = 'N'
+			and zine.startdt <= DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+		    and (authorseq1=#{authorseq} or authorseq2=#{authorseq} or authorseq3=#{authorseq})
+		order by zine.yoyozineseq desc
+	]]>
+		<if test="yoyozineStartRowNo != null and pageSize != null">
+		limit #{yoyozineStartRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="shopAuthorItemCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_prd 
+		where
+			sellyn ='Y' 
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+			and	(prdfg = 'name' OR prdfg='comment')
+			and (refauthorseq1=#{authorseq} or refauthorseq2=#{authorseq} or refauthorseq3=#{authorseq})
+	</select>
+	
+	<select id="shopAuthorItemList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.shop.domain.ShopDomain">
+		select
+			prdnm, prdfg, prdseq, thumbpath, sellfg, recommyn, purchasefg,
+			case
+				when prdprice = 0 then '무료' 
+			    else format(prdprice, 0)
+			end as prdprice,
+			case
+				when prddiscountprice = 0 then '무료' 
+			    else format(prddiscountprice, 0)
+			end as prddiscountprice,
+		<![CDATA[
+			case
+				when sellfg = 'sale' 
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			case
+				when sellfg = 'sale'
+					 and date_format(now(), '%Y%m%d%H%i%s') >= date_format(discountsellstartdt, '%Y%m%d%H%i%s')
+					 and date_format(now(), '%Y%m%d%H%i%s') <= date_format(discountsellenddt, '%Y%m%d%H%i%s') then Floor((prdprice - prddiscountprice)/IF(prdprice = 0, 1, prdprice) * 100)
+			    else ''
+			end as discountpercent
+		]]>
+		from 
+			ow_prd 
+		where
+			sellyn ='Y' 
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+			and	(prdfg = 'name' OR prdfg='comment')
+			and (refauthorseq1=#{authorseq} or refauthorseq2=#{authorseq} or refauthorseq3=#{authorseq})
+		order by 
+				regdt desc, 
+				prdseq desc
+		limit
+			#{itemstartRowNo}, #{itempageSize}
+	</select>
+	
+</mapper>

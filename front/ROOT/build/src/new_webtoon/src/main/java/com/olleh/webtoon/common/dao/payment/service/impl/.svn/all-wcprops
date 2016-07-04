@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/service/impl
+END
+PaymentServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/service/impl/PaymentServiceImpl.java
+END
+PaymentFailServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/payment/service/impl/PaymentFailServiceImpl.java
+END

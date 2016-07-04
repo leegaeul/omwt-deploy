@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+<script type="text/javascript">
+$(document).ready(function(){
+	/*//등록 이미지 더 보기 ~ 20140923 삭제
+	var uploaded_cnt = 0;
+	$('.uploaded_stickon_view .item_cont li').each(function(){//페이지 로딩시 리스트 10개만 노출
+		if (($(this).index()+1)>10)
+		{
+			$(this).hide();
+		}
+	});
+	$('.uploaded_stickon_view .com_more_toggle').click(function(){
+		$(this).find('span').toggleClass('on');
+		if (uploaded_cnt == 0)
+		{
+			$(this).find('span').text('접기');
+			uploaded_cnt = 1;
+		} else {
+			$(this).find('span').text('더보기');
+			uploaded_cnt = 0;
+		}
+		$('.uploaded_stickon_view .item_cont li').each(function(){
+			if (($(this).index()+1)>10)
+			{
+				$(this).toggle();
+			}
+		});
+		return false;
+	});*/
+
+	//관련 작품 더 보기 20140923 수정
+	$('.relative_stickon_view .list_epi').each(function(){//페이지 로딩시 리스트 1개만 노출
+		if ($(this).index() != 0)
+		{
+			$(this).hide();
+		}
+	});
+	$('.relative_stickon_view .com_more_toggle').click(function(){
+		$(this).hide();
+		$('.relative_stickon_view .list_epi').show();
+		return false;
+	});
+
+	//추천 아이템 더 보기 20140923 수정
+	$('.toon_author_item .item_cont li').each(function(){//페이지 로딩시 리스트 5개만 노출
+		if (($(this).index()+1)>5)
+		{
+			$(this).hide();
+		}
+	});
+	$('.toon_author_item .com_more_toggle').click(function(){
+		$(this).hide();
+		$('.toon_author_item .item_cont li').show();
+		return false;
+	});
+
+	//팝업 닫기 20140721
+	$('.popup_alarm_guide .popup_close02 a').click(function(){
+		$(this).parent().parent().fadeOut('fast');
+		$('.com_popup_bglayer').hide();
+		return false;
+	});
+});
+//20140721 추가 시작
+//팝업 불러오기
+$(window).load(function(){
+	init_popup('popup_alarm_guide');
+});
+//팝업 실행
+function init_popup(popup){
+	$('.'+popup).fadeIn('fast');
+	var popupY = 0;
+	if ($(window).height() < $('.'+popup).outerHeight())
+	{
+		popupY = $(window).scrollTop();
+	} else {
+		popupY = $(window).scrollTop() + ($(window).height()/2) - ($('.'+popup).outerHeight()/2);
+	}
+	$('.'+popup).css({ top: popupY });
+	$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});
+	$('.com_popup_bglayer').show();
+}
+//20140721 추가 끝
+</script>
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 수정 20140716 ~ 베리 충전소 링크/SHOP 하위 메뉴 추가 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#">
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#" class="on"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+			<!-- 베리 충전소 링크 추가 -->
+			<div class="topMenuEtc">
+				<a href="#"><img src="img/top_menu_bnr.png" alt="베리 충전소" /></a>
+			</div>
+			<!-- //베리 충전소 링크 추가 -->
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 20140507 수정 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">실시간 랭킹</a> |</li>
+					<li><a href="#">월간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 20140507 수정 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 2차 오픈 범위
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>-->
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 -->
+		<div class="subMenu subMenu06 subMenuOn"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">추천</a> |</li>
+					<li class="on"><a href="#">스티콘</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li><a href="#">네임콘</a> |</li>
+					<li><a href="#">B고객전용</a></li><!--20141107 추가-->
+				</ul>
+			</div>
+		</div>
+		<!-- //Shop 하위메뉴 -->
+<!-- //메뉴 수정 20140716 ~ 베리 충전소 링크/SHOP 하위 메뉴 추가 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+
+		<!-- layout_left -->
+		<div class="layout_left">
+
+			<!-- stickon_view_main 20141107 수정 ~ B한정 아이콘 추가, 가격표시 수정, 버튼 수정 -->
+			<div class="stickon_view_main">
+				<div class="view_top">
+					<img src="img/tit_shop_stickon.gif" alt="스티콘">
+				</div>
+				<div class="view_cont">
+					<img src="img/temp/tmp_sticker_cmt.png" alt="" class="cont_thumb" />
+					<span class="ic_blue_b">B한정</span><!--B한정-->
+					<div class="cont_tit">버내노</div>
+					<div class="cont_txt">
+						<ul>
+							<li>
+								<span class="tit author">작가</span>
+								<span class="wr wr_tp01">귤소녀</span>
+								<a href="#" class="bt_type_intro">작가소개</a>
+							</li>
+							<li>
+								<span class="tit period">이용기간</span>
+								<span class="wr wr_tp03">구입 후 12개월</span>
+							</li>
+							<li>
+								<span class="tit price">가격</span>
+								<!--베리/블루베리-->
+								<span class="wr">
+									<span class="ico_berry">베리</span>
+									<span class="ico_bberry">블루베리</span>
+									70
+								</span>
+								<!--//베리/블루베리-->
+								
+								<!--베리
+								<span class="wr rd">
+									<span class="ico_berry">베리</span>
+									70
+								</span>-->
+								<!--//베리-->
+
+								<!--블루베리
+								<span class="wr bl">
+									<span class="ico_bberry">블루베리</span>
+									70
+								</span>-->
+								<!--//블루베리-->
+							</li>
+						</ul>
+					</div>
+
+					<!-- 20140725 수정 -->
+					<div class="cont_btn">
+						<!-- 버튼 or 표시 유형 -->
+							<a href="#" class="bt_rd_buyItem">구매</a>
+							<!--<!-/- 아이템이 없을 때/아이템이 유료일 때 노출함 -/->
+							<a href="#" class="bt_txt_rdNormal" onclick="init_popup('spopup_buy_toon');return false;"><span>5,000,000 베리</span></a>
+
+							<!-/- 아이템이 없을 때/아이템이 무료일 때 노출함 -/->
+							<a href="#" class="bt_free_download">무료 다운로드</a>
+
+							<!-/- 아이템이 있을 때 노출함 -/->
+							<span class="mark_item_holding">보유 중</span>
+							-->
+						<!-- //버튼 or 표시 유형 -->
+
+						<!-- 아이템이 할인중일 때 노출함 
+						<span class="mark_dcp"><strong>99%</strong><br />할인</span>-->
+					</div>
+					<!-- //20140725 수정 -->
+				</div>
+			</div>
+			<!-- //stickon_view_main -->
+
+			<!-- 등록 이미지 20140923 수정-->
+			<div class="uploaded_stickon_view">
+				<div class="item_tit">
+					<a href="#" class="com_more_toggle"><span>더보기</span></a>
+				</div>
+				<div class="item_cont">
+					<ul>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+						<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- //등록 이미지 -->
+
+			<!-- 관련 작품 -->
+			<div class="relative_stickon_view">
+				<div class="item_tit">
+					<img src="img/tit_stickon_relative.gif" alt="관련 작품">
+					<a href="#" class="com_more_toggle"><span>더보기 +</span></a><!--20140923 수정-->
+				</div>
+				<div class="item_cont">
+					<!-- 리스트 -->
+					<div class="list_epi list_epi_on"><!-- 첫 번째 리스트에 list_epi_on 클래스 붙음-->
+						<a href="#">
+							<span class="thumb">
+								<img src="img/temp/tmp_work_list.jpg" alt="29화 - 고마워">
+								<span class="bg_img"></span>
+							</span>
+							<span class="thumbEtc">
+								<span class="top_wr">
+									<span class="tit">수상한 그녀의 밥상</span>
+									<span class="rate">
+										<img src="img/temp/tmp_icn02.png" alt="">
+										4,151
+									</span>
+								</span>
+								<span class="top_etc">연재일 : 월, 화, 수, 목, 금</span>
+								<span class="top_etc">장르 : 드라마</span>
+							</span>
+						</a>
+					</div>
+					<!-- //리스트 -->
+					<!-- 리스트 -->
+					<div class="list_epi">
+						<a href="#">
+							<span class="thumb">
+								<img src="img/temp/tmp_work_list.jpg" alt="29화 - 고마워">
+								<span class="bg_img"></span>
+							</span>
+							<span class="thumbEtc">
+								<span class="top_wr">
+									<span class="tit">수상한 그녀의 밥상</span>
+									<span class="rate">
+										<img src="img/temp/tmp_icn02.png" alt="">
+										4,151
+									</span>
+								</span>
+								<span class="top_etc">연재일 : 월, 화, 수, 목, 금</span>
+								<span class="top_etc">장르 : 드라마</span>
+							</span>
+						</a>
+					</div>
+					<!-- //리스트 -->
+					<!-- 리스트 -->
+					<div class="list_epi">
+						<a href="#">
+							<span class="thumb">
+								<img src="img/temp/tmp_work_list.jpg" alt="29화 - 고마워">
+								<span class="bg_img"></span>
+							</span>
+							<span class="thumbEtc">
+								<span class="top_wr">
+									<span class="tit">수상한 그녀의 밥상</span>
+									<span class="rate">
+										<img src="img/temp/tmp_icn02.png" alt="">
+										4,151
+									</span>
+								</span>
+								<span class="top_etc">연재일 : 월, 화, 수, 목, 금</span>
+								<span class="top_etc">장르 : 드라마</span>
+							</span>
+						</a>
+					</div>
+					<!-- //리스트 -->
+					<!-- 리스트 -->
+					<div class="list_epi">
+						<a href="#">
+							<span class="thumb">
+								<img src="img/temp/tmp_work_list.jpg" alt="29화 - 고마워">
+								<span class="bg_img"></span>
+							</span>
+							<span class="thumbEtc">
+								<span class="top_wr">
+									<span class="tit">수상한 그녀의 밥상</span>
+									<span class="rate">
+										<img src="img/temp/tmp_icn02.png" alt="">
+										4,151
+									</span>
+								</span>
+								<span class="top_etc">연재일 : 월, 화, 수, 목, 금</span>
+								<span class="top_etc">장르 : 드라마</span>
+							</span>
+						</a>
+					</div>
+					<!-- //리스트 -->
+					<!-- 리스트 -->
+					<div class="list_epi">
+						<a href="#">
+							<span class="thumb">
+								<img src="img/temp/tmp_work_list.jpg" alt="29화 - 고마워">
+								<span class="bg_img"></span>
+							</span>
+							<span class="thumbEtc">
+								<span class="top_wr">
+									<span class="tit">수상한 그녀의 밥상</span>
+									<span class="rate">
+										<img src="img/temp/tmp_icn02.png" alt="">
+										4,151
+									</span>
+								</span>
+								<span class="top_etc">연재일 : 월, 화, 수, 목, 금</span>
+								<span class="top_etc">장르 : 드라마</span>
+							</span>
+						</a>
+					</div>
+					<!-- //리스트 -->
+				</div>
+			</div>
+			<!-- //관련 작품 -->
+
+			<!-- toon_author_item 20141107 ~ B한정 아이콘 추가, 가격표시 수정 -->
+			<div class="toon_author_item">
+				<div class="item_tit">
+					<img src="img/tit_stickon_recom.gif" alt="님의 아이템">
+					<a href="#" class="com_more_toggle"><span>더보기 +</span></a><!--20140923 수정-->
+				</div>
+				<div class="item_cont">
+					<ul>
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb nameconThumb"><img src="img/temp/tmp_sticker_author.png" alt="아기자기 표정이 가득 가득"></div>
+								<span class="mk_thumb_evt">EVENT</span>
+								<span class="ic_blue_s">B한정</span><!--B한정-->
+							<div class="tit">
+								<span class="mark_namecon">네임콘</span>
+								<!--<span class="mark_stickon">스티콘</span>-->
+								아기자기 표정이 가득 가득...
+							</div>
+
+							<!--베리/블루베리-->
+							<div class="berry">
+								<span class="ico_berry">Berry</span>
+								<span class="ico_bberry">Blue Berry</span>
+								1,200
+							</div>
+							<!--//베리/블루베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+								<span class="mk_thumb_down">99%</span>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--블루베리-->
+							<div class="berry berry_bl">
+								<span class="ico_bberry">Blue Berry</span>
+								1,200
+							</div>
+							<!--//블루베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+						<!-- 리스트 -->
+						<li class="on"><a href="#">
+							<div class="thumb"><img src="img/temp/tmp_sticker_cmt.png" alt="아기자기 표정이 가득 가득"></div>
+							<div class="tit">
+								<span class="mark_stickon">스티콘</span>
+								아기자기 표정이 가득...
+							</div>
+							
+							<!--베리-->
+							<div class="berry berry_rd">
+								<span class="ico_berry">Berry</span>
+								1,200
+							</div>
+							<!--//베리-->
+						</a></li>
+						<!-- //리스트 -->
+					</ul>
+				</div>
+			</div>
+			<!-- //toon_author_item -->
+
+			<!-- top 버튼 -->
+			<div class="shop_main_btn">
+				<a href="#header" class="comTopBtn">TOP</a>
+			</div>
+			<!-- //top 버튼 -->
+			
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+
+			<!-- toon_day_bnr03 -->
+			<div class="toon_day_bnr03">
+				<a href="#"><img src="img/temp/tmp_s_custom06.jpg" alt="" /></a>
+			</div>
+			<!-- //toon_day_bnr03 -->
+
+			<!-- 실시간 랭킹 -->
+			<div class="m_weekly_ranking">
+				<div class="tit">
+					<img src="img/main_tit_rank.gif" alt="월간 랭킹" />
+				</div>
+				<ol class="list">
+					<!-- 1st list -->
+					<li class="first">
+						<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=40" class="listA">
+							<div class="thumb">
+								<span class="order o01">1</span>
+								<img src="img/temp/thumb_01_140610.jpg" alt="썸툰 시즌2" class="thum01" />
+								<span class="bg_thum01"></span>
+							</div>
+							<div class="cont">
+								<div class="name">썸툰 시즌2</div>
+								<div class="cntEtc">
+									<span class="author">모히또모히칸</span>
+								</div>
+								<div class="viewDt">연재일 : 월 목</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>누군가의 사연이지만, 우리에겐 좀처럼 일어나지 않는 달콤충만 썸 story~</span>
+						</div>
+					</li>
+					<!-- //1st list -->
+
+					<!-- 2nd list -->
+					<li>
+						<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=11" class="listA">
+							<div class="thumb">
+								<span class="order o02">2</span>
+								<img src="img/temp/thumb_02_140610.jpg" alt="개천고" class="thum" />
+								<span class="bg_thum"></span>
+							</div>
+							<div class="cont">
+								<div class="name">개천고</div>
+								<div class="cntEtc">
+									<span class="author">채준</span>
+								</div>
+								<div class="viewDt">연재일 : 월 수 금</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>손시진의 개천에서 용나는 격렬 전투 학습 고군분투기!</span>
+						</div>
+					</li>
+					<!-- //2nd list -->
+
+					<!-- 3rd list -->
+					<li>
+						<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=38" class="listA">
+							<div class="thumb">
+								<span class="order o03">3</span>
+								<img src="img/temp/thumb_03_140610.jpg" alt="샌드위치를 먹다" class="thum" />
+								<span class="bg_thum"></span>
+							</div>
+							<div class="cont">
+								<div class="name">샌드위치를 먹다</div>
+								<div class="cntEtc">
+									<span class="author">귤소녀</span>
+								</div>
+								<div class="viewDt">연재일 : 화</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>샌드위치처럼 낀 동하의 내꺼인 듯 내꺼 아닌 이야기</span>
+						</div>
+					</li>
+					<!-- //3rd list -->
+				</ol>
+				<div class="more">
+					<a href="http://webtoon.olleh.com/ranking/monthList.kt">더보기</a><!--20140923 수정-->
+				</div>
+			</div>
+			<!-- //실시간 랭킹-->
+
+			<!-- m_main_notice -->
+			<div class="m_main_notice">
+				<div class="tit"><img src="img/main_tit_notice.gif" alt="공지사항" /></div>
+				<ul>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+				</ul>
+				<div class="more"><a href="#">더보기</a></div><!--20140923 수정-->
+			</div>
+			<!-- //m_main_notice -->
+
+			<!-- mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+			<div class="mytoon_quickbtn">
+				<a href="#" class="faq">FAQ 자주 묻는 질문</a>
+				<!--<a href="#" class="userguide">이용가이드</a> 삭제 -->
+				<a href="#" class="qna">1:1 문의</a>
+				<a href="#" class="app">APP 다운로드</a>
+			</div>
+			<!-- //mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+
+		</div>
+		<!-- //layout_right -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+<!-- 20141107 수정 -->
+<div class="com_popup_bglayer"></div><!-- 팝업 배경 레이어 -->
+<!--블루멤버십 고객전용 알림-->
+<div class="com_popup_layout popup_alarm_guide">
+	<div class="popup_tit02">블루멤버십 고객전용 알림</div>
+	<div class="popup_com_cont">
+		<p class="p_tp">
+			블루멤버십 고객님,<br />
+			보유하신 베리가 부족해요~ 베리를 충전해 주세요.<br />
+			[확인] 누르시면 베리 충전소로 슝~
+		</p>
+		<div class="btn_tp">
+			<button type="button" class="bt_normal_confirm">확인</button>
+			<button type="button" class="bt_normal_cancel">취소</button>
+		</div>
+	</div>
+	<div class="popup_close02">
+		<a href="#"><img src="img/btn_close02.png" alt="close" /></a>
+	</div>
+</div>
+<!--//블루멤버십 고객전용 알림-->
+<!-- /20141107 수정 -->
+
+</body>
+</html>

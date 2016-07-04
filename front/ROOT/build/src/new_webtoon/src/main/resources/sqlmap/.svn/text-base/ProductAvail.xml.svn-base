@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.premium.persistence.ProductAvailMapper">
+
+	<select id="selectProductAvail"
+		parameterType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain"
+		resultType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain">
+		SELECT
+			buyseq, prdhistoryseq, buyid, idfg, availdt, regid, regdt
+		FROM
+			ow_prd_avail
+		WHERE
+		<![CDATA[
+			idfg = #{idfg}
+			and buyid = #{buyid}
+			and DATE_FORMAT(NOW(),'%Y%m%d') <= DATE_FORMAT(availdt,'%Y%m%d')
+		]]>
+		<if test='prdfg == null or prdfg == "times" or prdfg == "webtoon"'>
+			and (prdhistoryseq in (select prdhistoryseq from ow_prd_his
+								   where prdfg = 'times' and webtoonseq = #{webtoonseq} and timesseq = #{timesseq} 
+								   order by prdhistoryseq desc)
+			or prdhistoryseq in  (select prdhistoryseq from ow_prd_his
+								  where prdfg = 'webtoon' and webtoonseq = #{webtoonseq} 
+								  order by prdhistoryseq desc))
+		</if>
+		<if test='prdfg == "name" or prdfg == "comment"'>
+			and prdhistoryseq = (select prdhistoryseq from ow_prd_his
+							     where prdfg = #{prdfg} and prdseq = #{prdseq}
+								 order by prdhistoryseq desc
+								 limit 1 )		
+		</if>
+		LIMIT 1
+	</select>
+	
+	<insert id="insertProductAvail" parameterType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain">
+		INSERT INTO ow_prd_avail (
+			buyseq
+			, prdhistoryseq
+			, buyid
+			, idfg
+			, availdt
+			, regid
+			, regdt
+		) VALUES (
+			#{buyseq}
+			, #{prdhistoryseq}
+			, #{buyid}
+			, #{idfg}
+			, #{availdt}
+			, #{regid}
+			, #{regdt}
+		);		
+    </insert>
+    
+    <select id="selectProductAvailByPrdSeq" 
+    		parameterType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain"
+    		resultType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain">
+    		SELECT avail.buyseq, avail.prdhistoryseq, avail.buyid, avail.idfg, avail.availdt, avail.regid, avail.regdt 
+			FROM ow_prd_avail avail
+			JOIN
+			(
+				select * from ow_prd_his
+				where prdseq = #{prdseq}
+			) his on avail.prdhistoryseq = his.prdhistoryseq
+			WHERE 
+			<![CDATA[
+				avail.buyid = #{buyid} 
+				and avail.idfg = #{idfg}
+				and DATE_FORMAT(NOW(),'%Y%m%d') <= DATE_FORMAT(avail.availdt,'%Y%m%d')
+			]]>
+			ORDER BY avail.buyseq desc
+    </select>
+    
+    <delete id="deleteProductAvail" parameterType="java.lang.Integer">
+    	DELETE FROM ow_prd_avail
+           WHERE buyseq = #{buyseq} 
+    </delete>
+    
+</mapper>

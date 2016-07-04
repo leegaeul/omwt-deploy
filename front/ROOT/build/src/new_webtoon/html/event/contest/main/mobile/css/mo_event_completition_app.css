@@ -1,0 +1,107 @@
+@charset "utf-8";
+.completition_app_wrap{width:100%;min-width:320px;margin:0 auto;z-index:0;position:relative}
+.completition_app_wrap a{text-decoration:none}
+.completition_app_wrap img{width:100%}
+
+/* 네비게이션 */
+.navigation{background:url(../images/m_completition_nav_bg.png) repeat 0 0;height:32px;width:100%;position:fixed;z-index:10;text-align:center;min-width:320px}
+.navigation ul:after{display:block;clear:both;content:""}
+.navigation ul li{display:inline-block;margin-right:1%}
+.navigation ul .last_nav{margin:0}
+.navigation ul li a{display:block;height:32px;overflow:hidden;font-size:14px;color:#ced0d1;line-height:32px;padding:0 4px;letter-spacing:-0.25px}
+.navigation ul li a.active{color:#ff4921;background-color:#0e1531;}
+
+/* 우리의 꿈 */
+.we_dream_wrap{position:relative}
+.we_dream_wrap .d_day_box{position:absolute;top:3.2%;right:4.3%;background:url(../images/m_completition_dday_bg.png) no-repeat 0 0;width:43px;height:41px;background-size:auto 51px;color:#fff;font-size:9px;font-family:'맑은 고딕', Malgun Gothic;padding:10px 0 0 7px}
+.we_dream_wrap .d_day_box .d_day_txt{line-height:9px}
+.we_dream_wrap .d_day_box .d_day_txt .number{margin-left:3px;font-weight:bold;font-size:19px;position:relative;top:3px}
+
+/* 헬프바 */
+.help_bar{position:fixed;bottom:25px;right:-113px;overflow:hidden;z-index:10}
+.help_bar ul:after{display:block;clear:both;content:""}
+.help_bar ul li{float:left}
+
+/* 작가 심사단 */
+
+/* 응모 요건 및 응모하기 */
+.dream_challenge_wrap .needs_app_wrap .app_area{position:relative}
+.dream_challenge_wrap .needs_app_wrap .app_area a{position:absolute;top:100px;right:108px}
+
+/* 꿈의 실현 */
+.dream_realize_wrap{position:relative}
+.dream_realize_wrap .btn_story{position:absolute;top:55.4%;width:100%}
+.dream_realize_wrap .btn_story a{margin:0 40.2% 0 40.2%;display:block}
+
+/* 꿈 나누기 */
+.dream_div_wrap{position:relative}
+.dream_div_wrap .btn_winner{position:absolute;top:69%;width:100%}
+.dream_div_wrap .btn_winner a{margin:0 12% 0 67.5%;display:block}
+
+/* 공유&개인정보 동의 */
+.share_agree_wrap .step_list{overflow:hidden;width:275px;margin:0 auto 15px}
+.share_agree_wrap .step_list > li{position:relative}
+.share_agree_wrap .step_list input{border:1px solid #d1d1d1;height:21px;padding-left:2px;font-weight:bold;color:#000;float:left;font-size:12px;font-weight:normal}
+.share_agree_wrap .step_list > .step01 .number_box{position:absolute;top:73px;left:44px;font-size:12px}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number{position:relative;z-index:1;width:40px;height:21px;padding:0 2px;border:1px solid #d1d1d1;background:#fff;line-height:19px;float:left}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number a.btn_sel{display:block;*zoom:1}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number a.btn_sel:after{display:block;clear:both;content:''}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number a.btn_sel:hover .cnt,.selComp a.btn_sel:focus .cnt{text-decoration:underline}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .cnt{overflow:hidden;float:left;width:25px;height:21px;font-size:12px;color:#373737;line-height:21px;padding-left:3px;font-weight:normal}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .arrow{display:block;float:right;width:7px;height:5px;margin-top:-1px;background:#FFF url(../images/m_icon_select_arrow.jpg) no-repeat right center;text-indent:-9999px;margin:8px 2px 0 0;background-size:7px 5px}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .sel_list_wrap{display:none;overflow-x:hidden;overflow-y:scroll;position:absolute;top:21px;left:-1px;width:100%;max-height:115px;height:expression(this.scrollHeight > 120 ? '120' :'auto' );border:1px solid #D2D2D2;background:#fff;z-index:100}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .sel_list_wrap .sel_list li{width:100%;padding:2px}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .sel_list_wrap .sel_list li.on{background:#eee}
+.share_agree_wrap .step_list > .step01 .number_box .phone_first_number .sel_list_wrap .sel_list li a{display:block;overflow:hidden;;height:18px;font-size:12px;color:#373737;line-height:18px;font-weight:normal}
+.share_agree_wrap .step_list > .step01 .number_box .phone_number{width:57px;padding:0;text-align:center}
+.share_agree_wrap .step_list > .step01 .number_box .dash{float:left;margin:0 4px 0 3px;color:#000;font-size:9px;font-weight:normal;height:22px;line-height:22px}
+
+.share_agree_wrap .step_list > li .phone_input{border:1px solid #e0e0e0;position:absolute;top:137px;left:51px;font-size:12px;height:20px;line-height:12px;padding:5px;width:148px;text-align:left;color:#858585}
+.share_agree_wrap .step_list > li .comment_txt{border:1px solid #e0e0e0;position:absolute;top:72px;left:15px;width:233px;height:48px;padding:5px;overflow-y:auto;font-size:11px}
+.share_agree_wrap .step_list > li .radio_list{position:absolute;top:73px;left:46px}
+.share_agree_wrap .step_list > li .radio_list:after{display:block;content:'';clear:both}
+.share_agree_wrap .step_list > li .radio_list li{float:left;margin-right:12px;position:relative;width:37px}
+.share_agree_wrap .step_list > li .radio_list .last_list{margin:0;width:38px}
+.share_agree_wrap .step_list > li .radio_list li label{position:relative;float:left;font-size:14px;font-weight:normal;height:21px;line-height:14px;padding-left:14px;cursor:pointer;z-index:2}
+.share_agree_wrap .step_list > li .radio_list li label img{width:21px;height:21px}
+.share_agree_wrap .step_list > li .radio_list li .design_radio{background:url(../images/completition_design_radio.png) no-repeat 0 0;height:15px;width:15px;position:absolute;top:6px;left:0;cursor:pointer;z-index:1;display:block;background-size:15px 65px}
+.share_agree_wrap .step_list > li .radio_list .select .design_radio{background-position:0 -50px}
+
+.share_agree_wrap .term_agree_tp_bg{overflow:hidden;margin:0 auto;;width:275px;background:url(../images/m_completition_agree_tp_bg.jpg) no-repeat 0 0;background-size:275px auto;height:17px}
+.share_agree_wrap .term_agree_box{overflow:hidden;margin:0 auto;;width:275px;background:url(../images/m_completition_agree_md_bg.jpg) repeat-y 0 0;background-size:275px 1px;height:auto}
+.share_agree_wrap .term_agree_bt_bg{overflow:hidden;margin:0 auto;;width:275px;background:url(../images/m_completition_agree_bt_bg.jpg) no-repeat 0 0;background-size:275px auto;height:18px}
+.share_agree_wrap .term_agree_box > ul{padding:0 0 0 23px}
+.share_agree_wrap .term_agree_box > ul > li{position:relative}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 dt{display:block;height:17px;margin-bottom:5px}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 dt input{position:absolute;left:-9999px}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 dt label{position:relative;font-size:12px;color:#000;font-weight:normal;height:36px;line-height:17px;padding-left:21px;cursor:pointer;z-index:2;letter-spacing:-1px}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 dt .design_radio{background:url(../images/completition_design_check.png) no-repeat 0 0;height:17px;width:17px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block;background-size:20px 70px}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 dt.select .design_radio{background-position:0 -50px}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 .term_box{background-color:#fff;font-size:12px;color:#555555;padding:5px;line-height:19px;text-align:left;font-size:10px;width:219px;height:50px;background-color:#fff;margin-bottom:13px;overflow:hidden}
+.share_agree_wrap .term_agree_box > ul > li .term_box1 .all_view{position:absolute;top:2px;left:188px;background-color:#9d9d9d;color:#fff;font-size:9px;display:block;width:40px;text-align:center;height:14px;line-height:14px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 dt{display:block;height:17px;margin-bottom:5px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 dt input{position:absolute;left:-9999px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 dt label{position:relative;font-size:12px;color:#000;font-weight:normal;height:36px;line-height:17px;padding-left:21px;cursor:pointer;z-index:2;letter-spacing:-1px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 dt .design_radio{background:url(../images/completition_design_check.png) no-repeat 0 0;height:17px;width:17px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block;background-size:20px 70px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 dt.select .design_radio{background-position:0 -50px}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 .term_box{background-color:#fff;font-size:12px;color:#555555;padding:5px;line-height:19px;text-align:left;font-size:10px;width:219px;height:50px;background-color:#fff;overflow:hidden}
+.share_agree_wrap .term_agree_box > ul > li .term_box2 .all_view{position:absolute;top:2px;left:188px;background-color:#9d9d9d;color:#fff;font-size:9px;display:block;width:40px;text-align:center;height:14px;line-height:14px}
+.share_agree_wrap .btn_rumors{display:block;margin:0 auto;width:395px;margin-bottom:42px}
+
+.btn_area .btn_rumor{width:100%}
+.btn_area .btn_rumor a{margin:20px auto 20px;display:block;width:197px}
+
+.cheer_wrap .cheer_post_board{}
+.cheer_wrap .cheer_post_board .board_title{border-bottom:1px solid #525252;padding-left:20px}
+.cheer_wrap .cheer_post_board .board_title img{width:153px;height:auto}
+.cheer_wrap .cheer_post_board .board_list li{border-bottom:1px solid #cccccc}
+.cheer_wrap .cheer_post_board .board_list li dl{overflow:hidden}
+.cheer_wrap .cheer_post_board .board_list li dl dt{float:left;padding:10px 10px 10px 20px}
+.cheer_wrap .cheer_post_board .board_list li dl dt img{width:21px;height:21px}
+.cheer_wrap .cheer_post_board .board_list li dl dd{float:left;padding:13px 0 13px 0}
+.cheer_wrap .cheer_post_board .board_list li dl dd .comment_top{padding-bottom:5px}
+.cheer_wrap .cheer_post_board .board_list li dl dd .comment_top .name{font-size:10px;color:#000;font-weight:bold}
+.cheer_wrap .cheer_post_board .board_list li dl dd .comment_top .date{font-size:10px;color:#888888}
+.cheer_wrap .cheer_post_board .board_list li dl dd .comment_txt{font-size:10px;color:#444444}
+.cheer_wrap .board_more{background-color:#ebebeb}
+.cheer_wrap .board_more a{text-align:center;color:#000;font-size:10px;font-weight:bold;display:block;height:25px;line-height:25px}

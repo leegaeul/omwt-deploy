@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.yoyozine.persistence.YoyozineMapper">
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+
+	<select id="yoyozineSelectListCnt" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			ow_yoyozine
+		where
+		<![CDATA[
+			displayyn = 'Y' 
+			and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+			or (directdisplayyn = 'Y'))
+		]]>
+		<if test="categoryfg !=null and categoryfg != ''">
+			and categoryfg = #{categoryfg}
+		</if>
+		<if test="keyword !=null">
+			and
+			title like #{keyword}
+		</if>
+	</select>
+
+	<select id="yoyozineSelectList"
+		parameterType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain"
+		resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		select
+			yoyozineseq
+			, date_format(regdt, '%y.%m.%d') regdt
+			, categoryfg
+			, subject
+			, title
+			, startdt
+			, subtitle
+			, imageyn
+			, thumbpath
+			, mthumbpath
+			, readcnt
+			, publishdt
+			, imageyn
+			, (select count(articleseq)
+				from ow_comment P
+				WHERE P.articlefg = 'yoyozine' 
+				AND X.yoyozineseq = P.articleseq) AS commentcnt
+		from
+			ow_yoyozine X
+		where
+		<![CDATA[ 
+			displayyn = 'Y' 
+			and ((X.directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+			or (X.directdisplayyn = 'Y'))
+		]]>
+		<if test="categoryfg !=null and categoryfg != ''">
+			and X.categoryfg = #{categoryfg}
+		</if>
+		<if test="keyword !=null">
+			and
+			X.title like #{keyword}
+		</if>
+		order by
+			X.yoyozineseq desc
+		limit
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<!-- 
+	<select id="yoyozineBannerList"
+		parameterType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain"
+		resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		
+		select
+			*
+		from 
+			ow_yoyozine
+		where
+		<![CDATA[
+			yoyozineseq <= 3
+		]]>
+	</select> -->
+	
+	
+
+	<select id="yoyozineSelectDetail" parameterType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain"
+		resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		select
+			yoyozineseq
+			,date_format(regdt, '%y.%m.%d') regdt
+			,categoryfg
+			, subject
+			, title
+			, startdt
+			, subtitle
+			, imageyn
+			, thumbpath
+			, contentsurl
+			,readcnt
+			, publishdt,
+			(
+				select yoyozineseq
+				from ow_yoyozine
+				where 
+				<![CDATA[
+					yoyozineseq < #{yoyozineseq}
+					and displayyn = 'Y' 
+					and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+					or (directdisplayyn = 'Y'))
+				]]>
+				order by yoyozineseq desc
+				limit 0,1
+			) prevyoyozineseq,
+			(
+				select yoyozineseq
+				from ow_yoyozine
+				where 
+				<![CDATA[
+					yoyozineseq > #{yoyozineseq}
+					and displayyn = 'Y' 
+					and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+					or (directdisplayyn = 'Y'))
+				]]>
+				order by yoyozineseq asc
+				limit 0,1
+			) nextyoyozineseq
+		from
+			ow_yoyozine
+		where
+		<![CDATA[
+			displayyn = 'Y' 
+			and ((directdisplayyn = 'N' and date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d'))
+			or (directdisplayyn = 'Y'))
+		]]>
+			and yoyozineseq = #{yoyozineseq}
+	</select>
+
+	<select id="getPrevYoyozine" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		<![CDATA[ 
+		select yoyozineseq
+		from ow_yoyozine
+		where displayyn='y' and yoyozineseq < #{yoyozineseq}
+		order by yoyozineseq desc
+		limit 0,1
+	]]>
+	</select>
+
+	<select id="getNextgetPrevYoyozine" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		<![CDATA[ 
+		select
+			yoyozineseq
+		from
+			ow_yoyozine
+		where 
+			displayyn='y' and yoyozineseq > #{yoyozineseq}
+		order by
+			yoyozineseq asc
+		limit
+			0,1
+		]]>
+	</select>
+	
+	<select id="yoyozineImageList"  parameterType="java.lang.Integer" resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineImageDomain">
+		select
+			imageseq
+			, yoyozineseq
+			, imagepath
+			, imagefilenm
+			, imagesize
+			, date_format(regdt, '%y.%m.%d') regdt
+		from
+			ow_yoyozine_image
+		where
+			yoyozineseq = #{yoyozineseq}
+	</select>
+	
+	<update id="readCntUpdate" parameterType="java.lang.Integer">
+        update 
+        	ow_yoyozine 
+        set 
+        	readcnt = readcnt + 1
+        where 
+        	yoyozineseq = #{yoyozineseq}
+    </update>
+	
+	
+	<select id="moYoyozineMainList" resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+			<![CDATA[ 
+					SELECT
+						yoyozineseq
+							, date_format(regdt, '%y.%m.%d') regdt
+							, categoryfg
+							, subject
+							, title
+							, startdt
+							, subtitle
+							, imageyn
+							, thumbpath
+							, readcnt
+							, publishdt
+							, (select count(articleseq)
+            			from	 ow_comment P
+			     			WHERE 	P.articlefg = 'yoyozine'
+				   		 AND X.yoyozineseq = P.articleseq) AS commentcnt
+						from
+							(select * from ow_yoyozine
+            			where
+					  		displayyn = 'y'AND categoryfg='appzine'
+            				order by yoyozineseq desc limit 1) X		
+					union all
+					SELECT
+							yoyozineseq
+								, date_format(regdt, '%y.%m.%d') regdt
+								, categoryfg
+								, subject
+								, title
+								, startdt
+								, subtitle
+								, imageyn
+								, thumbpath
+								, readcnt
+								, publishdt
+								, (select count(articleseq)
+            			from	 ow_comment P
+			      			WHERE 	P.articlefg = 'yoyozine'
+				    	AND X.yoyozineseq = P.articleseq) AS commentcnt
+						from
+							(select * from ow_yoyozine
+           				 where
+					 	 displayyn = 'y'AND categoryfg='interview'
+           				 order by yoyozineseq desc limit 1) X
+					union all
+					SELECT
+							yoyozineseq
+								, date_format(regdt, '%y.%m.%d') regdt
+								, categoryfg
+								, subject
+								, title
+								, startdt
+								, subtitle
+								, imageyn
+								, thumbpath
+								, readcnt
+								, publishdt
+								, (select count(articleseq)
+           				 from	 ow_comment P
+			     			 WHERE 	P.articlefg = 'yoyozine'
+				    		AND X.yoyozineseq = P.articleseq) AS commentcnt
+						from
+							(select * from ow_yoyozine
+          				 where
+					 	 displayyn = 'y'AND categoryfg='special'
+            				order by yoyozineseq desc limit 1) X
+					union all
+					SELECT
+							yoyozineseq
+								, date_format(regdt, '%y.%m.%d') regdt
+								, categoryfg
+								, subject
+								, title
+								, startdt
+								, subtitle
+								, imageyn
+								, thumbpath
+								, readcnt
+								, publishdt
+								, (select count(articleseq)
+           				 from	 ow_comment P
+			      			WHERE 	P.articlefg = 'yoyozine'
+				    		AND X.yoyozineseq = P.articleseq) AS commentcnt
+						from
+							(select * from ow_yoyozine
+            			where
+					  		displayyn = 'y'AND categoryfg='toon'
+            			order by yoyozineseq desc limit 1) X      
+			]]>
+	</select>
+	
+	<select id="refwebtoonSelectList"  parameterType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			toon.webtoonnm,
+			toon.webtoonseq,
+			toon.thumbpath,
+			toon.sthumbpath,
+			author.authornm as authornm1
+		from ow_refwebtoon ref
+				INNER JOIN ow_webtoon toon ON ref.webtoonseq = toon.webtoonseq
+				INNER JOIN ow_author author ON ref.authorseq1 = author.authorseq
+		where
+			ref.yoyozineseq = #{yoyozineseq}
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and toon.pcdisplayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and toon.mdisplayyn = 'Y'
+		limit
+			0,10 
+		</if>
+	</select>
+	
+	<select id="simpleYoyozineSelectDetail" parameterType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain"
+		resultType="com.olleh.webtoon.common.dao.yoyozine.domain.YoyozineDomain">
+		select 
+			yoyozineseq,
+			title,
+			thumbpath
+		from 
+			ow_yoyozine
+		where
+			yoyozineseq = #{yoyozineseq}
+	</select>
+	
+</mapper>

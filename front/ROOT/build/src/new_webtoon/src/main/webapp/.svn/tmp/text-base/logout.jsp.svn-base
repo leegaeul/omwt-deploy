@@ -1,0 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+if("Y".equals(com.olleh.webtoon.common.util.RequestUtil.getParameter(request, "p", true))){
+%>
+<script type="text/javascript">
+parent.location.href = "/m/toon/weekList.kt";
+</script>
+<%
+return;
+}
+%>
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<title> 올레마켓웹툰 </title>
+</head>
+<body>
+<!-- <div style="text-align: center; width:100%; margin-top:20px;">
+잠시만 기다려 주십시요.<br/>
+로그아웃 처리중입니다.<br/><br/>
+
+<a href="#" onclick="javascript:history.back();">뒤로가기</a>
+</div> -->
+<article class="contents member" id="kmc" style="display:none">	
+<iframe style="width:100%;height:650px" id="kmcifrm" name="kmcifrm" src="<%= com.olleh.webtoon.common.util.MessageUtil.getSystemMessage("system.mobile.domain") %>/m/logoutIfm.kt" frameborder="0"></iframe>
+</article>
+</body>
+</html>

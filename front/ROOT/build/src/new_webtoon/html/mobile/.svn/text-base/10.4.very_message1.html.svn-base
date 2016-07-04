@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js" type="text/javascript"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" >
+$(document).ready(function(){
+
+	$('.view_select input').ezMark();//radio 이미지처리	
+	$("#view_select1").parent().parent().parent().parent().find("label").addClass("view_select_on");			//radio 초기
+	$('.radio_sel input').click(function(){//radio 클릭시
+		if($(this).is(':checked',true)){
+			$('.radio_sel').parent().parent().parent().parent().find("label").removeClass("view_select_on");			
+			$(this).parent().parent().parent().parent().find("label").addClass("view_select_on");			
+		}else{
+			$(this).parent().parent().parent().parent().find("label").removeClass("view_select_on");						
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<div class="titleArea">
+		<a href="#"><img src="img/btn_pre_top.png" alt=""/> 이전</a>
+		<h2>회차 감상</h2> 
+	</div>
+</header>
+
+<!--본문-->
+<article class="contents member">	
+
+	<div class="page_message">
+			<!--view_select 20141103 아이템 가격 표시 수정-->
+			<div class="view_select">
+				<table>
+					<tr class="on">
+						<th><span class="radio_sel"><input type="radio" name="view_select" id="view_select1" checked/></span></th>
+						<td>
+							<label for="view_select1">
+								<strong>113화-중력-이말년 4컷특급</strong>
+								<!--베리일 때
+								<img src="img/icn_bery_list.png" alt="berry" class="berry" />
+								<span class="bery">70</span>,-->
+								<!--//베리일 때-->
+
+								<!--베리/블루베리일 때-->
+								<img src="img/icn_bery_list.png" alt="berry" class="berry" />
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								70,
+								<!--//베리/블루베리일 때-->
+								
+								<!--블루베리일 때
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								<span class="bbery">70</span>,-->
+
+								이용기간 : 3일
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th><span class="radio_sel"><input type="radio" name="view_select" id="view_select2"/></span></th>
+						<td>
+							<label for="view_select2">
+								<strong>"제주 날나리 배낭자" 전회 구매 (총 35화)</strong>
+								<!--베리일 때
+								<img src="img/icn_bery_list.png" alt="berry" class="berry" />
+								<span class="bery">70</span>,-->
+								<!--//베리일 때-->
+
+								<!--베리/블루베리일 때-->
+								<img src="img/icn_bery_list.png" alt="berry" class="berry" />
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								70,
+								<!--//베리/블루베리일 때-->
+								
+								<!--블루베리일 때
+								<img src="img/icn_bbery_list.png" alt="blue berry" class="berry" />
+								<span class="bbery">70</span>,-->
+
+								이용기간 : 3일
+							</label>
+						<td>
+					</tr>
+				</table>				
+			</div>
+			<!--//view_select-->
+
+		<div class="pic pic_veryok"><img src="img/pic_veryok.png" alt="welcome"/></div>
+		<div class="btn">
+			<a href="#" class="btn_small red">감상하기</a>
+		</div>
+	</div>
+
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> © KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기</a>
+</footer>
+
+ 
+
+</body>
+</html>

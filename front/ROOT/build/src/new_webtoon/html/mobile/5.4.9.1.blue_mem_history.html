@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" >
+$(document).ready(function(){
+	//$('.select_top_date select').styledSelect( {innerClass:'select_add'} ); //셀렉트바
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<h2 class="caption">사이트 메뉴</h2>
+
+	<!--20141105 수정-->
+	<!-- 네비 -->
+	<div class="titleArea">
+		<h2 class="blue"><span><a href="#">MY</a></span> | <span class="on"><a href="#">블루멤버십</a></span></h2> 
+		<a href="#" class="setting"><img src="img/btn_setting.png" alt="설정"/><!--<img src="img/btn_setting_on.png" alt="설정"/>--></a>
+	</div>
+	<!-- //네비 -->
+	<!--//20141105 수정-->
+
+	<!-- top_sort -->
+	<div class="top_sort">
+		<ul class="sort_my">
+			<li class="sort6"><a href="#" class="on">이용내역</a></li>
+			<li class="sort6"><a href="#">결제내역</a></li>
+			<li class="sort6"><a href="#">쿠폰</a></li>
+		</ul>
+	</div>
+	<!--//top_sort -->
+</header>
+
+<!--본문-->
+<article class="contents">
+	<div class="contbox_wrap">
+		<div class="contbox h3LbtnR">
+			<h3><img src="img/bl_red_arrow.png" alt="" /> 현재 이용중인 멤버십</h3>
+			<div class="right">
+				<a href="#" class="btn_small">상품변경</a>
+			</div>
+		</div>
+
+		<div class="tablebox">
+			<table width="100%" class="list_table" summary="현재 이용중인 멤버십 내역 및 결제수단">
+				<caption>현재 이용중인 멤버십 내역</caption>
+				<thead>
+					<tr>
+						<th scope="col">멤버십 내역</th>
+						<th scope="col">결제수단</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="left">
+							<strong class="icn_blue">이용중</strong>
+							<!--<strong class="icn_red">해지예약</strong>-->
+							블루멤버십 30
+							<div class="mt5">
+								<span class="txt_rd">다음 결제일 : 2014.09.23</span>
+								<!--<span class="txt_gy">해지 예정일 : 2014.09.23</span>-->
+							</div>
+							<!--<div class="mt5">
+								<a href="#" class="btn_small_silver">해지 예약 취소</a>
+							</div>-->
+						</td>
+						<td>휴대폰</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="contbox h3LbtnR">
+			<h3><img src="img/bl_red_arrow.png" alt="" /> 블루베리 현황</h3>
+			<div class="right">
+				<a href="#" class="btn_small">내역보기</a>
+			</div>
+		</div>
+
+		<div class="tablebox">
+			<table width="100%" class="list_table" summary="현재 이용중인 멤버십 내역 및 결제수단">
+				<caption>현재 이용중인 멤버십 내역</caption>
+				<thead>
+					<tr>
+						<th scope="col">현재 블루베리</th>
+						<th scope="col">다음 충전일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>500 베리</td>
+						<td><span class="txt_rd">2014.09.23 00:00</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> © KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기</a>
+</footer>
+
+ 
+
+</body>
+</html>

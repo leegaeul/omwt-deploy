@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/css/pc/event_reply_winners.css" rel="stylesheet" type="text/css"/>
+<title>신나는 댓글 Festival 이벤트 당첨자 알아보기</title>
+<script src="/js/common/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/common/common_util.js"></script>
+<script src="/js/pc/common.js" type="text/javascript"></script>
+<script type="text/javascript" >
+
+$(document).ready(function(){
+	
+	//ajax 기본 세팅
+   	jQuery.ajaxSetup({
+   	   	global: false,
+   	    cache: true,
+   	    dataType: 'json',
+   	    timeout: 30000,
+   	    type: 'POST'
+   	});
+	
+	
+	$("#firstNumber").change(function(){
+		$("#middleNumber").focus();
+	});
+	
+	$("#middleNumber").on("keyup",function()
+	{
+        var num = $(this).val().match(/[0-9\b]/g);
+        if( num != null && num.length == 4 )
+        {
+            $("#endNumber").focus();
+        }
+  	});
+	
+	$("#endNumber").on("keyup",function()
+	{
+        var num = $(this).val().match(/[0-9\b]/g);
+        if( num != null && num.length == 4 )
+        {
+            $(".button_check").focus();
+        }
+  	});
+  	
+});
+
+var phoneNumber = "";
+
+function chkPrizeWinner(){
+	
+	var firstnum  = $('#firstNumber option:selected').val(); 
+	var phonenum1 = $('#middleNumber').val().match(/[0-9\b]/g);
+	var phonenum2 = $('#endNumber').val().match(/[0-9\b]/g);
+	
+	if(phonenum1 == null || (firstnum == "010" ? phonenum1.length < 4 : phonenum1.length < 3))
+	{
+		alert("휴대폰 번호를 확인해 주십시오.");
+		$("#middleNumber").focus();
+		
+    	return false;
+	}
+    
+    if(phonenum2 == null || phonenum2.length < 4)
+    {
+    	alert("휴대폰 번호를 확인해 주십시오.");
+    	$("#endNumber").focus();
+    	
+    	return false;
+    }
+    
+    phoneNumber = "";
+    phoneNumber += $('#firstNumber option:selected').val();
+    phoneNumber += $('input[name=middleNumber]').val();
+    phoneNumber += $('input[name=endNumber]').val();
+    
+	//ajax 방식으로 서버에 처리 요청
+	$.ajax
+	({	
+		url : '/common/checkPrizeWinner.kt',
+		data : 
+		{
+			phonenum : phoneNumber
+		},
+		beforeSend : function(xmlHttpRequest) 
+		{
+		},
+		error : function(xhr, textStatus, errorThrown) 
+		{
+			//에러 메시지 처리
+			alert("요청 중 서버에서 에러가 발생하였습니다.");
+		},
+		success : function(json, textStatus) 
+		{	
+			$('.winners_main').hide();
+			$('.winners_winning').hide();
+			$('.winners_lose').hide();
+			
+			if(json.winyn == "Y"){
+				$('.winning_txt_box ul').html(fncSetResult(json.prizeWinnerList));
+				$('.winners_winning').show();
+			
+			}else{
+				$('.winners_lose').show();
+			}
+		},
+		complete: function(xhr, textStatus) 
+		{
+			fncInfoReset();
+        }
+	}); 
+}
+
+function fncSetResult(list){
+	var html = "";
+	for(var i = 0; i < list.length; i++)
+	{
+		html += "<li> <strong class='font_orange'>"+list[i].regdt+"</strong>에 참여한 내용이 <strong>당첨</strong> 되었습니다.</li>";
+	}
+	
+	return html;
+}
+
+function fncInfoReset(){
+	
+	$('#firstNumber').val("010");
+	$('#middleNumber').val("");
+	$('#endNumber').val("");
+}
+
+</script>
+</head>
+<body>
+	 <!-- start -->
+	<div class="winners_wrapper">
+        <!-- title -->
+        <h1 class="title"><img src="/images/pc/reply_result/reply_winners_title.jpg" alt="신나는 댓글 Festival 이벤트에 당첨되신 여러분! 모두모두 축하 드립니다!" /></h1>
+        <!-- //title -->
+
+        <!-- winners info -->
+        <p class="winners_info"><img src="/images/pc/reply_result/reply_winners_info.jpg" alt="알라딘 선물상품권 5,000원 www.aladin.co.kr - 당첨되신 모든 분들께는 알라딘 선물 상품권을 MMS로 발송해 드립니다. 자 이제~여러분의 당첨 결과를 확인해 보세요!" /></p>
+        <!-- //winners info -->
+
+        <!-- (D) winners main start - type01 -->
+        <div class="winners_main">
+            <!-- sub title -->
+            <h2 class="sub_title"><img src="/images/pc/reply_result/reply_winners_subtitle01.jpg" alt="아이디와 휴대폰 번호를 입력해 주세요." /></h2>
+            <!-- //sub title -->
+
+            <!-- input area -->
+            <div class="check_input_wrapper">
+                <ul class="check_input_box">
+                    <li class="phone_list">
+                        <label for="phone_number"><img src="/images/pc/reply_result/reply_winners_label02.jpg" alt="휴대폰번호" /></label>
+                        <div class="sel_wrapper">
+                            <select name="fristNumber" class="selComp" id="firstNumber">
+                                <option value="010" selected="selected">010</option>
+                                <option value="011">011</option>
+                                <option value="016">016</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
+                            </select>
+                        </div>
+                        <input type="tel" title="핸드폰 중간 자리 입력" name="middleNumber" id="middleNumber" maxlength="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;"/>
+                        <input class="last_input" type="tel" title="핸드폰 끝 자리 입력" name="endNumber" id="endNumber" maxlength="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;"/>
+                    </li>
+                </ul>
+                <input class="button_check" onclick="javascript:chkPrizeWinner(); return false;" type="image" src="/images/pc/reply_result/button_reply_winners_check.jpg" title="이벤트 확인하기" />
+            </div>
+            <!-- //input area -->
+
+            <!-- common button area -->
+            <ul class="button_bottom_area" id="common_button_area">
+                <li><a href="/applay/eventDetail.kt?eventseq=6"><img src="/images/pc/reply_result/button_event_detail02.jpg" alt="이벤트 자세히 보기" /></a></li>
+                <li><a href="/html/event/aladin/pc/aladin_vouchers_info.html"><img src="/images/pc/reply_result/button_aladin_method.jpg" alt="알라딘 상품권 사용방법" /></a></li>
+                <li><a href="https://www.aladin.co.kr/login/wlogin.aspx?returnurl=%2faccount%2fwmaininfo.aspx%3fpType%3dMyAccount%26start%3dwe" target="_blank"><img src="/images/pc/reply_result/button_aladin_use.jpg" alt="알라딘 상품권 사용하기" /></a></li>
+            </ul>
+            <!-- //common button area -->
+        </div>
+        <!-- //(D) winners main end - type01 -->
+
+        <!-- (D) winners winning start - type02 -->
+        <div class="winners_winning" style="display:none">
+            <!-- sub title -->
+            <h2 class="sub_title"><img src="/images/pc/reply_result/reply_winners_subtitle02.jpg" alt="이벤트 당첨을 축하 드립니다! 알라딘 선물상품권과 함께 행복한 시간 보내세요~" /></h2>
+            <!-- //sub title -->
+
+            <!-- winning txt -->
+            <div class="winning_txt_box">
+                <ul>
+                </ul>
+            </div>
+            <!-- //winning txt -->
+            
+             <!-- common button area -->
+            <ul class="button_bottom_area">
+                <li><a href="/applay/eventDetail.kt?eventseq=6"><img src="/images/pc/reply_result/button_event_detail02.jpg" alt="이벤트 자세히 보기" /></a></li>
+                <li><a href="/html/event/aladin/pc/aladin_vouchers_info.html"><img src="/images/pc/reply_result/button_aladin_method.jpg" alt="알라딘 상품권 사용방법" /></a></li>
+                <li><a href="https://www.aladin.co.kr/login/wlogin.aspx?returnurl=%2faccount%2fwmaininfo.aspx%3fpType%3dMyAccount%26start%3dwe"><img src="/images/pc/reply_result/button_aladin_use.jpg" alt="알라딘 상품권 사용하기" /></a></li>
+            </ul>
+            <!-- //common button area -->
+        </div>
+        <!-- //(D) winners winning end - type02 -->
+
+
+
+        <!-- (D) winners lose start - type03 -->
+        <div class="winners_lose" style="display:none">
+            <!-- sub title -->
+            <h2 class="sub_title"><img src="/images/pc/reply_result/reply_winners_subtitle03.jpg" alt="당첨자 명단에서 찾을 수 없습니다. 다시 한번 댓글을 작성하시고 이벤트에 참여해 주세요" /></h2>
+            <!-- //sub title -->
+
+            <!-- button area -->
+            <ul class="button_area">
+                <li><a href="/applay/eventDetail.kt?eventseq=6"><img src="/images/pc/reply_result/button_event_detail.jpg" alt="이벤트 자세히 보기" /></a></li>
+                <li><a href="/html/event/renewal_result/pc/reply_event_result.html"><img src="/images/pc/reply_result/button_event_check.jpg" alt="당첨자 확인 다시하기" /></a></li>
+            </ul>
+            <!-- button area -->
+        </div>
+        <!-- //(D) winners lose end - type03 -->
+
+        <!-- winners notes -->
+        <div class="winners_notes">
+            <img src="/images/pc/reply_result/reply_winners_notes.jpg" alt="▶ 이벤트 안내 및 유의사항 *  당첨자 발표는 매주 1회, 목요일에 진행 되며 이벤트 사정에 따라 발표 및 경품 발송 일정이 변경 될 수 있습니다. * 이벤트 경품 수신일은 당첨자 발표일과 다소 차이가 있을 수 있습니다. * 이벤트에 대한 비방 또는 욕설, 건전성에 유해가 되는 게시물은 삭제될 수 있습니다. * 이벤트 응모자의 정보가 부정확하거나 본인이 아닐 경우 당첨 및 경품 배송이 취소될 수 있습니다. * 이벤트에 대한 궁금 사항이나 경품 발송 및 당첨자 확인 내용은 올레마켓 웹툰 고객센터로 문의해 주십시오. * 이벤트 경품에 대한 상세한 이용 방법은 알라딘 고객센터(1544-2514)를 통해 문의해 주십시오." usemap="#winners_notes" />
+            <map name="winners_notes" id="winners_notes">
+                <area shape="rect" coords="420,197,559,220" href="#" alt="올레마켓 웹툰 고객센터" />
+            </map>
+        </div>
+        <!-- //winners notes -->
+	</div>
+    <!-- //start -->
+</body>
+</html>

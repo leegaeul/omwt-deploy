@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.orderbuy.persistence.OrderMapper">
+
+	<select id="selectOrderSum"
+		parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain"
+		resultType="java.lang.Integer">
+		SELECT
+			SUM(
+				IF ((usefg = 'charge' AND orderfg = 'order') OR (usefg = 'buy' AND orderfg = 'cancel'), orderamount
+				, IF ((usefg = 'charge' AND orderfg = 'cancel') OR (usefg = 'buy' AND orderfg = 'order') OR (usefg = 'charge' AND orderfg = 'refund'), -orderamount
+				, 0))
+			) AS ordersum
+		FROM
+			ow_order
+		WHERE
+			orderid = #{orderid} AND idfg = #{idfg}	
+		GROUP BY
+			orderid
+		;
+	</select>
+	
+	<select id="selectBlueOrderSum"
+		parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain"
+		resultType="java.lang.Integer">
+		SELECT
+			SUM(
+				IF ((usefg = 'charge' AND orderfg = 'order') OR (usefg = 'buy' AND orderfg = 'cancel'), orderamount
+				, IF ((usefg = 'charge' AND orderfg = 'cancel') OR (usefg = 'buy' AND orderfg = 'order') OR (usefg = 'charge' AND orderfg = 'refund') OR (usefg = 'charge' AND orderfg = 'expire'), -orderamount
+				, 0))
+			) AS ordersum
+		FROM
+			ow_bm_order
+		WHERE
+			orderid = #{orderid} AND idfg = #{idfg}	
+		GROUP BY
+			orderid
+	</select>
+	
+	<select id="selectChargeDate"
+		parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain"
+		resultType="java.lang.String">
+		select
+			case
+				when tb2.changereqfg != 'cancel' then date_format(date_add(str_to_date(tb1.enddt, '%Y%m%d'), interval +1 day), '%y년-%m월-%d일')
+				else ''
+			end as date
+		from ow_bm_join_term tb1
+		left join ow_bm_join tb2 on tb1.joinseq = tb2.joinseq
+		where
+		<![CDATA[ 
+			tb1.userid = #{orderid}
+			and tb1.idfg = #{idfg}
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(tb1.startdt, '%Y%m%d%H%i%s') 
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(tb1.enddt, '%Y%m%d%H%i%s')
+		]]>
+		order by tb1.termseq desc
+		limit 1
+	</select>
+	
+	<select id="selectBmCancelyn"
+		parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain"
+		resultType="java.lang.String">
+		SELECT
+    		"Y"
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{orderid}
+    		AND joinstatusfg = 'active'
+    		AND changereqfg = 'cancel'
+    	LIMIT 1
+	</select>
+	
+	<insert id="insertOrder" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain">
+		INSERT INTO ow_order (
+			buyseq
+			, usefg
+			, orderfg
+			, orderamount
+			, orderid
+			, orderdt
+			, idfg
+			, regid
+			, regdt
+		) VALUES (
+			#{buyseq}
+			, #{usefg}
+			, #{orderfg}
+			, #{orderamount}
+			, #{orderid}
+			, #{orderdt}
+			, #{idfg}
+			, #{regid}
+			, #{regdt}
+		);
+    </insert>
+    
+    <insert id="insertBlueOrder" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain">
+		INSERT INTO ow_bm_order (
+			buyseq
+			, usefg
+			, orderfg
+			, orderamount
+			, orderid
+			, orderdt
+			, idfg
+			, regid
+			, regdt
+		) VALUES (
+			#{buyseq}
+			, #{usefg}
+			, #{orderfg}
+			, #{orderamount}
+			, #{orderid}
+			, #{orderdt}
+			, #{idfg}
+			, #{regid}
+			, #{regdt}
+		);
+    </insert>
+    
+    <select id="orderSelectListCnt" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain" resultType="java.lang.Integer">
+    	select count(*)
+    	from(
+			select orderid
+			from ow_order
+			where orderid = #{orderid} and usefg = "charge" and idfg = #{idfg}
+				  and date_format(orderdt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')
+			union all
+			select orderid
+			from ow_bm_order
+			where orderid = #{orderid} and usefg = "charge" and idfg = #{idfg}
+				  and date_format(orderdt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')				
+			) a
+	</select>
+	
+	<select id="berrychargeSelectList" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain" resultType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain">
+		select a.*
+		from ( 
+			select
+				'berry' as purchasefg,
+				pmt.paymethod,
+				pmt.freeyn,
+				od.orderfg,
+				od.orderdt as orderdate,
+				CASE 
+					WHEN pmt.freeyn = 'Y' and od.orderfg = 'order' THEN '운영자 충전'
+					WHEN pmt.freeyn = 'Y' and od.orderfg = 'refund' THEN '운영자 차감'
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'cancel' THEN '결제 취소'
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'order' and pmt.paymethod = 'HP' THEN '핸드폰'
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'order' and pmt.paymethod = 'DP' THEN '핸드폰'
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'order' and pmt.paymethod = 'CD' THEN '신용카드'
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'order' and pmt.paymethod = 'GF' THEN '문화상품권'
+					WHEN pmt.paymethod IS NULL THEN ''
+				END AS paymethodnm,
+				pmt.payamount,
+				date_format(pmt.paymentdt, '%Y.%m.%d %H:%i') paymentdt,
+				od.orderamount,
+				<![CDATA[
+				CASE 
+					WHEN pmt.freeyn = 'N' and od.orderfg = 'cancel' THEN (SELECT date_format(paymentdt, '%Y.%m.%d %H:%i') FROM ow_payment WHERE paymentseq = pmt.orgpaymentseq)
+					WHEN pmt.freeyn = 'Y' and od.orderfg = 'refund' THEN '-'
+					ELSE date_format(pmt.paymentdt, '%Y.%m.%d %H:%i')
+				END AS orderdt
+				]]>
+			from ow_order od
+				left join ow_payment pmt on od.paymentseq = pmt.paymentseq
+			where 
+				od.orderid = #{orderid}
+			and
+				od.usefg = "charge"
+			and 
+				od.idfg = #{idfg}
+			and
+				date_format(od.orderdt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')
+				
+			union all
+			
+			select
+				'blue' as purchasefg,
+				'' as paymethod,
+				'' as freeyn,
+				od.orderfg,
+				od.orderdt as orderdate,
+				CASE 
+					WHEN od.regid is not null and od.orderfg = 'order'  THEN '운영자 충전'
+					WHEN od.regid is not null and od.orderfg = 'refund' THEN '운영자 차감'
+					WHEN od.regid is null and od.orderfg = 'cancel'     THEN '해지'
+					WHEN od.regid is null and od.orderfg = 'expire'     THEN '만료'
+					WHEN od.regid is null and od.orderfg = 'order'      THEN concat(prd.prdname, ' 정기충전')
+				END AS paymethodnm,
+				'' as payamount,
+				date_format(od.orderdt, '%Y.%m.%d %H:%i') as paymentdt,
+				od.orderamount,
+				date_format(od.orderdt, '%Y.%m.%d %H:%i') as orderdt
+				
+			from ow_bm_order od
+				left join ow_bm_payment pmt on od.paymentseq = pmt.paymentseq
+				left join ow_bm_prd prd on pmt.prdcode = prd.prdcode
+			where 
+				od.orderid = #{orderid}
+			and 
+				od.idfg = #{idfg}
+			and
+				od.usefg = "charge"
+			and
+				date_format(od.orderdt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')
+		) a
+						
+		<if test="sort != null">
+			order by a.orderdate ${sort}
+		</if>			
+		limit 
+			#{startRowNo}, #{pageSize}
+    </select>
+    
+    <delete id="deleteOrder" parameterType="java.lang.Integer">
+    	UPDATE ow_order SET orderfg = 'cancel'
+           WHERE buyseq = #{buyseq}
+    </delete>
+    
+</mapper>

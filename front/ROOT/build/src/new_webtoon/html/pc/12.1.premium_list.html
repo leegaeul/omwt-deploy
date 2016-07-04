@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 수정 20140512 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#">
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#" class="on"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+				</a></li>
+				<li><a href="#" onclick="alert('Comming soon!');return false;">
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">주간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 2차 오픈 범위
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>-->
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 20141128 추가 -->
+		<div class="subMenu subMenu05 subMenuOn">
+			<div class="topEtcDepth2">
+				<ul>
+					<li class="on"><a href="#">프리미엄웹툰</a> |</li>
+					<li><a href="#">웹소설</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- premium 하위메뉴 -->
+
+		<!-- Shop 하위메뉴 없음 -->
+<!-- //메뉴 수정 20140512 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+
+		<!-- layout_left -->
+		<div class="layout_left">
+			
+			<!-- premium list -->
+			<div class="premium_list_tit">
+				<img src="img/tit_premium_main.gif" alt="Premium" />
+				<a href="#" class="bt_board_list">목록</a><!-- 20140703 버튼 추가 -->
+			</div>
+
+			<div class="premium_list_cont">
+				<div class="cont_top">
+					<strong>그린라이트 19+</strong>
+					매주 금요일 업데이트가 됩니다.
+				</div>
+				
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_genre_toon01.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고 개천고 개천고 개천고 개천고 개천고(액션)</span>
+								<span class="ic_up">UP</span>
+								<!--<span class="ic_stop">휴재</span>
+								<span class="ic_end">완결</span>-->
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_stop">휴재</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+				<!-- list -->
+				<div class="cont_list">
+					<a href="#">
+						<span class="thumb">
+							<img src="img/temp/tmp_work_list.jpg" alt="개천고(액션)" />
+							<span class="bg_thumb"></span>
+							<span class="ic_19">19금</span>
+							<span class="ic_new">new</span>
+						</span>
+						<span class="thumbEtc">
+							<span class="top">
+								<span class="tit">개천고(액션)</span>
+								<span class="ic_end">완결</span>
+								<span class="rate">
+									<img src="img/temp/tmp_icn02.png" alt="" /> 1,690
+								</span>
+							</span>
+							<span class="author">하율이 아부지</span>
+						</span>
+					</a>
+				</div>
+				<!-- //list -->
+			</div>
+
+			<div class="premium_list_btm">
+				<a href="#header" class="comTopBtn">TOP</a>
+			</div>
+			<!-- //premium list -->
+			
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- 실시간 인기 
+			<div class="toon_weekly_ranking">
+				<div class="tit">
+					<img src="img/tit_toon_rank.gif" alt="실시간 인기" />
+				</div>
+				<ol class="list">
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o01">1</span>
+								<!-/-<span class="order o01">1</span>
+								<span class="order o02">2</span>
+								<span class="order o03">3</span>
+								<span class="order o04">4</span>
+								<span class="order o05">5</span>-/->
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn01.png" alt="" />578</span>
+								</div>
+								<div class="rank rk_up">57857</div><!-/- 인기 상승 -/->
+								<!-/-<div class="rank rk_dash">578</div> 인기 그대로 -/->
+								<!-/-<div class="rank rk_dn">578</div> 인기 그대로 -/->
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o02">2</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />533</span>
+								</div>
+								<div class="rank rk_dash">변화 없음</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o03">3</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o04">4</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" class="listA">
+							<div class="thumb">
+								<span class="order o05">5</span>
+								<img src="img/temp/tmp_rank_thumb03.jpg" alt="썸툰" class="thum" />
+							</div>
+							<div class="cont">
+								<div class="name">썸툰썸툰썸툰썸툰썸툰썸툰썸툰썸툰</div>
+								<div class="writer">38화 - 맥주광 시대</div>
+								<div class="rankEtc">
+									<span class="date">2014.04.02</span>
+									<span class="cnt"><img src="img/temp/tmp_icn02.png" alt="" />57</span>
+								</div>
+								<div class="rank rk_dn">578</div>
+							</div>
+						</a>
+					</li>
+				</ol>
+				<div class="more">
+					<a href="#">+ 더보기</a>
+				</div>
+			</div>-->
+			<!-- //실시간 인기 -->
+
+			<!-- 앱 광고 -->
+			<div class="toon_day_app">
+				<a href="#">
+					<img src="img/temp/tmp_app2.png" alt="로드 오브 히어로즈 PLUS" />
+					<span class="cont">
+						<strong>로드 오브 히어로즈<br />PLUS</strong>
+						<span class="corp">나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트나노엔터네인먼트</span>
+					</span>
+				</a>
+			</div>
+			<!-- //앱 광고 -->
+
+		</div>
+		<!-- //layout_right -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

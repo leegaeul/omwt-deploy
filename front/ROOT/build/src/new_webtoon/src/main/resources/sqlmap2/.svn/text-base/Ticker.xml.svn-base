@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.ticker.persistence.TickerMapper">
+	
+	<cache eviction="LRU" flushInterval="30000" size="2" readOnly="true"/>
+	
+	<select id="tickerSelectList"
+		parameterType="java.lang.String"
+		resultType="com.olleh.webtoon.common.dao.ticker.domain.TickerDomain">
+		SELECT
+			newwindowyn
+			, contents
+			, linkurl
+		FROM
+			ow_ticker
+		WHERE displayfg = #{displayfg}
+		AND      displayyn = 'Y'
+		AND     (sysdate() between startdt and enddt)
+		LIMIT 0,1
+		
+	</select>
+	</mapper>

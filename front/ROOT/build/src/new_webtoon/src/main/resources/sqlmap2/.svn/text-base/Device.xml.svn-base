@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.olleh.webtoon.common.dao.api.persistence.DeviceMapper">		
+
+	<select id="selectByDeviceid" 
+		parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain" 
+		resultType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		SELECT 
+			*
+		FROM 
+			ow_device
+		WHERE
+			deviceid = #{deviceid}
+	</select>
+	
+	<select id="selectByUser" 
+		parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain" 
+		resultType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		SELECT 
+			*
+		FROM 
+			ow_device
+		WHERE
+				idfg = #{idfg}
+			AND userid = #{userid}
+	</select>
+	
+	<select id="selectByPushKey" 
+		parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain" 
+		resultType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		SELECT 
+			*
+		FROM 
+			ow_device
+		WHERE
+				devicefg = #{devicefg}
+			AND	pushkey = #{pushkey}
+	</select>
+	
+	<insert id="insert" parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		INSERT INTO
+			ow_device(deviceid, idfg, userid, devicefg, pushkey, pushyn, delyn, delreason, deldt, regdt, devicemodelno, deviceosversion, appversion, loginyn)
+		VALUES(
+			#{deviceid},
+			#{idfg},
+			#{userid},
+			#{devicefg},
+			#{pushkey},
+			#{pushyn},
+			'N',
+			#{delreason},
+			#{deldt},
+			#{regdt},
+			#{devicemodelno}, 
+			#{deviceosversion}, 
+			#{appversion},
+			'N'
+		)
+	</insert>
+	
+	<sql id="updateBase">
+		UPDATE
+			ow_device
+		SET
+			deviceid = deviceid
+		<if test="idfg 				!= null">	,idfg 			= #{idfg}			</if>
+		<if test="userid 			!= null">	,userid 		= #{userid}			</if>
+		<if test="devicefg 			!= null">	,devicefg 		= #{devicefg}		</if>
+		<if test="pushkey 			!= null">	,pushkey 		= #{pushkey}		</if>
+		<if test="pushyn 			!= null">	,pushyn 		= #{pushyn}			</if>
+		<if test="delreason			!= null">	,delreason 		= #{delreason}		</if>
+		<if test="deldt 			!= null">	,deldt 			= #{deldt}			</if>
+		<if test="devicemodelno 	!= null">	,devicemodelno 	= #{devicemodelno}	</if>
+		<if test="deviceosversion 	!= null">	,deviceosversion= #{deviceosversion}</if>
+		<if test="appversion 		!= null">	,appversion 	= #{appversion}		</if>
+		<if test="loginyn 			!= null">	,loginyn 		= #{loginyn}		</if>
+	</sql>
+	
+	<update id="updateByDeviceid" parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		<include refid="updateBase" />
+		WHERE
+			deviceid = #{deviceid}
+	</update>
+	
+	<update id="updateByUser" parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		<include refid="updateBase" />
+		WHERE
+				idfg = #{idfg}
+			AND	userid = #{userid}
+	</update>
+	
+	<delete id="deleteByDeviceid" parameterType="com.olleh.webtoon.common.dao.api.domain.DeviceDomain">
+		DELETE FROM
+			ow_device
+		WHERE
+			deviceid = #{deviceid}
+	</delete>
+</mapper>

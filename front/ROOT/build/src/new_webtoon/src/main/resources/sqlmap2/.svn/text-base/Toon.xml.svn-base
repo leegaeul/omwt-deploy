@@ -1,0 +1,1567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.toon.persistence.ToonMapper">	
+
+    <cache eviction="LRU" flushInterval="10000" size="1024" readOnly="true"/>    
+    
+	<select id="toonSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	<![CDATA[ 
+		select * from (
+		  select 
+		  	
+		    toon.webtoonseq, toon.webtoonnm, toon.thumbpath, toon.sthumbpath, toon.imagepath, toon.agefg, toon.moddt,
+		    toon.pcdisplayyn, toon.mdisplayyn, toon.toonyn, toon.premiumyn, toon.toonfg,
+		    toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,		    
+        	toon.genreseq1, toon.genreseq2, toon.genreseq3,
+        	toon.authorseq1, toon.authorseq2, toon.authorseq3,
+			toon.serialfg,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+		    ifnull(author1.authornm, '') authornm1, 
+		    ifnull(author2.authornm, '') authornm2, 
+		    ifnull(author3.authornm, '') authornm3,
+			ifnull(genre1.genrenm, '') genrenm1, 
+			ifnull(genre2.genrenm, '') genrenm2, 
+			ifnull(genre3.genrenm, '') genrenm3,
+		    ifnull(times.timesno, '') maxtimesno,
+    		ifnull(times.timestitle, '') maxtimestitle,
+		    ifnull(times.thumbpath, '') maxtimesthumbpath,
+		    format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+		    times.totalstickercnt totalstickercntsort,
+		    format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+		    times.sumtotalstickercnt sumtotalstickercntsort,
+	        times.timesseq,
+			times.timestitle,
+	        DATE_FORMAT(times.startdt, '%Y.%m.%d') regdt,
+	        times.startdt,
+	        times.publishdt, 
+	        ifnull(times.comments, '') comments,    
+	        times.displayorder,     
+	        case 
+	          when (toon.webtoonnm RLIKE '^(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)') then 'e1'
+	          when (toon.webtoonnm RLIKE '^(ㄱ|ㄲ|ㄴ|ㄷ|ㄸ)' OR ( toon.webtoonnm >= '가' AND toon.webtoonnm < '라' )) then 'h1'
+	          when (toon.webtoonnm RLIKE '^(ㄹ|ㅁ|ㅂ)' OR ( toon.webtoonnm >= '라' AND toon.webtoonnm < '사' )) then 'h2'
+	          when (toon.webtoonnm RLIKE '^(ㅅ|ㅆ|ㅇ|ㅈ|ㅉ)' OR ( toon.webtoonnm >= '사' AND toon.webtoonnm < '차' )) then 'h3'
+	          when (toon.webtoonnm RLIKE '^(ㅊ|ㅋ|ㅌ)' OR ( toon.webtoonnm >= '차' AND toon.webtoonnm < '파' )) then 'h4'
+	          when (toon.webtoonnm RLIKE '^(ㅍ|ㅎ)' OR ( toon.webtoonnm >= '파')) then 'h5'
+	        else ''
+	        end as initialword,
+	        
+        	case 
+			    when 
+			    	times.displayyn = 'Y' 
+			    	and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+			    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+			  	else 'N'
+		  	end as upyn,
+	        
+	        case 
+	          when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+	        
+	        case 
+	          when 
+              toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+	        else 'N'
+	        end as restyn,
+	        
+	        case
+				when prd.sellyn = 'Y' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.sellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.sellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as sellyn,
+			
+			case
+				when prd.sellfg = 'sale' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.discountsellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			
+			case
+				when (prd.sellfg = 'sale')
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(prd.discountsellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(prd.discountsellenddt, '%Y%m%d%H%i%s') then Floor((prd.prdprice - prd.prddiscountprice)/IF(prd.prdprice = 0, 1, prd.prdprice) * 100)
+			    else ''
+			end as discountpercent
+	        
+		  from ow_webtoon toon
+		    left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		    left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		    left join ow_author author3 on toon.authorseq3 = author3.authorseq
+			left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+			left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+			left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+     		left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			left join 
+	        (
+				select 
+					a.displayyn, a.directdisplayyn, a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq, a.regdt, a.publishdt, a.lastyn, a.comments, a.displayorder
+				from (
+					select 
+						displayyn,directdisplayyn,timesseq, timesno,timestitle,thumbpath,startdt,totalstickercnt, webtoonseq, regdt, publishdt, lastyn, comments, displayorder
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, displayorder asc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+	        left join 
+			(
+				select 					
+					*
+				from ow_prd
+				where 
+					sellyn ="Y" 
+					and prdfg = 'webtoon'
+					and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+					and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')			
+			) prd on toon.webtoonseq = prd.webtoonseq
+		  where times.timesseq is not null
+		) toonlist
+	]]>
+		order by
+		<if test="sort == null or sort == '' or sort == 'update'">
+			toonlist.publishdt desc, toonlist.displayorder asc, toonlist.timesseq desc
+		</if>
+		<if test="sort != null and sort == 'sticker'">	
+			<if test="toonType == null or toonType == '' or toonType == 'times'">	
+			toonlist.totalstickercntsort*1 desc , 
+			</if>	
+			<if test="toonType != null and toonType == 'toon'">		
+			toonlist.sumtotalstickercntsort*1 desc , 
+			</if>		
+			toonlist.displayorder asc, toonlist.timesseq desc
+		</if>
+		<if test="sort != null and sort == 'subject'">
+			toonlist.webtoonnm asc , toonlist.displayorder asc, toonlist.timesseq desc
+		</if>
+		<if test="sort != null and sort == 'author'">
+			toonlist.authornm1 asc, toonlist.authornm2 asc, toonlist.authornm3 asc, 
+			toonlist.displayorder asc, toonlist.timesseq desc
+		</if>
+	</select>
+	
+	<select id="genreSelectList" resultType="com.olleh.webtoon.common.dao.toon.domain.GenreDomain">
+		select 
+			genreseq, genrenm 
+		from ow_genre 
+		where displayyn = 'Y' AND toonfg = 'toon'
+		order by genreorder asc;
+	</select>
+	
+	<select id="timesSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	<![CDATA[ 
+		select 
+			times.timesseq, times.timesno, times.timestitle, times.thumbpath, times.totalstickercnt, times.comments,
+			times.bgmdisplayyn, times.bgmpath1, times.bgmpath2,
+			toon.webtoonnm, toon.webtoondesc, toon.webtoonseq,
+        	toon.authorseq1, toon.authorseq2, toon.authorseq3,
+        	toon.agefg, toon.toonfg, toon.bgcolor,
+        	sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			(
+				select timesseq 
+				from ow_times prevtimes 
+				where prevtimes.webtoonseq = times.webtoonseq and prevtimes.displayyn = 'Y' and prevtimes.timesseq < times.timesseq 
+				order by prevtimes.timesseq desc limit 0,1
+			) prevtimesseq,
+			(
+				select timesseq 
+				from ow_times nexttimes 
+				where nexttimes.webtoonseq = times.webtoonseq and nexttimes.displayyn = 'Y' and nexttimes.timesseq > times.timesseq 
+				and (nexttimes.directdisplayyn = 'Y' or (nexttimes.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= nexttimes.startdt))
+				order by nexttimes.timesseq asc limit 0,1
+			) nexttimesseq,
+			(
+				select timesseq 
+				from ow_times firsttimes 
+				where firsttimes.webtoonseq = times.webtoonseq and firsttimes.displayyn = 'Y'
+				order by firsttimes.timesseq asc limit 0,1
+			) firsttimesseq,
+			times.refseq1,
+			reftimes1.webtoonseq refwebtoonseq1,
+			reftimes1.timestitle reftimestitle1,
+			times.refseq2,
+			reftimes1.webtoonseq refwebtoonseq2,
+			reftimes2.timestitle reftimestitle2,
+			times.refseq3,
+			reftimes1.webtoonseq refwebtoonseq3,
+			reftimes3.timestitle reftimestitle3
+		from ow_times times
+	      left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+		  left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		  left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		  left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		  left join ow_times reftimes1 on times.refseq1 = reftimes1.timesseq	
+		  left join ow_times reftimes2 on times.refseq2 = reftimes2.timesseq	
+		  left join ow_times reftimes3 on times.refseq3 = reftimes3.timesseq
+      	  left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+      	]]>
+		where
+			times.timesseq = #{timesseq} and times.webtoonseq = #{webtoonseq}
+		<if test='myuseyn != "Y"'>
+			and times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+		</if> 
+			
+	
+	</select>
+	
+	<select id="toonImageSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonImageDomain">
+		select
+			imagepath, width, height
+		from ow_webtoon_image
+		where timesseq = #{timesseq}
+		order by displayorder asc
+	</select>
+	
+	<select id="novelFileSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.NovelFileDomain">
+		select
+			*
+		from ow_novel_file
+		where timesseq = #{timesseq}
+		order by displayorder asc
+	</select>
+	
+	<select id="tiemsnoSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			timesseq, timesno, timestitle
+		from ow_times
+		where webtoonseq = #{webtoonseq}
+		and displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+		order by publishdt desc, displayorder asc, timesseq desc 
+	</select>
+	
+	<select id="timesSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	<![CDATA[ 
+		select
+			times.timesseq,times.timesno,times.timestitle,times.thumbpath,times.startdt,times.lastyn,
+			format(ifnull(times.totalstickercnt,0),0) totalstickercnt, times.webtoonseq, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+			toon.agefg, sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(prd.sellyn, 'N') as sellyn,  
+			format(ifnull(prd.prdprice, '0'), 0) as prdprice,
+			format(ifnull(prd.prddiscountprice, '0'), 0) as prddiscountprice,
+			ifnull(prd.prdterm, 0) as prdterm, prd.purchasefg,  
+			
+			case 
+	          when prd.sellfg = 'sale' and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= prd.discountsellstartdt) 
+									   and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= prd.discountsellenddt) then 'Y'
+	        else 'N'
+	        end as discountyn,
+	        
+			case 
+				when his.timesseq is not null then 'Y'
+			else 'N'
+			end AS purchaseyn,
+			
+        	case 
+			    when 
+			    	times.displayyn = 'Y' 
+			    	and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+			    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+			  	else 'N'
+		  	end as upyn,
+	        
+	        case 
+	          when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+	        case 
+	          when 
+              toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+	        else 'N'
+	        end as restyn,
+	        case
+				when (prd.sellfg = 'sale')
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(prd.discountsellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(prd.discountsellenddt, '%Y%m%d%H%i%s') then Floor((prd.prdprice - prd.prddiscountprice)/IF(prd.prdprice = 0, 1, prd.prdprice) * 100)
+			    else ''
+			end as discountpercent
+		from ow_times times
+			left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+      	    left join 
+			(
+				SELECT ph.timesseq
+				FROM ow_prd_avail pa
+				JOIN ow_prd_his ph ON pa.prdhistoryseq = ph.prdhistoryseq
+				WHERE
+					pa.buyid = #{buyid}
+					AND DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') < DATE_FORMAT(pa.availdt,'%Y%m%d%H%i%s')
+					AND ph.webtoonseq = #{webtoonseq}
+			) his on times.timesseq = his.timesseq
+      	    left join 
+			(
+				select 					
+					prdseq, webtoonseq, timesseq, prdfg, sellfg, prdnm, sellyn, prdprice, prddiscountprice, purchasefg,
+					prdterm, sellstartdt, sellenddt, discountsellstartdt, discountsellenddt
+				from ow_prd
+				where 
+					sellyn ="Y" 
+					and prdfg = 'times'
+					and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+					and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')			
+			) prd on times.timesseq = prd.timesseq
+	]]>
+		where times.webtoonseq = #{webtoonseq}
+		and times.displayyn = 'Y' and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt))
+		
+		<if test="serialfg != null and serialfg == 'end'">
+		order by times.publishdt asc, times.displayorder asc, times.timesseq asc
+		</if>
+		<if test="serialfg == null or serialfg != 'end'">
+		order by times.publishdt desc, times.displayorder asc, times.timesseq desc
+		</if>
+		
+		<if test="startRowNo != null and pageSize != null">
+		limit #{startRowNo}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="selectToonPurchaseyn" parameterType="hashmap" resultType="java.lang.String">
+		select "Y"
+		from ow_prd_avail tb1
+		left join ow_prd_his tb2 on tb1.prdhistoryseq = tb2.prdhistoryseq
+		where
+		<![CDATA[ 
+			tb1.buyid = #{buyid}
+			and DATE_FORMAT(NOW(),'%Y%m%d') <= DATE_FORMAT(tb1.availdt,'%Y%m%d')
+			and tb2.prdfg = 'webtoon'
+			and tb2.webtoonseq = #{webtoonseq}
+			and tb1.availdt
+		]]>
+		limit 0, 1
+	</select>
+	
+	<select id="timesSelectListCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select
+			count(timesseq)
+		from ow_times
+		where webtoonseq = #{webtoonseq}
+		and displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+	</select>	
+	
+	<select id="refItemCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_prd 
+		where
+			sellyn ='Y' 
+			and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		<![CDATA[ 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s')
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		AND	(prdfg = 'name' OR prdfg='comment')
+		AND (refwebtoonseq1=#{webtoonseq} or refwebtoonseq2=#{webtoonseq} or refwebtoonseq3=#{webtoonseq})
+		
+	</select>	
+	
+	<select id="toonSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+	<![CDATA[ 
+		select 
+			toon.webtoonnm, toon.webtoondesc, toon.webtoonseq, toon.thumbpath, toon.sthumbpath, toon.imagepath,toon.restcomment,toon.serialfg,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn, toon.agefg, toon.toonfg,
+			toon.authorseq1, toon.authorseq2, toon.authorseq3, times.timesseq, times.timestitle,
+			toon.illustauthorseq1, toon.illustauthorseq2, toon.illustauthorseq3,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			ifnull(author4.authornm, '') illustauthornm1, 
+			ifnull(author5.authornm, '') illustauthornm2, 
+			ifnull(author6.authornm, '') illustauthornm3,
+			ifnull(genre1.genrenm, '') genrenm1, 
+			ifnull(genre2.genrenm, '') genrenm2, 
+			ifnull(genre3.genrenm, '') genrenm3,
+			ifnull(timesprd.timesprdcnt, 0) as timesprdcnt, 
+			(
+				select 
+				  yoyozineseq
+				from ow_refwebtoon ref
+				where (ref.authorseq1 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1) or
+					  (ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1 or ref.authorseq2 = toon.authorseq1) or
+                      (ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1 or ref.authorseq3 = toon.authorseq1)
+				order by yoyozineseq desc limit 1
+			) yoyozineseq,
+			prd.prdfg, prd.prdnm, prd.prdterm, prd.purchasefg,
+			format(ifnull(prd.prdprice, 0), 0 ) prdprice,
+			format(ifnull(prd.prddiscountprice, 0), 0 ) prddiscountprice,
+			
+			case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+	              (
+	                select startdt from ow_times onest_times 
+	                where toon.webtoonseq = onest_times.webtoonseq 
+	                order by onest_times.publishdt asc limit 1
+	              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+	        end as newyn,
+	        
+			case
+				when prd.sellfg = 'sale' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.discountsellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			case
+				when prd.sellyn = 'Y' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.sellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.sellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as sellyn, 
+			case
+				when avail.prdhistoryseq != 'null' then 'Y'
+				else 'N'
+			end as purchaseyn,
+			case
+				when (prd.sellfg = 'sale')
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(prd.discountsellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(prd.discountsellenddt, '%Y%m%d%H%i%s') then Floor((prd.prdprice - prd.prddiscountprice)/IF(prd.prdprice = 0, 1, prd.prdprice) * 100)
+			    else ''
+			end as discountpercent
+		from ow_webtoon toon
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+			left join ow_author author2 on toon.authorseq2 = author2.authorseq
+			left join ow_author author3 on toon.authorseq3 = author3.authorseq
+			left join ow_author author4 on toon.illustauthorseq1 = author4.authorseq
+			left join ow_author author5 on toon.illustauthorseq2 = author5.authorseq
+			left join ow_author author6 on toon.illustauthorseq3 = author6.authorseq
+			left join ow_genre genre1 on toon.genreseq1 = genre1.genreseq
+			left join ow_genre genre2 on toon.genreseq2 = genre2.genreseq
+			left join ow_genre genre3 on toon.genreseq3 = genre3.genreseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+      	    left join 
+			(
+				select * 
+				from ow_prd_his 
+				where prdfg = 'webtoon'
+				order by prdhistoryseq desc
+			) prd on toon.webtoonseq = prd.webtoonseq
+			left join 
+			(
+				select prdhistoryseq
+				from ow_prd_avail
+				where buyid = #{buyid}
+				and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= availdt
+			) avail on prd.prdhistoryseq = avail.prdhistoryseq
+	      	left join 
+	        (
+				select 
+					a.timesseq,a.timesno,a.timestitle,a.thumbpath,a.startdt,a.totalstickercnt, a.webtoonseq, a.regdt, a.publishdt
+				from (
+					select 
+						timesseq,timesno,timestitle,thumbpath,startdt,totalstickercnt, webtoonseq, regdt, publishdt
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt asc, timesseq asc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+	        left join
+			(
+				select webtoonseq, count(*) as timesprdcnt from ow_prd 
+				where prdfg = 'times' and sellyn = 'Y'
+				and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(sellstartdt, '%Y%m%d%H%i%s') 
+				and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(sellenddt, '%Y%m%d%H%i%s') 
+				group by webtoonseq
+			) timesprd on toon.webtoonseq = timesprd.webtoonseq
+		where times.timesseq is not null
+      		and toon.webtoonseq = #{webtoonseq}
+      	order by prd.prdhistoryseq desc
+      	limit 0, 1
+	]]>
+	</select>
+	
+	<select id="topToonSelectList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">	
+	<![CDATA[ 
+		select 
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			top.thumbpath1 as thumbpath,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3, 
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		from ow_top_webtoon top
+		left join ow_webtoon toon   on toon.webtoonseq = top.webtoonseq1
+		left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq
+				from (
+					select 
+						timesseq,timestitle,totalstickercnt, webtoonseq
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = #{param}
+			and top.displayyn = 'Y'
+			and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+		union all
+		select 
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			top.thumbpath2 as thumbpath,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3, 
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		from ow_top_webtoon top
+		left join ow_webtoon toon   on toon.webtoonseq = top.webtoonseq2
+		left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq
+				from (
+					select 
+						timesseq,timestitle,totalstickercnt, webtoonseq
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = #{param}
+			and top.displayyn = 'Y'
+		and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+		union all
+		select 
+			toon.webtoonnm,
+			toon.webtoonseq, 
+			top.thumbpath3 as thumbpath,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3, 
+			format(ifnull(times.totalstickercnt,0), 0) totalstickercnt,
+			format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+			times.timestitle, times.timesseq
+		FROM ow_top_webtoon top
+		left join ow_webtoon toon   on toon.webtoonseq = top.webtoonseq3
+		left join ow_author author1 on toon.authorseq1 = author1.authorseq
+		left join ow_author author2 on toon.authorseq2 = author2.authorseq
+		left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		left join 
+	        (
+				select 
+					a.timesseq,a.timestitle, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq
+				from (
+					select 
+						timesseq,timestitle,totalstickercnt, webtoonseq
+					from ow_times 				
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where topfg = #{param}
+			and top.displayyn = 'Y'
+		and 
+			(
+		      (top.directdisplayyn = 'N' AND date_format(now(), '%Y%m%d%H%i%s') >= date_format(top.startdt, '%Y%m%d%H%i%s') AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.enddt, '%Y%m%d%H%i%s'))
+				OR  (top.directdisplayyn = 'Y' AND date_format(now(), '%Y%m%d%H%i%s') <= date_format(top.directdisplayenddt, '%Y%m%d%H%i%s'))
+		    )
+	]]>
+	</select>
+	
+	<insert id="stickerInsert" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain">
+        insert into ow_sticker(
+			timesseq, idfg, regid, stickercnt, regdt
+		) values (
+			#{timesseq}, #{idfg}, #{regid}, #{stickercnt}, #{regdt}
+		);
+    </insert>
+	
+	<update id="stickerUpdate" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain">
+		update ow_times 
+            set totalstickercnt = totalstickercnt+#{stickercnt} 
+            where timesseq = #{timesseq};
+    </update>
+    
+    <select id="stickerSelectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT format(ifnull(sum(stickercnt), 0),0)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq}
+    </select>
+    
+    <select id="myStickerSelectCount" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT format(ifnull(sum(stickercnt), 0),0)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq} and idfg = #{idfg} and regid = #{regid}
+    </select>
+    
+    <select id="stickerCheck" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.StickerDomain" resultType="java.lang.Integer">
+        SELECT count(stickercnt)
+           FROM ow_sticker
+           WHERE timesseq = #{timesseq} and regid = #{regid}
+    </select>    
+    
+	
+	<insert id="bookmarkInsert" parameterType="com.olleh.webtoon.common.dao.toon.domain.BookmarkDomain">
+        insert into ow_bookmark(
+        	idfg, regid, timesseq, regdt
+		) values (
+			#{idfg}, #{regid}, #{timesseq}, #{regdt}
+		);
+    </insert>
+    
+    <delete id="bookmarkDelete" parameterType="com.olleh.webtoon.common.dao.toon.domain.BookmarkDomain">
+        delete from ow_bookmark 
+        where regid = #{regid} and timesseq in (${timesseqlist});
+    </delete>
+    
+    <select id="bookmarkCheck" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.BookmarkDomain" resultType="java.lang.Integer">
+        SELECT count(timesseq)
+           FROM ow_bookmark
+           WHERE timesseq = #{timesseq} and regid = #{regid}
+    </select>
+    
+    <select id="bookmarkSelectListCnt" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.BookmarkDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_bookmark
+		where regid = #{regid}
+	</select>
+    
+    <select id="bookmarkSelectList" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.BookmarkDomain" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+    <![CDATA[ 
+		select
+			times.timesseq,times.timesno,times.timestitle,times.startdt,times.lastyn,
+			times.totalstickercnt, times.webtoonseq, DATE_FORMAT(bookmark.regdt, '%Y.%m.%d %H:%i') regdt,
+        	sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			toon.webtoonnm,	
+			toon.agefg,	
+			toon.serialfg,
+			toon.toonfg,	
+			
+			case 
+				when toon.toonfg = 'novel' then toon.thumbpath
+				else times.thumbpath
+			end as thumbpath,
+					        
+        	case 
+			    when 
+			    	times.displayyn = 'Y' 
+			    	and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+			    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+			  	else 'N'
+		  	end as upyn,
+			
+			case 
+	        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+			
+			case 
+			  when 
+			    toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+			else 'N'
+			end as restyn
+		from ow_bookmark bookmark
+			left join ow_times times on bookmark.timesseq = times.timesseq
+			left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+			left join ow_author author2 on toon.authorseq2 = author2.authorseq
+			left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		where bookmark.regid = #{regid}
+		order by
+			bookmark.regdt desc
+		limit 
+			#{startRowNo}, #{pageSize}
+	]]>
+    </select>    
+	
+	<insert id="favoritesInsert" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain">
+        insert into ow_favorites(
+        	idfg, regid, webtoonseq, pushyn, regdt
+		) values (
+			#{idfg}, #{regid}, #{webtoonseq}, #{pushyn}, #{regdt}
+		);
+    </insert>
+    
+    <delete id="favoritesDelete" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain">
+        delete from ow_favorites 
+        where regid = #{regid} and webtoonseq in (${webtoonseqlist});
+    </delete>
+    
+    <select id="favoritesCheck" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain" resultType="java.lang.Integer">
+        SELECT count(webtoonseq)
+           FROM ow_favorites
+           WHERE webtoonseq = #{webtoonseq} and regid = #{regid}
+    </select>
+    
+    <select id="favoritesSelectListCnt" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_favorites
+		where regid = #{regid}
+	</select>
+    
+    <select id="favoritesSelectList" useCache="false" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+    <![CDATA[ 
+		select
+			toon.webtoonseq, toon.webtoonnm, toon.thumbpath, toon.toonfg,
+			DATE_FORMAT(favorites.regdt, '%Y.%m.%d %H:%i') regdt,
+        	sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			toon.agefg,
+			toon.serialfg,
+			toon.mondayyn,
+			toon.tuesdayyn,
+			toon.wednesdayyn,
+			toon.thursdayyn,
+			toon.fridayyn,
+			toon.saturdayyn,
+			toon.sundayyn,
+			favorites.pushyn,
+		    format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+		    
+        	case 
+			    when 
+			    	times.displayyn = 'Y' 
+			    	and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+			    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+			  	else 'N'
+		  	end as upyn,
+	        
+	        case 
+	          when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+	        
+	        case 
+	          when 
+              toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+	        else 'N'
+	        end as restyn
+	        
+		from ow_favorites favorites
+			left join ow_webtoon toon on favorites.webtoonseq = toon.webtoonseq
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+			left join ow_author author2 on toon.authorseq2 = author2.authorseq
+			left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			left join 
+	        (
+				select 
+					a.displayyn, a.directdisplayyn, a.webtoonseq, a.startdt, sum(a.totalstickercnt) sumtotalstickercnt
+				from (
+					select 
+						displayyn, directdisplayyn, totalstickercnt, webtoonseq, startdt
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, displayorder asc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+		where 
+			favorites.regid = #{regid}
+		order by
+			favorites.regdt desc, toon.webtoonnm
+		limit 
+			#{startRowNo}, #{pageSize}
+	]]>
+    </select>    
+    
+    <update id="favoritesPushUpdate" parameterType="com.olleh.webtoon.common.dao.toon.domain.FavoritesDomain">
+        UPDATE 
+        	ow_favorites favorites 
+        SET 
+        	pushyn = #{pushyn}
+        WHERE 
+        	webtoonseq = #{webtoonseq}
+        	and idfg = #{idfg}
+        	and regid = #{regid}
+    </update>
+    
+    <select id="recentSelectListCnt" parameterType="hashmap" resultType="java.lang.Integer">
+    <![CDATA[ 
+		select
+			count(*)
+		from ow_times
+		where timesseq in (${timesseqList});
+	]]>
+    </select>
+    
+    
+    <select id="recentSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+    <![CDATA[ 
+		select
+			times.webtoonseq,times.timesseq,times.timestitle,times.totalstickercnt,
+			DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+        	sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			toon.webtoonnm, toon.agefg, toon.toonfg,
+			case 
+				when toon.toonfg = 'novel' then toon.thumbpath
+				else times.thumbpath
+			end as thumbpath
+		from ow_times times
+			left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+			left join ow_author author2 on toon.authorseq2 = author2.authorseq
+			left join ow_author author3 on toon.authorseq3 = author3.authorseq
+      	    left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		where times.timesseq in (${timesseqList})
+	]]>
+    </select>
+ 
+	<select id="mytoonSelectDetail" useCache="false" parameterType="hashmap" resultType="hashmap">
+	    (
+		  select
+		  	'bookmark' mytoon, ifnull(times.timesseq, 0) timesseq, ifnull(times.timestitle, '') timestitle, count(bookmark.timesseq) totalcnt
+		  from 
+		    ( select timesseq, regid from ow_bookmark where regid = #{regid} order by regdt desc ) bookmark
+		    left join ow_times times on bookmark.timesseq = times.timesseq
+		)
+		union all
+		(
+		  select
+		  	'favorites' mytoon, ifnull(toon.webtoonseq, 0) webtoonseq, ifnull(toon.webtoonnm, '') webtoonnm, count(favorites.webtoonseq) totalcnt
+		  from 
+		    ( select webtoonseq, regid from ow_favorites where regid = #{regid} order by regdt desc ) favorites
+		    left join ow_webtoon toon on favorites.webtoonseq = toon.webtoonseq
+		)
+		union all
+		(
+		  select
+		  	'recent' mytoon, timesseq, timestitle, count(timesseq) totalcnt
+		  from ow_times 
+		  <if test="timesseqList != ''">
+		  where timesseq in (${timesseqList})
+		  </if>
+		  <if test="timesseqList == ''">
+		  where 1=2
+		  </if>
+		)
+    </select>
+	
+	<select id="mainTodayWebtoonSelectDateList" parameterType="hashmap" resultType="java.lang.String">
+	<![CDATA[ 
+		select a.date 
+		from(
+			select 1 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{monday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{monday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 2 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{tuesday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{tuesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 3 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{wednesday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{wednesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 4 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{thursday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{thursday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 5 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{friday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{friday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 6 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{saturday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{saturday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+			
+			union all
+			select 7 as weekorder, DATE_FORMAT(ifnull(b.startdt, date_add(#{sunday}, interval - 1 week)), '%Y%m%d') date
+			from ow_todaytoon a
+			left join 
+			(
+				select startdt from ow_todaytoon 
+				where displayyn = 'Y' 
+					and DATE_FORMAT(#{sunday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+				order by todaytoonseq desc limit 1
+			) b on a.startdt = b.startdt
+		) a
+		group by a.weekorder
+	]]>	
+	</select>
+	
+	<select id="mainTodayWebtoonTypeSelectList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[ 
+		select a.* from (
+		select 
+			1 weekorder, DATE_FORMAT(#{monday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{monday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			2 weekorder, DATE_FORMAT(#{tuesday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{tuesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			3 weekorder, DATE_FORMAT(#{wednesday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{wednesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			4 weekorder, DATE_FORMAT(#{thursday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{thursday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			5 weekorder, DATE_FORMAT(#{friday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{friday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			6 weekorder, DATE_FORMAT(#{saturday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{saturday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		union all
+		select 
+			7 weekorder, DATE_FORMAT(#{sunday}, '%Y. %m. %d') today, type.typefg, type.typeorder  from 
+				(
+				  select * from ow_todaytoon 
+				  where displayyn = 'Y' 
+						and DATE_FORMAT(#{sunday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d') 
+						order by todaytoonseq desc limit 1
+				)
+				todaytoon
+				join ow_type type on todaytoon.templateseq = type.templateseq
+		) a
+		order by a.weekorder, a.typeorder
+	]]>
+	</select>
+
+	<select id="mainTodayWebtoonItemSelectList" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.TodayToonDomain">
+	<![CDATA[ 
+		select a.*
+		from (
+			select 
+				  1 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					  when 
+					  	times.displayyn = 'Y' 
+					    and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+					    and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					  else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{monday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			union all
+			select 
+				  2 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+	        	  case 
+				      when 
+						times.displayyn = 'Y' 
+				    	and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+				    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+				  	else 'N'
+			  	  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{tuesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		union all
+			select 
+				  3 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					when 
+						times.displayyn = 'Y' 
+						and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+						and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{wednesday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			union all
+			select 
+				  4 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					when 
+						times.displayyn = 'Y' 
+						and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+						and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{thursday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		union all
+			select 
+				  5 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					when 
+						times.displayyn = 'Y' 
+						and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+						and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{friday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		union all
+			select 
+				  6 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					when 
+						times.displayyn = 'Y' 
+						and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+						and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{saturday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		union all
+			select 
+				  7 as weekorder,
+		      	  todaytoon.todaytoonseq,
+				  item.timesseq, times.webtoonseq,
+				  item.locationfg,item.itemorder,
+		          sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+				  item.thumbpath,
+				  times.timestitle, times.lastyn,
+				  format(ifnull(times.totalstickercnt,0), 0) totalstickercnt, DATE_FORMAT(times.publishdt, '%Y.%m.%d') regdt,
+				  ifnull(author1.authornm, '') authornm1, ifnull(author2.authornm, '') authornm2, ifnull(author3.authornm, '') authornm3,		  
+				  toon.serialfg, toon.agefg, toon.webtoonnm,
+				  		        
+		          case 
+					when 
+						times.displayyn = 'Y' 
+						and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+						and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+					else 'N'
+				  end as upyn,
+				  
+				case 
+		        when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+		             (
+		               select startdt from ow_times onest_times 
+		               where toon.webtoonseq = onest_times.webtoonseq 
+		               order by onest_times.publishdt asc limit 1
+		             ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+		        else 'N'
+		        end as newyn,
+				  
+				  case 
+				    when 
+				      toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+				  else 'N'
+				  end as restyn
+				from ow_todaytoon_item item
+				join 
+		    (
+		      select * from ow_todaytoon 
+		      where displayyn = 'Y' 
+		            and DATE_FORMAT(#{sunday}, '%Y%m%d') = DATE_FORMAT(startdt, '%Y%m%d')
+		    		order by todaytoonseq desc limit 1
+		    )
+		    todaytoon on item.todaytoonseq = todaytoon.todaytoonseq
+				left join ow_times times on item.timesseq = times.timesseq
+				left join ow_webtoon toon on times.webtoonseq = toon.webtoonseq
+				left join ow_author author1 on toon.authorseq1 = author1.authorseq
+				left join ow_author author2 on toon.authorseq2 = author2.authorseq
+				left join ow_author author3 on toon.authorseq3 = author3.authorseq
+		      	left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+		) a
+		order by a.weekorder, a.itemorder
+	]]>
+	</select>
+	
+	<select id="mainRealTimeCommentSelectList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[ 
+		select 
+			a.*,
+		case 
+      	  	when a.articlefg = 'times' then (select sthumbpath from ow_webtoon where webtoonseq = a.webtoonseq) 
+      	  	when a.articlefg = 'ctimes' then (select sthumbpath from ow_contest_webtoon where webtoonseq = a.webtoonseq)
+      	  	else 0
+      	end as sthumbpath	
+			
+		from 
+		(
+			select 
+			  comment.articleseq, comment.articlefg, comment.authoryn,
+	      	  comment.nameconseq, comment.comment, comment.idfg, namecon.defaultyn,
+	      	  
+	      	  case 
+	      	  	when comment.articlefg = 'times' then (select webtoonseq from ow_times where timesseq = comment.articleseq) 
+	      	  	when comment.articlefg = 'ctimes' then (select webtoonseq from ow_contest_times where timesseq = comment.articleseq)
+	      	  	else 0
+	      	  end as webtoonseq,
+	      	  
+	      	  case
+				 when comment.idfg = 'olleh' and comment.authoryn = 'Y' then concat(concat('<strong>', comment.nickname), '</strong>')
+				 when comment.idfg = 'olleh' 
+	                  and comment.authoryn = 'N' 
+	                  and instr(comment.regid, '@') > 0  
+	                  and char_length(substring_index(comment.regid, '@', 1)) > 3 
+	              then concat(concat(concat(left(substring_index(comment.regid, '@', 1), 3), repeat('*', char_length(substring_index(comment.regid, '@', 1)) - 3)), '@'), substring_index(comment.regid, '@', -1))
+				 when comment.idfg = 'olleh'                                                          
+	                  and comment.authoryn = 'N' 
+	                  and instr(comment.regid, '@') > 0  
+	                  and char_length(substring_index(comment.regid, '@', 1)) < 3 
+	              then comment.regid
+				 when comment.idfg = 'olleh' and comment.authoryn = 'N' and instr(comment.regid, '@') < 1  and char_length(comment.regid) > 3 
+				  then concat(left(comment.regid, 3), repeat('*', char_length(comment.regid) - 3)) 
+				 else comment.nickname
+				end as nickname,
+				
+			  case 
+			  when FLOOR(HOUR(TIMEDIFF(now(),comment.regdt)) / 24) > 0  then concat(FLOOR(HOUR(TIMEDIFF(now(),comment.regdt)) / 24), ' day')
+			  when FLOOR(HOUR(TIMEDIFF(now(),comment.regdt)) / 24) <= 0 and MOD(HOUR(TIMEDIFF(now(),comment.regdt)), 24) > 0  then concat(MOD(HOUR(TIMEDIFF(now(),comment.regdt)), 24),' hour')
+			  else concat(MINUTE(TIMEDIFF(now(),comment.regdt)), ' min')
+			  end as regdt 
+			from ow_comment comment
+			left join ow_namecon namecon on comment.nameconseq = namecon.nameconseq
+	    	left join 
+				(
+					select commentseq, SUM(IF ((regid in (${musers})), 3, 1)) as declarecnt
+					from ow_declaration
+					group by commentseq
+				)  de on comment.commentseq = de.commentseq
+			where (articlefg='times' or articlefg='ctimes') and comment.delyn='N' and blindyn = 'N' and ifnull(de.declarecnt, 0) < 3
+			order by comment.regdt desc
+			limit 0,5
+		) a
+		
+	]]>
+	</select>
+	    
+	<select id="simpleTimesSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			toon.toonfg,
+			toon.webtoonnm,
+			toon.webtoonseq,
+			times.timesseq,
+			times.thumbpath,
+			times.timestitle
+		from 
+			ow_webtoon toon
+		left join ow_times times on toon.webtoonseq = times.webtoonseq
+		where
+			toon.webtoonseq = #{webtoonseq}
+			and times.timesseq = #{timesseq}
+	</select>
+	
+	<select id="simpleToonSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			toonfg,
+			webtoonnm,
+			webtoonseq,
+			thumbpath,
+			agefg
+		from 
+			ow_webtoon
+		where
+			webtoonseq = #{webtoonseq}
+	</select>
+	
+	<select id="prdToonSelectDetail" parameterType="hashmap" resultType="com.olleh.webtoon.common.dao.toon.domain.ToonDomain">
+		select
+			toon.webtoonnm,
+			toon.webtoonseq,
+			toon.thumbpath,
+			toon.agefg,
+			prd.prdhistoryseq,
+		<![CDATA[ 
+			case
+				when prd.sellyn = 'Y' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.sellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.sellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as sellyn
+		]]>
+		from 
+			ow_webtoon toon
+		left join 
+			(
+				select * 
+				from ow_prd_his 
+				where prdfg = 'webtoon'
+				order by prdhistoryseq desc
+			) prd on toon.webtoonseq = prd.webtoonseq
+		where
+			toon.webtoonseq = #{webtoonseq}
+		order by prd.prdhistoryseq desc
+      	limit 0, 1
+	</select>
+	
+	<select id="toonRefPrdSelectCount" parameterType="hashmap" resultType="java.lang.Integer">
+		select 
+		  count(*)
+		from ow_prd prd
+		where 
+			(prdfg = 'name' or prdfg='comment') 
+		  and sellyn ='Y'
+		  and (sellfg = 'sell' or sellfg = 'sale' or sellfg = 'promotion')
+		and (prd.refwebtoonseq1 = #{webtoonseq} or prd.refwebtoonseq2 = #{webtoonseq} or prd.refwebtoonseq3 = #{webtoonseq})
+	</select>
+	
+</mapper>

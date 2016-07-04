@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓웹툰 </title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><!-- 최신 브라우저 랜더링 20140801 추가 -->
+<link href="/images/mobile/olleh_webtooon.ico" rel="shortcut icon" />
+<link rel="stylesheet" href="http://webtoon.olleh.com/css/pc/design.css?dt=2014100800000" type="text/css" /><!-- css -->
+<link rel="stylesheet" href="http://webtoon.olleh.com/css/pc/event_reply_festival.css?dt=201406051716" type="text/css" /><!-- css -->
+<link rel="stylesheet" href="http://webtoon.olleh.com/css/pc/event.css" type="text/css" /><!-- 201408070 event css 추가 -->
+
+<script type="text/javascript" src="http://webtoon.olleh.com/js/common/common_util.js?dt=2014100800000"></script>
+<script type="text/javascript" src="http://webtoon.olleh.com/js/common/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="http://webtoon.olleh.com/js/jquery/jquery.cookie.js"></script><!-- jquery -->
+</head>
+<body>
+<!-- wrap -->
+<div id="wrap">
+    <!-- ### header ### -->
+	<div id="header">
+		<div class="top">
+			<h1><a href="http://webtoon.olleh.com/main.kt"><img src="http://webtoon.olleh.com/images/pc/logo.gif?day=20140602" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+			<div class="h1Etc">
+				<!-- gnb -->
+
+				<div class="h_gnb">
+
+					<a href="https://webtoon.olleh.com/login.kt" onclick="javascript:adobePageAnalytics('^메인^로그인');" class="webtoonLoginBtn">로그인</a> |
+					<a href="https://webtoon.olleh.com/user/regist.kt" onclick="javascript:adobePageAnalytics('^메인^회원가입');">회원가입</a> |
+					<a href="#" class="webtoonLoginBtn">MY TOON</a> |
+
+					<a href="http://webtoon.olleh.com/support/noticeList.kt">고객센터</a>
+				</div>
+				<!-- //gnb -->
+
+				<!-- 검색 -->
+				<div class="h_sch">
+					<form action="http://webtoon.olleh.com/search.kt" name="searchform" method="get" onsubmit="javascript:toonsearch();return false;">
+						<fieldset>
+							<legend class="hidden">작품 또는 작가로 검색하기</legend>
+							<input type="text" placeholder="작품 또는 작가 검색" title="작품 또는 작가 검색" name="query" id="query" value=""  />
+							<button type="submit" onclick="javascript:adobePageAnalytics('^메인^검색^검색결과');"><img src="http://webtoon.olleh.com/images/pc/btn_search.gif" alt="검색" /></button>
+						</fieldset>
+					</form>
+				</div>
+				<!-- //검색 -->
+			</div>
+		</div>
+
+
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="http://webtoon.olleh.com/toon/weekList.kt" ><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="http://webtoon.olleh.com/images/pc/top_menu01.gif?r=201407071300" alt="Toon" class="menu" />
+					<!-- <img src="http://webtoon.olleh.com/images/pc/top_menu_new.gif" alt="new" class="new" /> --><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="http://webtoon.olleh.com/ranking/monthList.kt" >
+					<img src="http://webtoon.olleh.com/images/pc/top_menu02.gif?r=201407071300" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="http://webtoon.olleh.com/applay/recommendAppList.kt" >
+					<img src="http://webtoon.olleh.com/images/pc/top_menu03.gif?r=201407071300" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="http://webtoon.olleh.com/yoyozine/main.kt" >
+					<img src="http://webtoon.olleh.com/images/pc/top_menu04.gif?r=201407071300" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="http://webtoon.olleh.com/premium/premiumMain.kt" >
+					<img src="http://webtoon.olleh.com/images/pc/top_menu05.gif?r=201407071300" alt="Premium" class="menu" />
+				</a></li>
+				<li><a href="http://webtoon.olleh.com/shop/shopMain.kt" >
+					<img src="http://webtoon.olleh.com/images/pc/top_menu06.gif?r=201407071300" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+
+			<!-- 베리 충전소 링크 추가 -->
+			<div class="topMenuEtc">
+				<a href="https://webtoon.olleh.com/payment/payment.kt"><img alt="베리 충전소" src="http://webtoon.olleh.com/images/pc/top_menu_bnr.png"></a>
+			</div>
+			<!-- //베리 충전소 링크 추가 -->
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01 "><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li ><a href="http://webtoon.olleh.com/toon/weekList.kt">요일별</a> |</li>
+					<li ><a href="http://webtoon.olleh.com/toon/genreList.kt">장르별</a> |</li>
+					<li ><a href="http://webtoon.olleh.com/toon/toonList.kt?sort=subject">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 20140507 수정 -->
+		<div class="subMenu subMenu02 ">
+			<div class="topEtcDepth2">
+				<ul>
+					<!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li ><a href="/ranking/monthList.kt">월간 랭킹</a> |</li>
+					<li ><a href="/ranking/yorankingList.kt">Yo랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 20140507 수정 -->
+
+
+		<!-- //랭킹 하위메뉴 -->
+
+		<!-- 프리미엄관 하위메뉴 없음 -->
+
+		<!-- YOYOZINE 하위메뉴 -->
+
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu05 ">
+			<div class="topEtcDepth2">
+				<ul style="left:234px">
+					<li ><a href="http://webtoon.olleh.com/applay/recommendAppList.kt">추천앱</a> |</li>
+					<li ><a href="http://webtoon.olleh.com/applay/eventList.kt">이벤트</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- Shop 하위메뉴 -->
+		<div class="subMenu subMenu06 "><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li class='on'><a href="/shop/shopMain.kt">추천</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li ><a href="/shop/shopMain.kt?shopfg=comment">스티콘</a> |</li>
+					<li ><a href="/shop/shopMain.kt?shopfg=name">네임콘</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //Shop 하위메뉴 -->
+	</div>
+
+	<!-- ### container ### -->
+	<div id="container" style="height:1200px">
+		<h2 class="hidden">본문영역</h2>
+        <!-- 20141022 레이어 추가 -->
+        <!-- 베리베리 충전&플러스 이벤트 스타일 -->
+        <style type="text/css">
+        .layer_very_charge_wrapper h3, h4, p, dt, dd, span, input, label, textarea, li{font-family:'맑은 고딕', Malgun Gothic}
+        .layer_very_charge_wrapper{width:520px;position:absolute;top:20px;left:24%;background-color:#fff;border:1px solid #2e2e2e}
+        .layer_very_charge_wrapper .layer_top{background-color:#2e2e2e;height:55px;position:relative}
+        .layer_very_charge_wrapper .layer_top .layer_title{height:55px;line-height:52px;color:#fff;font-size:17px;padding-left:25px}
+        .layer_very_charge_wrapper .layer_top .button_close{position:absolute;top:18px;right:25px}
+        .layer_very_charge_wrapper .layer_middle{padding:30px 25px 47px;position:relative}
+        /* 20141022 추가 */
+        .layer_very_charge_wrapper .layer_middle_top{padding:30px 0;;border-bottom:1px solid #d0d0d0}
+        .layer_very_charge_wrapper .layer_middle_top .layer_event_info{font-size:20px;color:#5a5a5a;font-weight:bold;text-align:center}
+        /* //20141022 추가 */
+        .layer_very_charge_wrapper .layer_middle .button_check{display:block;width:125px;margin:0 auto 25px}
+        .layer_very_charge_wrapper .layer_middle .sub_title{font-size:18px;color:#373737;line-height:18px;font-weight:bold;margin-bottom:22px}
+        .layer_very_charge_wrapper .layer_middle .layer_event_info2{font-size:15px;color:#373737;font-weight:bold;margin-bottom:5px}
+        .layer_very_charge_wrapper .layer_middle  dl{position:relative}
+        .layer_very_charge_wrapper .layer_middle  dl:after{clear:both;display:block;content:""}
+        .layer_very_charge_wrapper .layer_middle  dl dt{font-size:15px;color:#373737;font-weight:bold;width:56px;float:left;padding-top:10px}
+        .layer_very_charge_wrapper .layer_middle  dl dd{font-size:15px;color:#373737;font-weight:bold;float:left;margin:7px 0;width:414px;position:relative}
+        .layer_very_charge_wrapper .layer_middle  dl dd:after{clear:both;display:block;content:""}
+        .layer_very_charge_wrapper .layer_middle  dl dd input{border:1px solid #bfbfbf;height:30px;padding-left:8px;font-weight:bold;color:#373737;float:left;font-size:14px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle  dl dd input:focus{background-color:#fffcd9}
+        .layer_very_charge_wrapper .layer_middle  dl dd .name{width:152px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .title_name{width:404px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .e_mail{width:256px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .button_duplicate_check{border:1px solid #9b9b9b;background-color:#a7a7a7;color:#fff;font-size:13px;height:30px;float:left;margin-left:8px;font-weight:normal;width:100px;text-align:center;line-height:26px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .comment_name{width:100%;float:left;color:#9c9c9c;font-size:12px;font-weight:normal;padding:5px 0}
+
+        .layer_very_charge_wrapper .layer_middle .phone{position:relative;z-index:2;margin-bottom:10px}
+        .layer_very_charge_wrapper .layer_middle .phone dt{width:98px}
+        .layer_very_charge_wrapper .layer_middle .phone dd{width:372px}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_number{width:67px;padding:0;text-align:center}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number{position:relative;z-index:1;width:57px;height:30px;padding:0 2px;border:1px solid #bfbfbf;background:#fff;line-height:19px;float:left}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel{display:block;*zoom:1}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel:after{display:block;clear:both;content:''}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel:hover .cnt,.selComp a.btn_sel:focus .cnt{text-decoration:underline}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .cnt{overflow:hidden;float:left;width:30px;height:30px;font-size:15px;color:#373737;line-height:28px;padding-left:6px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .arrow{display:block;float:right;width:10px;height:6px;margin-top:-1px;background:#FFF url(./images/icon_select_arrow.gif) no-repeat right center;text-indent:-9999px;margin:13px 5px 0 0}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap{display:none;overflow-x:hidden;overflow-y:scroll;position:absolute;top:30px;left:-1px;width:100%;max-height:115px;height:expression(this.scrollHeight > 120 ? '120' :'auto' );border:1px solid #D2D2D2;background:#fff;z-index:100}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li{width:100%;padding:2px}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li.on{background:#eee}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li a{display:block;overflow:hidden;;height:25px;font-size:15px;color:#373737;line-height:26px;padding-left:6px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .phone dd .dash{float:left;margin:0 2px;color:#c5c5c5;font-size:18px;font-weight:normal;height:32px;line-height:26px}
+
+        .layer_very_charge_wrapper .layer_middle .term_agree dt{float:none;display:block;width:100%}
+        .layer_very_charge_wrapper .layer_middle .term_agree dt a{border:1px solid #9b9b9b;background-color:#a7a7a7;color:#fff;font-size:12px;height:19px;margin-left:5px;font-weight:normal;width:65px;text-align:center;line-height:18px;display:inline-block;*display:inline}
+        .layer_very_charge_wrapper .layer_middle .term_agree dd{float:none;display:block;width:100%;margin:10px 0}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box{position:absolute;top:3px;right:0;width:160px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list{float:left;display:block}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list{z-index:1;position:relative}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list:after{display:block;content:'';clear:both}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li{float:left;margin-right:15px;position:relative;width:55px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list .last_list{margin:0;width:89px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li label{position:relative;float:left;font-size:14px;font-weight:normal;line-height:22px;padding-left:27px;cursor:pointer;z-index:2} /* 20141022 추가 */
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li .design_radio{background:url(./images/radio_completition.png) no-repeat 0 0;height:19px;width:19px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list .select .design_radio{background-position:0 -20px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2{float:left}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2{z-index:1;position:relative}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2:after{display:block;content:'';clear:both}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li{float:left;margin-right:15px;position:relative;width:55px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 .last_list{margin:0;width:89px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li label{position:relative;display:block;float:left;font-size:14px;font-weight:normal;line-height:22px;padding-left:27px;cursor:pointer;z-index:2} /* 20141022 추가 */
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li .design_radio{background:url(./images/radio_completition.png) no-repeat 0 0;height:19px;width:19px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 .select .design_radio{background-position:0 -20px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1{border:1px solid #bfbfbf;padding:10px;height:52px;overflow:hidden;font-size:12px;color:#9c9c9c;font-weight:normal;letter-spacing:-1px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1 p{padding-bottom:10px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1 ul li{padding-bottom:5px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2{border:1px solid #bfbfbf;padding:10px;height:52px;overflow:hidden;font-size:12px;color:#9c9c9c;font-weight:normal;letter-spacing:-1px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2 p{padding-bottom:10px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2 ul li{padding-bottom:5px}
+        .layer_very_charge_wrapper .layer_middle .button_app{display:block;width:205px;margin:0 auto;padding-top:15px}
+        #layerVeryChargeComplete{display:none}
+        #layerVeryChargeComplete .layer_middle{padding-bottom:0}
+        </style>
+        <!-- //베리베리 충전&플러스 이벤트 스타일 -->
+
+        <!-- 베리베리 충전&플러스 이벤트 스크립트 -->
+        <script type="text/javascript">
+        $(document).ready(function(){
+            /* 디자인 셀렉트박스 */
+            $.fn.designSelectBox = function (options) {
+                var opts = $.extend({
+                    selectType:"click",
+                    linkFunc:null,
+                    aTarget:'_self'
+                }, options);
+                return this.each(function () {
+                    var isOpen = false,
+                        linkFunc = opts.linkFunc,
+                        valueArr = [],
+                        $self = $(this),
+                        $replaceSelectBox,
+                        $btn,
+                        $selList,
+                        $selectUl,
+                        $selectLl,
+                        $lstBtn;
+
+                    function setting(){
+                        var realSelectBox = $self.find('option'), lst='', isSelect='', addHref='#', aTarget='', firTl='선택하기';
+                        realSelectBox.each(function(){
+                            if($(this).attr('selected')=='selected') isSelect = 'on';
+                            else isSelect = '';
+                            if(linkFunc != null){
+                                if( $(this).attr('value') == "" ) return;
+                                valueArr.push($(this).attr('value'));
+                                addHref = '#';
+
+                                lst += '<li class="'+isSelect+'"><a href="'+addHref+'"'+aTarget+'>'+$(this).text()+'</a></li>';
+                            }else{
+                                addHref = $(this).attr('value');
+                                aTarget = ' target="'+opts.aTarget+'"';
+                                if(opts.aTarget == '_blank') aTarget += ' title="새창"';
+                                if(addHref != '') lst += '<li class="'+isSelect+'"><a href="'+addHref+'"'+aTarget+'>'+$(this).text()+'</a></li>';
+                                else firTl = $(this).text();
+                            }
+                        });
+
+                        var replaceSelectBox = '<div class="'+$self.attr('class')+'">';
+                        replaceSelectBox+='<a class="btn_sel" href="#">';
+                        replaceSelectBox+='<span class="cnt">'+firTl+'</span>';
+                        replaceSelectBox+='<span class="arrow"></span>';
+                        replaceSelectBox+='</a>';
+                        replaceSelectBox+='<div class="sel_list_wrap">';
+                        replaceSelectBox+='<ul class="sel_list">';
+                        replaceSelectBox+= lst;
+                        replaceSelectBox+='</ul>';
+                        replaceSelectBox+='</div>';
+
+                        $replaceSelectBox = $(replaceSelectBox);
+                        $self.parent().prepend($replaceSelectBox);
+                        $self.remove();
+
+                        init();
+                    }
+
+                    setting();
+
+                    function init(){
+                        $btn = $replaceSelectBox.find('.btn_sel');
+                        $selList = $replaceSelectBox.find('.sel_list_wrap');
+                        $selectUl = $replaceSelectBox.find('.sel_list');
+                        $selectLl = $replaceSelectBox.find('.sel_list > li');
+                        $lstBtn = $selectLl.find('a');
+
+                        if( $selectUl.find('.on').text() != "")
+                            setSelectTxt();
+
+                        if( opts.selectType == "click" ){
+                            $btn.bind("click", function(){
+                                if( !isOpen ) setShowList(true);
+                                else setShowList(false);
+                                return false;
+                            });
+                        }else{
+                            $replaceSelectBox.bind('mouseenter focusin', function(){setShowList(true);});
+                        }
+
+                        $replaceSelectBox.bind('mouseleave', function(){if(isOpen){setShowList(false);}});
+
+                        $lstBtn.bind({
+                            'click':function(){
+                                        if( linkFunc != null ){
+                                            $selectLl.removeClass('on');
+                                            $(this).parent().addClass('on');
+                                            setSelectTxt();
+                                            setShowList(false);
+                                            linkFunc(valueArr[$(this).parent().index()]);
+                                            return false;}},
+                            'focusin': function(){setShowList(true);}
+                        });
+                        $lstBtn.eq(-1).bind('focusout', function(){setShowList(false);});
+                    }
+
+                    function setShowList(flag){
+                        if( flag ) $selList.show();
+                        else $selList.hide();
+                        isOpen = flag;
+                    }
+
+                    function setSelectTxt(){$btn.find('.cnt').text($selectUl.find('.on').text());}
+                });
+            };
+			$('.phone_first_number').designSelectBox({selectType:'click', linkFunc:null});
+
+            /* 디자인 라디오 */
+            function designRadio(){
+                var $radioWrapper = $('.radio_list'), //라디오 버튼 전체 영역
+                    $radioIist = $('.radio_list > li'), //라디오 버튼 리스트
+                    $radioInput = $('.radio_list > li > input'), //라디오 버튼 영역
+                    $radioLabel = $('.radio_list > li > label'), //레이블 버튼 영역
+                    $radioFake = $('.radio_list > li > .design_radio'), //페이크 버튼 영역
+                    $startIdx = 0, //라디오 버튼 초기화
+                    onIndex = -1 //현재활성화 라디오 버튼 초기화
+
+                function init(){
+                    $radioInput.each(function (idx, entry){
+                        $(entry).data('input', idx);
+                    });
+                    $radioIist.each(function (idx, entry){
+                        $(entry).data('label', idx);
+                    });
+                    startIdx($startIdx); //탭 초기 활성화
+                    event(); //이벤트 실행
+                };
+                init(); //초기화
+
+                //처음 이벤트 실행될 함수
+                function startIdx(idx){
+                    $radioIist.eq(idx).addClass('select');
+                        $radioInput.css({position:'absolute', left:-9999});
+                    onIndex = idx;
+                };
+
+                //레이블 아웃라인 주기
+                function labelOutline(idx){
+                    $radioIist.eq(onIndex).removeClass('select').children('.design_radio').css({outline:'none'});
+                    $radioIist.eq(idx).addClass('select').children('.design_radio').css({outline:'1px dotted'});
+
+                    onIndex = idx;
+                }
+
+                //레이블 클릭시 인풋 체크(ie 7,8대응)
+                function inputCheck(idx){
+                    $radioIist.eq(onIndex).removeClass('select').children('.design_radio').css({outline:'none'});
+                    $radioIist.eq(idx).addClass('select').children('.design_radio').css({outline:'1px dotted'});
+                    $radioInput.eq(idx).focus();
+
+                    onIndex = idx;
+                }
+
+                //이벤트 실행
+                function event(){
+                    //라디오버튼 클릭시
+                    $radioInput.bind({
+                        'focusin' : function(event){
+                            labelOutline($(this).data('input'));
+
+                        },
+                        'focusout' : function(event){
+                            $radioIist.children('.design_radio').css({outline:'none'});
+                        }
+                    });
+
+                    //레이블 클릭시
+                    $radioLabel.bind({
+                        'click' : function(event){
+                            inputCheck($(this).data('label'));
+
+                        },
+                        'focusout' : function(event){
+                            $radioIist.children('.design_radio').css({outline:'none'});
+                        }
+                    });
+                };
+            };
+            designRadio();
+
+            /* 디자인 라디오2 */
+            function designRadio2(){
+                var $radioWrapper = $('.radio_list2'), //라디오 버튼 전체 영역
+                    $radioIist = $('.radio_list2 > li'), //라디오 버튼 리스트
+                    $radioInput = $('.radio_list2 > li > input'), //라디오 버튼 영역
+                    $radioLabel = $('.radio_list2 > li > label'), //레이블 버튼 영역
+                    $startIdx = 0, //라디오 버튼 초기화
+                    onIndex = -1 //현재활성화 라디오 버튼 초기화
+
+                function init(){
+                    $radioInput.each(function (idx, entry){
+                        $(entry).data('input', idx);
+                    });
+                    $radioIist.each(function (idx, entry){
+                        $(entry).data('label', idx);
+                    });
+                    startIdx($startIdx); //탭 초기 활성화
+                    event(); //이벤트 실행
+                };
+                init(); //초기화
+
+                //처음 이벤트 실행될 함수
+                function startIdx(idx){
+                    $radioIist.eq(idx).addClass('select');
+                        $radioInput.css({position:'absolute', left:-9999});
+                    onIndex = idx;
+                };
+
+                //레이블 아웃라인 주기
+                function labelOutline(idx){
+                    $radioIist.eq(onIndex).removeClass('select').children('.design_radio').css({outline:'none'});
+                    $radioIist.eq(idx).addClass('select').children('.design_radio').css({outline:'1px dotted'});
+
+                    onIndex = idx;
+                }
+
+                //레이블 클릭시 인풋 체크(ie 7,8대응)
+                function inputCheck(idx){
+                    $radioIist.eq(onIndex).removeClass('select').children('.design_radio').css({outline:'none'});
+                    $radioIist.eq(idx).addClass('select').children('.design_radio').css({outline:'1px dotted'});
+                    $radioInput.eq(idx).focus();
+
+                    onIndex = idx;
+                }
+
+                //이벤트 실행
+                function event(){
+                    //라디오버튼 클릭시
+                    $radioInput.bind({
+                        'focusin' : function(event){
+                            labelOutline($(this).data('input'));
+
+                        },
+                        'focusout' : function(event){
+                            $radioIist.children('.design_radio').css({outline:'none'});
+                        }
+                    });
+
+                    //레이블 클릭시
+                    $radioLabel.bind({
+                        'click' : function(event){
+                            inputCheck($(this).data('label'));
+
+                        },
+                        'focusout' : function(event){
+                            $radioIist.children('.design_radio').css({outline:'none'});
+                        }
+                    });
+                };
+            };
+            designRadio2();
+
+            /* 전문보기 슬라이딩-1 */
+            $("a.button_term1_all").bind({
+                "click" : function() {
+                    var txtMaxHeight = 208;
+                    var txtMinHeight = 52;
+
+                    if($(this).parent().siblings(".term_box").children(".term_txt1").length > 0){
+                        if($(this).parent().siblings(".term_box").children(".term_txt1").hasClass("on")){
+                            $(this).parent().siblings(".term_box").children(".term_txt1").removeClass("on");
+                           $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMinHeight});
+                            return false;
+                        }else{
+                            $(this).parent().siblings(".term_box").children(".term_txt1").addClass("on");
+                            $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMaxHeight});
+                            return false;
+                        };
+                    }else{
+                        return false;
+                    };
+                }
+            });
+
+            /* 전문보기 슬라이딩-2 */
+            $("a.button_term2_all").bind({
+                "click" : function() {
+                    var txtMaxHeight = 150;
+                    var txtMinHeight = 52;
+
+                    if($(this).parent().siblings(".term_box").children(".term_txt2").length > 0){
+                        if($(this).parent().siblings(".term_box").children(".term_txt2").hasClass("on")){
+                            $(this).parent().siblings(".term_box").children(".term_txt2").removeClass("on");
+                           $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMinHeight});
+                            return false;
+                        }else{
+                            $(this).parent().siblings(".term_box").children(".term_txt2").addClass("on");
+                            $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMaxHeight});
+                            return false;
+                        };
+                    }else{
+                        return false;
+                    };
+                }
+            });
+
+            /* 레이어 닫기 */
+            $(".button_close").click(function(){
+                $(".button_close").parent().parent("#layerVeryCharge").css({"display" : "none"});
+                return false;
+            });
+        });
+        </script>
+        <!-- //베리베리 충전&플러스 이벤트 스크립트 -->
+
+        <!-- ###[레이어]베리베리 충전&플러스 이벤트### -->
+        <div id="layerVeryCharge" class="layer_very_charge_wrapper">
+            <!-- 레이어 상단 -->
+            <div class="layer_top">
+                <h3 class="layer_title">베리베리~100베리 충전 & 플러스 이벤트</h3>
+                <a href="#none" class="button_close"><img src="./images/button_completition_close.gif" alt="레이어닫기"></a>
+            </div>
+            <!-- //레이어 상단 -->
+
+            <!-- 20141022 추가 -->
+            <div class="layer_middle_top">
+                <p class="layer_event_info">100베리 충전이 완료되었습니다!<br/>익일 정오에 MY>MY베리를 확인 해주세요~</p>
+            </div>
+            <!-- //20141022 추가 -->
+
+            <!-- 레이어 중단 -->
+            <div class="layer_middle">
+                <h4 class="sub_title"> + PLUS 이벤트</h4>
+                <p class="layer_event_info2">경품 받으실 핸드폰 번호를 입력해주세요</p>
+                <dl class="phone">
+                    <dt>휴대전화번호</dt>
+                    <dd>
+                        <select name="rowsPerPage" class="phone_first_number">
+                            <option value="010" selected="selected">010</option><!-- (D) 해당 전달값 value에 삽입 처리 -->
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="018">018</option>
+                        </select>
+                        <span class="dash">-</span>
+                        <input type="text" class="phone_number" />
+                        <span class="dash">-</span>
+                        <input type="text" class="phone_number" />
+                    </dd>
+                </dl>
+                <dl class="term_agree">
+                    <dt>개인정보 수집, 활용에 대한 동의<a href="#none" class="button_term1_all">전문보기</a></dt>
+                    <dd class="radio_box">
+                        <ul class="radio_list">
+                            <li>
+                                <input type="radio" id="agree1" name="term_agree1">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree1">동의</label>
+                            </li>
+                            <li class="last_list">
+                                <input type="radio" id="agree2" name="term_agree1">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree2">동의 안함</label>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd class="term_box">
+                        <div class="term_txt1">
+                            <p>고객님이 입력한 개인정보는 ‘정보통신망 이용촉진 및 정보보호 등에 관한 법률’에 따라 kt가 수집, 이용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다.</p>
+                            <p>입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 이용되지 않습니다.</p>
+                            <ul>
+                                <li>1) 개인정보 수집 및 이용목적 - 이벤트 대상 여부 및 본인 확인, 경품 배송</li>
+                                <li>2) 수집하는 개인정보 항목 - 휴대폰번호</li>
+                                <li>3) 개인정보 보유 및 이용기간 - 당첨자 발표 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)</li>
+                                <li>4) 본 이벤트 참여 고객은 개인정보 수집, 이용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다.</li>
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+                <dl class="term_agree">
+                    <dt>개인정보 취급 위탁 동의<a href="#none" class="button_term2_all">전문보기</a></dt>
+                    <dd class="radio_box">
+                        <ul class="radio_list2">
+                            <li>
+                                <input type="radio" id="agree3" name="term_agree2">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree3">동의</label>
+                            </li>
+                            <li class="last_list">
+                                <input type="radio" id="agree4" name="term_agree2">
+                                <span class="design_radio">&nbsp;</span>
+                                <label for="agree4">동의 안함</label>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd class="term_box">
+                        <div class="term_txt2">
+                            <p>회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급 위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+                            <ul>
+                                <li>1) 개인정보 취급위탁을 받는 자 - 업체명 : 케이티하이텔㈜, ㈜케이티엠하우스 문의 : 올레마켓웹툰 서비스 로그인 후 1:1문의를 통해 문의</li>
+                                <li>2) 위탁목적 - 이벤트 참여자 문의시 본인 확인 및 응대, 경품 발송</li>
+                                <li>3) 위탁범위 - 본 개인정보수집, 이용, 위탁 방침에 동의한 이용자가 입력한 개인정보</li>
+                                <li>4) 위탁기간 - 이벤트 종료 후 10일 이내 폐기</li>
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+                <a href="#none" class="button_app"><img src="./images/button_very_charge_app.jpg" alt="확인" /></a>
+            </div>
+            <!-- //레이어 중단 -->
+        </div>
+        <!-- //###[레이어]베리베리 충전&플러스 이벤트### -->
+        <!-- //20141022 레이어 추가 -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer ### -->
+	<!-- //wrap -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="http://www.kt.com/main.jsp" target="_blank">회사소개</a> |</li>
+			<li><a href="http://webtoon.olleh.com/support/rule.kt?tab=1">이용약관</a> |</li>
+			<li><strong><a href="http://webtoon.olleh.com/support/rule.kt?tab=2">개인정보취급방침</a></strong> |</li>
+			<li><a href="http://webtoon.olleh.com/support/rule.kt?tab=3">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

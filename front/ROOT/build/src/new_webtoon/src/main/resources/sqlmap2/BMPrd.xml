@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMPrdMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain">
+		INSERT INTO 
+			ow_bm_prd 
+			(
+				  prdcode
+				, prdname
+				, price
+				, firstprice
+				, useterm
+				, blueberrycnt
+				, maintainperiod
+				, regid
+				, regdt
+			)
+			VALUES 
+			(
+				  #{prdcode}
+				, #{prdname}
+				, #{price}
+				, #{firstprice}
+				, #{useterm}
+				, #{blueberrycnt}
+				, #{maintainperiod}
+				, #{regid}
+				, #{regdt}
+			);
+    </insert>
+    
+	<update id="updateByPrdcode"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain">
+		UPDATE
+			ow_bm_prd
+		SET
+			  									   prdcode 			= prdcode
+		<if test="isNotEmpty(prdname)"			>, prdname			= #{prdname}		</if>
+		<if test="isNotEmpty(price)"			>, price			= #{price}			</if>
+		<if test="isNotEmpty(firstprice)"		>, firstprice 		= #{firstprice}		</if>
+		<if test="isNotEmpty(useterm)"			>, useterm 			= #{useterm}		</if>
+		<if test="isNotEmpty(blueberrycnt)"		>, blueberrycnt 	= #{blueberrycnt}	</if>
+		<if test="isNotEmpty(maintainperiod)"	>, maintainperiod 	= #{maintainperiod}	</if>
+		<if test="isNotEmpty(modid)"			>, modid			= #{modid}			</if>
+		<if test="isNotEmpty(moddt)"			>, moddt			= #{moddt}			</if>
+		WHERE
+			prdcode = #{prdcode}
+    </update>
+    
+    <delete id="deleteByPrdcode"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain">
+		DELETE FROM
+			ow_bm_prd
+		WHERE
+			prdcode = #{prdcode}
+    </delete>
+    
+    <select id="selectByPrdcode"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_prd
+    	WHERE
+    		prdcode = #{prdcode}
+    </select>
+    
+    <select id="selectAll"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMPrdDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_prd
+    </select>
+</mapper>

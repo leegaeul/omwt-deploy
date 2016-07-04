@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/service/iface
+END
+DeviceService.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/service/iface/DeviceService.java
+END
+AppLatestVersionService.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/service/iface/AppLatestVersionService.java
+END
+MemberService.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/api/service/iface/MemberService.java
+END

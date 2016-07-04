@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+  <title>yoyozine december</title>
+  <style type="text/css">
+
+   html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video 
+   {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      vertical-align: top;
+      list-style:none;
+   }
+   #event{max-width:600px; min-width:320px; margin:0 auto;}
+   #event img{width:100%; height:auto;}
+  </style>
+ </head>
+ <body>
+ <div id="event">
+  <div class="rect1">
+	<img src="images/yorank_04_top.jpg" width="600" height="361" alt="" /> <!-- 이미지경로 기존 요요진 참고 /yoranking/등록일/ -->
+  </div>
+  <div class="rect2">
+	  <ol>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=20">
+				<img src="images/yorank_04_01.jpg" width="600" height="120" alt="" /> 
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=15">
+				<img src="images/yorank_04_02.jpg" width="600" height="120" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=93">
+				<img src="images/yorank_04_03.jpg" width="600" height="120" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=40">			
+				<img src="images/yorank_04_04.jpg" width="600" height="80" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=28">
+				<img src="images/yorank_04_05.jpg" width="600" height="80" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=59">
+				<img src="images/yorank_04_06.jpg" width="600" height="80" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=81">
+				<img src="images/yorank_04_07.jpg" width="600" height="81" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=55">
+				<img src="images/yorank_04_08.jpg" width="600" height="80" alt="" />
+			</a>
+		</li>  
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=11">
+				<img src="images/yorank_04_09.jpg" width="600" height="80" alt="" />
+			</a>
+		</li> 
+		<li>
+			<a href="http://webtoon.olleh.com/toon/timesList.kt?webtoonseq=66">
+				<img src="images/yorank_04_10.jpg" width="600" height="80" alt="" />
+			</a>
+		</li> 
+	  </ol>	
+  </div>
+</div>
+</body>
+</html>

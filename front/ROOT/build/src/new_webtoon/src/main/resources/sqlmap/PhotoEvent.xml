@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.photoevent.persistence.PhotoEventMapper">
+	
+	<insert id="insertPhotoEvent" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventDomain">
+	INSERT INTO ow_photo_event (eventfg, userid, idfg, phonenum, regdt) 
+		VALUES (#{eventfg}, #{userid}, #{idfg}, HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015')), #{regdt})
+    </insert>
+	    
+    <select id="selectPhotoEventRegist" parameterType="com.olleh.webtoon.common.dao.comment.domain.CommentEventDomain" resultType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventDomain">
+		SELECT 
+			eventseq,eventfg,userid,idfg,regdt,winyn,grade,degree,
+			CONVERT(AES_DECRYPT(UNHEX(phonenum), 'ollehwebtoon2015') using utf8) as phonenum
+		FROM
+			ow_photo_event
+		WHERE
+			userid = #{userid} 
+			AND idfg = #{idfg} 
+			AND eventfg = #{eventfg} 
+		LIMIT
+		 	0, 1
+	</select>
+	
+	<insert id="insertPhotoEventImage" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain">
+	INSERT INTO ow_photo_image (eventseq,statusfg,content,
+		thumbpath,mthumbpath,detailimagepath,mdetailimagepath,imagepath,imagefilenm,
+		totalgoodcnt,nickname,regid,idfg,regdt) 
+	VALUES (
+		#{eventseq},'success',#{content},
+		#{thumbpath},#{mthumbpath},#{detailimagepath},#{mdetailimagepath},#{imagepath},#{imagefilenm},
+		0,#{nickname},#{regid},#{idfg},#{regdt}
+	)
+    </insert>
+    
+    <select id="selectImageListCnt" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain" 
+    								       resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_photo_image
+		WHERE statusfg != 'ready' AND statusfg != 'urdelete'
+    </select>
+    
+    <select id="selectImageList" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain" 
+    								       resultType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain">
+		SELECT 
+			date_format(t1.regdt, "%Y-%m-%d %H:%i") as regdt,
+			t1.imageseq, t1.eventseq, t1.statusfg, t1.content, t1.totalgoodcnt, t1.regid, t1.moddt,
+			t1.thumbpath, t1.mthumbpath, t1.detailimagepath, t1.mdetailimagepath, t1.imagepath, t1.imagefilenm,
+		<![CDATA[
+			CASE
+          		WHEN(ifnull(t2.imageseq, 0) > 0) then 'Y'
+           		ELSE 'N'
+           	END AS recomyn,
+           
+			CASE
+				WHEN t3.declarecnt >= 5 OR t1.statusfg = 'addelete' THEN 'Y'
+				ELSE 'N'
+			END AS blindyn,
+			
+			CASE
+          		WHEN(ifnull(t2.imageseq, 0) > 0) then 'Y'
+           		ELSE 'N'
+           	END AS recomyn,
+           
+			CASE
+				WHEN t1.regid = #{regid} and t1.idfg = #{idfg} THEN 'Y'
+				ELSE 'N'
+			END AS selfyn,
+			
+			CASE
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') > 0  AND char_length(substring_index(t1.regid, '@', 1)) > 3 
+              		THEN concat(concat(concat(left(substring_index(t1.regid, '@', 1), 3), repeat('*', char_length(substring_index(t1.regid, '@', 1)) - 3)), '@'), substring_index(t1.regid, '@', -1))
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') > 0 AND char_length(substring_index(t1.regid, '@', 1)) < 3 THEN t1.regid
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') < 1  AND char_length(t1.regid) > 3 
+			  		THEN concat(left(t1.regid, 3), repeat('*', char_length(t1.regid) - 3)) 
+				ELSE t1.nickname
+			END AS nickname
+		]]>
+		FROM ow_photo_image t1
+		LEFT JOIN ow_photo_recommend t2 on t1.imageseq = t2.imageseq and t2.regid = #{regid}
+		LEFT JOIN (
+			select imageseq, (SUM(IF ((regid in (${musers})), 5, 1))) as declarecnt
+			from ow_photo_declaration
+			group by imageseq
+		) t3 ON t1.imageseq = t3.imageseq
+		WHERE statusfg != 'ready' AND statusfg != 'urdelete'
+		ORDER BY imageseq DESC
+		LIMIT #{startRowNo}, #{pageSize}
+    </select>
+    
+    <select id="selectMyImageListCnt" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain" 
+    								       resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_photo_image
+		WHERE regid = #{regid} and idfg = #{idfg}
+		
+		<if test="regdt != null and regdt != ''">
+		and date_format(regdt, '%Y%m%d') = #{regdt}
+		and statusfg != 'urdelete'
+		</if>
+    </select>
+    
+    <select id="selectMyImageList" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain" 
+    								       resultType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain">
+		SELECT 
+			date_format(t1.regdt, "%Y-%m-%d %H:%i") as regdt, 
+			t1.imageseq, t1.eventseq, t1.statusfg, t1.content, t1.totalgoodcnt, t1.regid, t1.moddt,
+			t1.thumbpath, t1.mthumbpath, t1.detailimagepath, t1.mdetailimagepath, t1.imagepath, t1.imagefilenm,
+		<![CDATA[
+			CASE
+          		WHEN(ifnull(t2.imageseq, 0) > 0) then 'Y'
+           		ELSE 'N'
+           	END AS recomyn,
+           
+			CASE
+				WHEN t3.declarecnt >= 5 OR t1.statusfg = 'addelete' THEN 'Y'
+				ELSE 'N'
+			END AS blindyn,
+			
+			CASE
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') > 0  AND char_length(substring_index(t1.regid, '@', 1)) > 3 
+              		THEN concat(concat(concat(left(substring_index(t1.regid, '@', 1), 3), repeat('*', char_length(substring_index(t1.regid, '@', 1)) - 3)), '@'), substring_index(t1.regid, '@', -1))
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') > 0 AND char_length(substring_index(t1.regid, '@', 1)) < 3 THEN t1.regid
+			 	WHEN t1.idfg = 'olleh' AND instr(t1.regid, '@') < 1  AND char_length(t1.regid) > 3 
+			  		THEN concat(left(t1.regid, 3), repeat('*', char_length(t1.regid) - 3)) 
+				ELSE t1.nickname
+			END AS nickname
+		]]>
+		FROM ow_photo_image t1
+		LEFT JOIN ow_photo_recommend t2 on t1.imageseq = t2.imageseq and t2.regid = #{regid}
+		LEFT JOIN (
+			select imageseq, (SUM(IF ((regid in (${musers})), 5, 1))) as declarecnt
+			from ow_photo_declaration
+			group by imageseq
+		) t3 ON t1.imageseq = t3.imageseq
+		WHERE t1.regid = #{regid} and t1.idfg = #{idfg}
+		ORDER BY imageseq DESC
+		LIMIT #{startRowNo}, #{pageSize}
+    </select>
+    
+	<insert id="insertImageDeclation" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageDeclarationDomain">
+	INSERT INTO ow_photo_declaration (imageseq, idfg, regid, regdt) 
+		VALUES (#{imageseq}, #{idfg}, #{regid}, #{regdt})
+    </insert>
+	
+	<select id="selectDeclareCntByImgseq" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageDeclarationDomain" resultType="java.lang.Integer">
+		SELECT t.declarecnt
+		FROM (
+				select ifnull(SUM(IF ((regid in (${musers})), 5, 1)), 0) as declarecnt
+				from ow_photo_declaration
+				where imageseq = #{imageseq}
+			 ) t	
+	</select>
+	
+	<select id="selectDeclareCntById" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageDeclarationDomain" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM ow_photo_declaration
+		WHERE regid = #{regid} 
+			  and idfg = #{idfg} 
+			  and imageseq = #{imageseq}
+	</select>
+	
+	<select id="selectRecomCntById" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageRecommendDomain" resultType="java.lang.Integer">
+		SELECT count(*) AS recomcnt
+		FROM ow_photo_recommend
+		WHERE regid = #{regid}
+			  AND idfg = #{idfg}
+			  AND imageseq = #{imageseq}	
+	</select>
+	
+	<select id="selectRecomCntByImgseq" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageRecommendDomain" resultType="java.lang.Integer">
+		SELECT count(*) AS recomcnt
+		FROM ow_photo_recommend
+		WHERE imageseq = #{imageseq}	
+	</select>
+	
+	<select id="selectImageRegId" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain" resultType="java.lang.String">
+		SELECT regid
+        FROM ow_photo_image
+        WHERE imageseq = #{imageseq}
+        LIMIT 0, 1
+	</select>
+	
+	<insert id="insertImageRecommend" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageRecommendDomain">
+        INSERT INTO ow_photo_recommend (
+             imageseq,
+             recommendno,
+             recommendfg,
+             regid,
+             idfg,
+             regdt)
+		SELECT
+			t1.imageseq,
+			IFNULL(MAX(t2.recommendno),0) + 1,
+			#{recommendfg},
+			#{regid},
+			#{idfg},
+			#{regdt}
+        from
+			ow_photo_image t1
+		left join ow_photo_recommend t2 on t1.imageseq = t2.imageseq
+		where
+			t1.imageseq = #{imageseq}
+    </insert>
+    
+    <update id="updateImageInfo" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.ImageRecommendDomain">
+        UPDATE ow_photo_image
+        SET totalgoodcnt =  ifnull(totalgoodcnt, 0) + 1
+        WHERE imageseq = #{imageseq}
+    </update>
+    
+	<update id="updateImageDelete" parameterType="com.olleh.webtoon.common.dao.photoevent.domain.PhotoEventImageDomain">
+        UPDATE ow_photo_image
+        SET statusfg =  #{statusfg}, moddt = #{moddt}
+        WHERE imageseq = #{imageseq}
+    </update>
+    
+</mapper>

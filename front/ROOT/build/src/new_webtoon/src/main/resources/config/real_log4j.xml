@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n"/>
+	    </layout>
+    </appender>
+
+    <!-- eclipse에 서버 설치하여 개발 시 catalina.base는 "워크스페이스경로/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/"임 -->
+    <appender name="LOGFILE-INFO" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/info.log" />
+	    <param name="DatePattern" value="'.'yyyy-MM-dd" />
+	    <param name="Append" value="true" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+    </appender>
+
+    <appender name="LOGFILE-ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/error.log" />
+	    <param name="DatePattern" value="'.'yyyy-MM-dd" />
+	    <param name="Append" value="true" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+    
+	<appender name="LOGFILE-DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/debug.log" />
+	    <param name="DatePattern" value="'.'yyyy-MM-dd" />
+	    <param name="Append" value="true" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUG"/>
+            <param name="LevelMax" value="DEBUG"/>
+        </filter>
+    </appender>    
+    
+    <!-- <appender name="DB-LOGFILE-INFO" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/db/dblog.log" />
+	    <param name="DatePattern" value="'.'yyyy-MM-dd_HH" />
+	    <param name="Append" value="true" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+    </appender>
+    
+    <appender name="DBCACHE-LOGFILE-DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/db_cache/dbCachelog.log" />
+	    <param name="DatePattern" value="'.'yyyy-MM-dd_HH" />
+	    <param name="Append" value="true" />
+	    <param name="encoding" value="utf-8" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	        <param name="ConversionPattern" value="[%d{HH:mm:ss}] %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUG"/>
+            <param name="LevelMax" value="DEBUG"/>
+        </filter>
+    </appender>
+    
+	<logger name="com.olleh.webtoon.common.dao" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="DBCACHE-LOGFILE-DEBUG"/>
+    </logger>
+    <logger name="com.olleh.webtoon.common.util.MapperLoggerUtil" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="DBCACHE-LOGFILE-DEBUG"/>
+    </logger>
+ 
+	<logger name="jdbc.connection" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger>
+ 
+    <logger name="jdbc.audit" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger>
+ 
+    <logger name="jdbc.sqlonly" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger>
+ 
+    <logger name="jdbc.sqltiming" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger>
+ 
+    <logger name="jdbc.resultset" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger>
+     
+    <logger name="jdbc.resultsettable" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="DB-LOGFILE-INFO"/>
+    </logger> -->
+    
+    
+    
+    <root>
+		<level value="ERROR"/>
+		<appender-ref ref="console" />
+	    <appender-ref ref="LOGFILE-INFO" />
+	    <appender-ref ref="LOGFILE-ERROR" />
+	    <appender-ref ref="LOGFILE-DEBUG" />
+	</root>
+
+</log4j:configuration>

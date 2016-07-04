@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.applay.persistence.RecommendAppMapper">
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+	
+	<select id="recommendAppSelectListCnt" parameterType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			ow_recommendapp
+		where
+		<![CDATA[
+			((rdisplayyn = 'Y' and date_format(now(), '%Y%m%d') >= date_format(rstartdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(renddt, '%Y%m%d'))
+			or (rdirectdisplayyn = 'Y' and date_format(now(), '%Y%m%d') <= date_format(rdirectdisplayenddt, '%Y%m%d')))
+		]]>
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and ( displayfg = 'all' or displayfg = 'pc')
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and ( displayfg = 'all' or displayfg = 'mobile')
+		</if>
+	</select>
+	
+	<select id="recommendAppSelectList" parameterType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain"  resultType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain">
+		select
+			appseq,
+			thumbpath,
+			apptitle,
+			category1,
+			category2,
+			format(ifnull(price,0),0) price,
+			freeyn,
+			sellernm
+		from 
+			ow_recommendapp
+		where
+		<![CDATA[
+			(
+				(rdisplayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') >= date_format(rstartdt, '%Y%m%d') 
+				and date_format(now(), '%Y%m%d') <= date_format(renddt, '%Y%m%d'))
+			or (rdirectdisplayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') <= date_format(rdirectdisplayenddt, '%Y%m%d')))
+		]]>
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and ( displayfg = 'all' or displayfg = 'pc')
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and ( displayfg = 'all' or displayfg = 'mobile')
+		</if>
+		order by
+			rdisplayorder asc, appseq desc
+		limit 
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="recommendAppSelectDetail" parameterType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain"  resultType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain">
+		select
+			appseq,
+			thumbpath,
+			contents,
+			apptitle,
+			grade,
+			filesize,
+			freeyn,
+			format(ifnull(price,0),0) price,
+			sellernm,
+			category1,
+			category2,
+			screenshotpath01,
+			screenshotpath02,
+			screenshotpath03,
+			screenshotpath04,
+			screenshotpath05,
+			linkurl,
+			mlinkurl,
+			installurl
+		from 
+			ow_recommendapp
+		where
+			appseq = #{appseq}
+		<![CDATA[
+			and ((rdisplayyn = 'Y' and date_format(now(), '%Y%m%d') >= date_format(rstartdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(renddt, '%Y%m%d'))
+			or (rdirectdisplayyn = 'Y' and date_format(now(), '%Y%m%d') <= date_format(rdirectdisplayenddt, '%Y%m%d')))
+		]]>
+	</select>
+	
+	<select id="rnbRecommendAppSelect" resultType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain">
+		select 
+			recommend.appseq, 
+			recommend.thumbpath, 
+			recommend.apptitle,
+			format(ifnull(recommend.price,0),0) price,
+			recommend.sellernm, 
+			recommend.linkurl 
+		from 
+			ow_rnb_app rnb
+		left join 
+			ow_recommendapp recommend on rnb.appseq = recommend.appseq
+		where
+		<![CDATA[
+			rnb.rnbfg = 'sub' and 
+			(
+				(rnb.displayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') >= date_format(rnb.startdt, '%Y%m%d') 
+				and date_format(now(), '%Y%m%d') <= date_format(rnb.enddt, '%Y%m%d'))
+				or
+				(rnb.directdisplayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') <= date_format(rnb.directdisplayenddt, '%Y%m%d'))
+			) 
+		]]>
+		order by 
+			rnb.rnbappseq DESC
+		limit
+			0, 1
+	</select>
+	
+	<select id="rnbPopularAppSelect" resultType="com.olleh.webtoon.common.dao.applay.domain.RecommendAppDomain">
+		select 
+			recommend.appseq, 
+			recommend.thumbpath, 
+			recommend.apptitle,
+			recommend.freeyn,
+			format(ifnull(recommend.price,0),0) price
+		from 
+			ow_rnb_app rnb
+		left join 
+			ow_recommendapp recommend on rnb.appseq = recommend.appseq
+		where
+		<![CDATA[
+			rnb.rnbfg = 'main' and 
+			(
+				(rnb.displayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') >= date_format(rnb.startdt, '%Y%m%d') 
+				and date_format(now(), '%Y%m%d') <= date_format(rnb.enddt, '%Y%m%d'))
+				or
+				(rnb.directdisplayyn = 'Y' 
+				and date_format(now(), '%Y%m%d') <= date_format(rnb.directdisplayenddt, '%Y%m%d'))
+			) 
+		]]>
+		order by 
+			rnb.rnbappseq DESC
+		limit
+			0, 1
+	</select>
+	
+	<select id="mainHotappSelectDetail" resultType="com.olleh.webtoon.common.dao.applay.domain.HotAppDomain">
+	<![CDATA[ 
+		select 
+		  rcdapp.appseq, rcdapp.apptitle,
+		  format(ifnull(rcdapp.price,0),0) price,
+		  rcdapp.freeyn, hotapp.thumbpath, hotapp.titlethumbpath, hotapp_item.itemorder
+		from ow_hotapp_item hotapp_item    
+      left join ow_hotapp hotapp on hotapp_item.hotappseq = hotapp.hotappseq
+			left join ow_recommendapp rcdapp on hotapp_item.appseq = rcdapp.appseq
+		where ((displayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= enddt )
+			or (directdisplayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= directdisplayenddt )) and hotapp_item.itemorder = 1
+		limit 0,1;
+	]]>
+	</select>
+
+	<select id="mainHotappItemSelectList" resultType="com.olleh.webtoon.common.dao.applay.domain.HotAppDomain">
+	<![CDATA[ 
+		select
+		  hotapp_item.itemseq, rcdapp.appseq, rcdapp.apptitle, format(ifnull(rcdapp.price,0),0) price, rcdapp.freeyn, rcdapp.thumbpath
+		from 
+		  ow_hotapp hotapp
+		left join ow_hotapp_item hotapp_item on hotapp.hotappseq = hotapp_item.hotappseq
+		left join ow_recommendapp rcdapp on rcdapp.appseq = hotapp_item.appseq
+		where ((hotapp.displayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= hotapp.startdt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= hotapp.enddt )
+				  or (hotapp.directdisplayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= hotapp.directdisplayenddt )) 
+           and hotapp_item.itemorder != 1 and hotapp_item.itemorder <= 7
+		order by rand();
+	]]>
+	</select>
+
+	<select id="mainHotappItemRandomSelectList" resultType="com.olleh.webtoon.common.dao.applay.domain.HotAppDomain">
+	<![CDATA[ 
+		select
+		  hotapp_item.itemseq, rcdapp.appseq, rcdapp.apptitle, format(ifnull(rcdapp.price,0),0) price, rcdapp.freeyn, rcdapp.thumbpath
+		from 
+		  ow_hotapp hotapp
+		left join ow_hotapp_item hotapp_item on hotapp.hotappseq = hotapp_item.hotappseq
+		left join ow_recommendapp rcdapp on rcdapp.appseq = hotapp_item.appseq
+		where ((hotapp.displayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= hotapp.startdt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= hotapp.enddt )
+				  or (hotapp.directdisplayyn = 'Y' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= hotapp.directdisplayenddt )) 
+           and hotapp_item.itemorder != 1 and hotapp_item.itemorder > 7
+		order by rand();
+	]]>
+	</select>
+	
+	<insert id="linkSmsInsert" parameterType="com.olleh.webtoon.common.dao.applay.domain.LinkSmsDomain">
+        insert into ow_link_sms(
+			appseq,
+			idfg,
+			regid,
+			regdt
+		) values (
+			#{appseq}, #{idfg}, #{regid}, #{regdt}
+		);
+    </insert>
+
+	<select id="linkSmsSelectCnt" parameterType="com.olleh.webtoon.common.dao.applay.domain.LinkSmsDomain" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			ow_link_sms
+		where
+			date_format(regdt, '%Y%m%d') = date_format(now(), '%Y%m%d')
+			and idfg = #{idfg}
+			and regid = #{regid}
+		<if test='marketyn != null and marketyn == "Y"'>
+			and appseq = 0
+		</if>
+		<if test='marketyn == null or marketyn == ""'>
+			and appseq != 0
+		</if>
+	</select>
+</mapper>

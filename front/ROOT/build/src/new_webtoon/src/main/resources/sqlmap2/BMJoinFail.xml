@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.bluemembership.persistence.BMJoinFailMapper">
+
+	<insert id="insert"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinFailDomain"
+			useGeneratedKeys="true"
+			keyProperty="failseq">
+		INSERT INTO 
+			ow_bm_join_fail 
+			(
+				  joinseq
+				, paymentseq
+				, errormsg
+				, errorlog
+				, regdt
+			)
+			VALUES 
+			(
+				  #{joinseq}
+				, #{paymentseq}
+				, #{errormsg}
+				, #{errorlog}
+				, #{regdt}
+			);
+    </insert>
+    
+	<update id="updateByFailseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinFailDomain">
+		UPDATE
+			ow_bm_join_fail
+		SET
+				failseq = failseq
+		<if test="isNotEmpty(joinseq)"		>, joinseq		= #{joinseq}</if>
+		<if test="isNotEmpty(paymentseq)"	>, paymentseq	= #{paymentseq}</if>
+		<if test="isNotEmpty(errormsg)"		>, errrmsg		= #{errrmsg}</if>
+		<if test="isNotEmpty(errrlog)"		>, errrlog		= #{errrlog}</if>
+		<if test="isNotEmpty(regdt)"		>, regdt		= #{regdt}</if>
+		WHERE
+			failseq = #{failseq}
+    </update>
+    
+    <delete id="deleteByFailseq"
+			parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinFailDomain">
+		DELETE FROM
+			ow_bm_join_fail
+		WHERE
+			failseq = #{failseq}
+    </delete>
+    
+    <select id="selectByfailseq"
+    		parameterType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinFailDomain"
+    		resultType="com.olleh.webtoon.common.dao.bluemembership.domain.BMJoinFailDomain">
+    	SELECT
+    		*
+    	FROM
+    		ow_bm_join_fail
+    	WHERE
+    		failseq = #{failseq}
+    </select>
+</mapper>

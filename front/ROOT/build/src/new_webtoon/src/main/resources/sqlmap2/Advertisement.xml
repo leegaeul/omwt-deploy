@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.advertisement.persistence.AdvertisementMapper">
+	
+    <cache eviction="LRU" flushInterval="30000" size="32" readOnly="true"/> 
+    
+	<select id="advertiseSelectList" parameterType="com.olleh.webtoon.common.dao.advertisement.domain.AdvertisementDomain" resultType="com.olleh.webtoon.common.dao.advertisement.domain.AdvertisementDomain">
+		select 
+				advertisementseq
+				, title
+				, imagepath
+				, imagefilenm
+				
+				, devicefg
+				, bgcolor
+				
+				, newwindowyn 
+				, mnewwindowyn
+				, imnewwindowyn
+				, iosnewwindowyn
+				, androidnewwindowyn
+				, linkurl 
+				, mlinkurl
+				, imlinkurl
+				, IFNULL(ioslinkurl, '') AS ioslinkurl
+				, IFNULL(androidlinkurl, '') AS androidlinkurl
+		from 
+				ow_advertisement
+		where
+				areafg = #{areafg}
+				AND displayyn = 'Y'
+				AND  (sysdate() between startdt and enddt)
+				<if test="(areafg == 'sponsorW' or areafg == 'msponsorW') and webtoonseq != null and webtoonseq != ''">
+				AND webtoonseq = #{webtoonseq}
+				</if>
+				<if test="(areafg == 'sponsorT' or areafg == 'msponsorT') and timesseq != null and timesseq != ''">
+				AND webtoonseq = #{webtoonseq} AND timesseq = #{timesseq}
+				</if>
+
+	</select>
+	
+ 	<select id="advertiseSelectListCount" parameterType="com.olleh.webtoon.common.dao.advertisement.domain.AdvertisementDomain" resultType="java.lang.Integer">
+		select 
+				count(advertisementseq)
+		from 
+				ow_advertisement
+		where
+				areafg = #{areafg}
+				AND displayyn = 'Y'
+				AND  (sysdate() between startdt and enddt)
+				<if test="(areafg == 'sponsorW' or areafg == 'msponsorW') and webtoonseq != null and webtoonseq != ''">
+				AND webtoonseq = #{webtoonseq}
+				</if>
+				<if test="(areafg == 'sponsorT' or areafg == 'msponsorT') and timesseq != null and timesseq != ''">
+				AND webtoonseq = #{webtoonseq} AND timesseq = #{timesseq}
+				</if>
+
+	</select>
+	
+	<select id="adTextSelectList" parameterType="com.olleh.webtoon.common.dao.advertisement.domain.AdvertisementDomain" resultType="com.olleh.webtoon.common.dao.advertisement.domain.AdvertisementDomain">
+		select 
+		
+				advertisementseq
+				, title
+				, imagepath
+				, imagefilenm
+				
+				, devicefg
+				, bgcolor
+				
+				, newwindowyn 
+				, mnewwindowyn
+				, imnewwindowyn
+				, iosnewwindowyn
+				, androidnewwindowyn
+				, linkurl 
+				, mlinkurl
+				, imlinkurl
+				, IFNULL(ioslinkurl, '') AS ioslinkurl
+				, IFNULL(androidlinkurl, '') AS androidlinkurl
+				
+				, comment 
+		from 
+				ow_advertisement
+		where
+				areafg = #{areafg}
+				AND  (sysdate() between startdt and enddt)
+				AND displayyn = 'Y'
+		order by 
+				rand()
+		limit 
+				0,1
+								
+	</select>
+	
+	
+</mapper>

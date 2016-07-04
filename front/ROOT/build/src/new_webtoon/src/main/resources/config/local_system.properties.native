@@ -1,0 +1,127 @@
+####################################################
+# 도메인 및 쿠키 설정 관련
+####################################################
+
+# PC 도메인
+system.pc.domain=http://dev.webtoon.olleh.com
+
+# PC SSL 도메인
+system.pc.domain.ssl=http://webtoon.olleh.com
+
+# 모바일 도메인
+system.mobile.domain=http://dev.webtoon.olleh.com
+
+# 모바일 SSL 도메인
+system.mobile.domain.ssl=http://m.webtoon.olleh.com
+
+# 이미지서버 도메인
+system.image.server.domain=http://webtoonimg.kthcorp.com
+
+# 이미지서버 SSL 도메인
+system.image.server.domain.ssl=https://webtoonimg.kthcorp.com
+
+# 임시저장 파일경로
+system.data.temp.image.path=D:/data/temp
+
+# 이벤트 이미지 파일경로
+system.data.event.image.path=D:/data/event
+
+# 쿠키 암호화 키, 초기화벡터, 쿠키  이름, 쿠키 유효시간 (초단위), 쿠키경로, 쿠키 도메인
+system.cookie.aes.key=2c1b213af63e5a7d2a01d3599eba2c4b
+system.cookie.aes.iv=1a10c43d9a4506a12d6316a25d2b3c54
+system.cookie.name=NWC
+system.cookie.age=-1
+system.cookie.path=/
+system.cookie.domain=dev.webtoon.olleh.com
+
+# 메일 서버 URL
+system.email.url=https://mailapi.dev.kthcorp.com:8443/1/email/outbound/request
+
+# 메일 인증키
+system.email.authorization=dGVzdG1lOmQ2NjZkMDc1LTgxMzYtNDA0Mi1iZGMyLThjNDhjNzgzNTQ5MQ==
+
+# 보내는이 메일주소
+system.email.frommail=no-reply@webtoon.olleh.com
+
+# 이메일 템플릿
+system.email.template.passwdsearch=/mail/passwdsearch_email.html
+system.email.template.certification=/mail/certification_email.html
+system.email.template.join=/mail/join_email.html
+
+# SMS API URL
+system.sms.apiurl=http://api.openapi.io/ppurio/1/message/sms/
+
+# SMS API 인증키
+system.sms.apikey=MTUwMy0xNDAwNTQ5MDA0ODIyLWJiYjQyNTNiLWNmZDYtNDYwNS1iNDI1LTNiY2ZkNjg2MDU5Yw==
+
+# SMS API Client ID
+system.sms.apiclientid=omwebtoon
+
+# SMS 보내는 사람 정보
+system.sms.sendname=올레마켓웹툰
+system.sms.sendphone=02100
+
+# IPG 결제
+system.ipg.mobile.domain=https://221.148.247.138
+system.ipg.pc.domain=https://gaia.olleh.com
+system.ipg.opcode=PG_PAY_AUTH
+system.ipg.paystoreid=OLLEH10007
+system.ipg.prtlsvctype=01
+system.ipg.prtlsvccd=189772
+system.ipg.sellerno=20671
+system.ipg.sellertype=02
+system.ipg.sellerid=1028142945
+system.ipg.sellernm=㈜케이티
+system.ipg.sellerrprsnm=황창규
+system.ipg.sellertlph=02-100
+system.ipg.selleradrs=경기도 성남시 분당구 불정로 90(정자동 206번지)
+
+# SDP 연동
+system.sdp.host=tb.openapi.kt.com
+system.sdp.username=AII3200053690ZVJBPA
+system.sdp.password=TBK3200053690ZSJTSA
+system.sdp.cpid=KTFCP
+system.sdp.portal_svc_cd=150301
+system.sdp.svc_type=A
+
+#이니시스 연동
+system.inipay.home=/Users/bigmandoo/Documents/devtools/inipay
+system.inipay.logmode=DEBUG
+system.inipay.url=http://dev.webtoon.olleh.com
+
+#test
+system.inipay.mid=INIBillTst
+system.inipay.key=1111
+system.inipay.merchantkey=b09LVzhuTGZVaEY1WmJoQnZzdXpRdz09
+
+#real
+#system.inipay.mid=Omwebtoon1
+#system.inipay.key=1111
+#system.inipay.merchantkey=bUU0SEl4aWxBTDhDOERYS3hoQ3Nqdz09
+
+
+#모빌리언스 연동
+system.mobi.svcid.auto=141102610001
+system.mobi.svcid.manual=141102580001
+system.mobi.paymode=00
+system.mobi.siteurl=webtoon.olleh.com
+system.mobi.notiemail=webtoon@kt.com
+system.mobi.mrchid=M0031851
+system.mobi.emailflag=Y
+system.mobi.loglevel=DEBUG
+system.mobi.logdir=/home/asplant/mobilog/
+system.mobi.ver=BJ01
+system.mobi.curkey=0
+system.mobi.key1=
+system.mobi.key2=
+system.mobi.userencode=UTF-8
+
+#test
+system.mobi.server.ip=121.254.135.131
+system.mobi.server.port=31001
+system.mobi.switch.ip=121.254.135.131
+
+#real
+#system.mobi.server.ip=121.254.135.130
+#system.mobi.server.port=31001
+#system.mobi.switch.ip=218.50.55.97

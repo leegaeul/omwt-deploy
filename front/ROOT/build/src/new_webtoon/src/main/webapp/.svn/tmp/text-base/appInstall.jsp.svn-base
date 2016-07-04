@@ -1,0 +1,7 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓웹툰 </title>
+<script type="text/javascript"> 
+ location.href="market://details?id=com.olleh.webtoon";
+</script>

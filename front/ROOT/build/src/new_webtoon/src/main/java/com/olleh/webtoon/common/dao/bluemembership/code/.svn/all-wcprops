@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code
+END
+CardCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/CardCodeTypeHandler.java
+END
+CardCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/CardCode.java
+END
+CodeBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/CodeBase.java
+END
+OrderCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/OrderCodeTypeHandler.java
+END
+OrderCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/OrderCode.java
+END
+BillMethodCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/BillMethodCodeTypeHandler.java
+END
+BillMethodCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/BillMethodCode.java
+END
+PrdCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/PrdCode.java
+END
+PrdCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/PrdCodeTypeHandler.java
+END
+OrderUseCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/OrderUseCodeTypeHandler.java
+END
+OrderUseCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/OrderUseCode.java
+END
+PayStatusCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/PayStatusCodeTypeHandler.java
+END
+PayStatusCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/PayStatusCode.java
+END
+EnumCodeSerializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/EnumCodeSerializer.java
+END
+ChangeRequestCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/ChangeRequestCodeTypeHandler.java
+END
+ChangeRequestCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/ChangeRequestCode.java
+END
+JoinStatusCodeTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/JoinStatusCodeTypeHandler.java
+END
+JoinStatusCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/code/JoinStatusCode.java
+END

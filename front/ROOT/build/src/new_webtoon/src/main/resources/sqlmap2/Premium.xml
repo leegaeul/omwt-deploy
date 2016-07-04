@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.premium.persistence.PremiumMapper">
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+	
+	<select id="totalSelectListCnt" parameterType="com.olleh.webtoon.common.dao.premium.domain.PremiumDomain" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			ow_category_belonging be
+		left join ow_webtoon toon on be.webtoonseq = toon.webtoonseq
+		left join 
+		(
+			select webtoonseq, count(*) as cnt 
+			from ow_times
+			where displayyn = 'Y'
+			group by webtoonseq
+		) times on toon.webtoonseq = times.webtoonseq
+		where
+			be.categoryseq = #{categoryseq}
+			and toon.premiumyn = 'Y'
+			and ifnull(times.cnt, 0) > 0
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and toon.pcdisplayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and toon.mdisplayyn = 'Y'
+		</if>
+	</select>
+	
+	<select id="premiumSelectCategoryList" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.premium.domain.CategoryDomain">
+		select
+			ca.categoryseq, ca.categorynm, ca.categorydesc, ca.regdt, 
+			ifnull(be.categorycnt, 0) as categorycnt
+		from 
+			ow_category ca
+		left join
+		(
+			select categoryseq, count(categoryseq) as categorycnt
+			from ow_category_belonging
+			group by categoryseq
+		) be on ca.categoryseq = be.categoryseq
+		where displayyn = "Y" and ca.categoryfg = #{categoryfg}
+		order by displayorder asc
+	</select>
+	
+	<select id="selectCategoryBySeq" parameterType="java.lang.Integer" resultType="com.olleh.webtoon.common.dao.premium.domain.CategoryDomain">
+		select categoryseq, categorynm, categorydesc
+		from ow_category
+		where displayyn = "Y" and categoryseq = #{categoryseq}
+	</select>
+	
+	<select id="premiumSelectList" parameterType="com.olleh.webtoon.common.dao.premium.domain.PremiumDomain" resultType="com.olleh.webtoon.common.dao.premium.domain.PremiumDomain">
+		select
+			ca.categorynm,
+			toon.thumbpath, toon.webtoonnm, toon.agefg, toon.webtoonseq, toon.serialfg,
+			toon.mondayyn, toon.tuesdayyn, toon.wednesdayyn, toon.thursdayyn, toon.fridayyn, toon.saturdayyn, toon.sundayyn,
+			sticker_icon.oniconurl, sticker_icon.officonurl, sticker_icon.listiconurl, sticker_icon.defaultyn,
+			ifnull(author1.authornm, '') authornm1, 
+			ifnull(author2.authornm, '') authornm2, 
+			ifnull(author3.authornm, '') authornm3,
+			format(ifnull(times.sumtotalstickercnt,0), 0) sumtotalstickercnt,
+		<![CDATA[
+	        case 
+				when 
+					times.displayyn = 'Y' 
+					and (times.directdisplayyn = 'Y' or (times.directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= times.startdt)) 
+					and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - times.startdt) < 1000000 then 'Y'
+				else 'N'
+			end as upyn,		 
+			
+			case 
+	          when datediff(DATE_FORMAT(now(), '%Y%m%d%H%i%s'), DATE_FORMAT(
+              (
+                select startdt from ow_times onest_times 
+                where toon.webtoonseq = onest_times.webtoonseq 
+                order by onest_times.publishdt asc limit 1
+              ), '%Y%m%d%H%i%s')) <= 14 then 'Y'
+	        else 'N'
+	        end as newyn,
+	        
+	        case 
+	          when 
+              toon.serialfg='rest' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= toon.restenddt and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= toon.reststartdt then 'Y'
+	        else 'N'
+	        end as restyn,
+	        
+	         case
+				when prd.sellyn = 'Y' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.sellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.sellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as sellyn,
+			
+			case
+				when prd.sellfg = 'sale' 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= DATE_FORMAT(prd.discountsellstartdt, '%Y%m%d%H%i%s') 
+					 and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= DATE_FORMAT(prd.discountsellenddt, '%Y%m%d%H%i%s') then 'Y'
+				else 'N'
+			end as discountyn,
+			
+			case
+				when (prd.sellfg = 'sale')
+				and date_format(now(), '%Y%m%d%H%i%s') >= date_format(prd.discountsellstartdt, '%Y%m%d%H%i%s')
+				and date_format(now(), '%Y%m%d%H%i%s') <= date_format(prd.discountsellenddt, '%Y%m%d%H%i%s') then Floor((prd.prdprice - prd.prddiscountprice)/IF(prd.prdprice = 0, 1, prd.prdprice) * 100)
+			    else ''
+			end as discountpercent
+			
+		from 
+			ow_category ca
+			left join ow_category_belonging be on ca.categoryseq = be.categoryseq 
+			left join ow_webtoon toon   on be.webtoonseq   = toon.webtoonseq
+			left join ow_author author1 on toon.authorseq1 = author1.authorseq
+			left join ow_author author2 on toon.authorseq2 = author2.authorseq
+			left join ow_author author3 on toon.authorseq3 = author3.authorseq
+			left join ow_sticker_icon sticker_icon on toon.iconseq = sticker_icon.iconseq
+			left join 
+	        (
+				select 
+					a.displayyn, a.directdisplayyn, a.timesseq,a.timestitle, a.startdt, a.totalstickercnt, sum(a.totalstickercnt) sumtotalstickercnt, a.webtoonseq
+				from (
+					select 
+						displayyn, directdisplayyn, timesseq, timestitle, startdt, totalstickercnt, webtoonseq
+					from ow_times 
+					where displayyn = 'Y' and (directdisplayyn = 'Y' or (directdisplayyn = 'N' and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= startdt))
+					order by publishdt desc, timesseq desc 
+				) as a 
+				group by a.webtoonseq
+	        ) times on toon.webtoonseq = times.webtoonseq
+	        left join 
+			(
+				select 					
+					*
+				from ow_prd
+				where 
+					sellyn ="Y" 
+					and prdfg = 'webtoon'
+					and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+					and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')			
+			) prd on toon.webtoonseq = prd.webtoonseq
+		]]>
+		where 
+			ca.categoryseq = #{categoryseq}
+			and toon.premiumyn = 'Y'
+			and ifnull(times.timesseq, 0) > 0
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and toon.pcdisplayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and toon.mdisplayyn = 'Y'
+		</if>
+		<if test='mainyn != null and mainyn == "Y"'>
+		order by rand()
+		</if>
+		limit
+		<if test='mainyn == null or mainyn == "N"'> 
+			#{startRowNo}, #{pageSize}
+		</if>
+		<if test='mainyn != null and mainyn == "Y"'>
+			0, 2
+		</if>
+		
+	</select>
+	
+	<select id="selectBlueMembershipInfo" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain" resultType="java.lang.String">
+		SELECT
+    		"Y"
+    	FROM
+    		ow_bm_join
+    	WHERE
+    			idfg = #{idfg}
+    		AND userid = #{orderid}
+    		AND joinstatusfg = 'active'
+    	LIMIT 1
+	</select>
+	
+</mapper>

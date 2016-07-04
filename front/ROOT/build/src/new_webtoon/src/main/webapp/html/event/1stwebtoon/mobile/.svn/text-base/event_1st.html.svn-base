@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>1ST ANNIVERSARY 올레마켓웹툰 생일을 축하해주세요</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0, target-densityDpi=medium-dpi">
+<meta name="format-detection" content="telephone=no"/>
+<style type="text/css">
+/* 1ST ANNIVERSARY */
+.eventist img{width:100%}
+.eventist {margin-bottom:-6px;}
+.content03{position:relative}
+.content03 .button_box01{position:absolute;top:5%;left:0;width:100%}
+.content03 .button_box01 a{margin:0 19% 0 55.5%;display:block}
+.content03 .button_box02{position:absolute;top:27.5%;left:0;width:100%}
+.content03 .button_box02 a{margin:0 2% 0 53%;display:block}
+.content03 .button_box03{position:absolute;top:38%;left:0;width:100%}
+.content03 .button_box03 a{margin:0 90% 0 2%;display:block}
+/* //1ST ANNIVERSARY */
+</style>
+
+
+</head>
+<body>
+    <!-- start -->
+    <section class="eventist title">
+        <h1><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary01.png" alt="1ST ANNIVERSARY 올레마켓웹툰 생일을 축하해주세요" /></h1>
+    </section>
+
+    <section class="eventist content01">
+        <p><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary02.png" alt="특별한 네임콘으로 나만의 개성을 뽐내기 매일 매일~ 출석 미션 수행하고 톡톡 튀는 한정판 네임콘을 만나보세요! 이벤트 기간 : 2014. 7. 17 ~ 2014. 7. 31까지 ●  한정판 네임콘은 이벤트 기간 동안 출석 미션을 달성할 때마다 미션 수행 당일 자동으로 지급됩니다. ●  획득한 네임콘은 MY > 설정 페이지에서 확인하실 수 있습니다." /></p>
+    </section>
+
+    <section class="eventist content02">
+        <p><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary03.png" alt="미션 수행 방법 MISSION 01. 올레마켓웹툰에 로그인만 하면 네임콘 100% 증정 MISSION 02. 올레마켓웹툰 방문일 횟수 3회 달성시 두번째 네임콘 증 MISSION 03. 올레마켓웹툰 방문일 횟수 5회 달성시 세번째 네임콘 증정 MISSION 04. 올레마켓웹툰 방문일 횟수 7회 달성시 네번째 네임콘 증정 MISSION 05. 올레마켓웹툰 방문일 횟수 5회 달성시 마지막 네임콘 증정" /></p>
+    </section>
+
+    <section class="eventist content03">
+        <p><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary04.png" alt="●  미션 수행을 통해 획득한 이벤트 네임콘은 MY > 설정 > 네임콘 변경 화면에서 확인할 수 있습니다.●  이벤트 및 네임콘 사용 관련 궁금 사항은 올레마켓웹툰 고객센터 (1:1 문의하기)를 통해 문의해 주십시오 ●  한정판 이벤트 네임콘은 이벤트 진행 기간 동안에만 지급됩니다. ●  올레마켓웹툰 네임콘은 8월부터 유료로 전환될 예정이며, 구매 후 사용이 가능합니다. (기본 제공되는 대표 네임콘 및 이벤트 지급 네임콘은 제외)" /></p>
+        <div class="button_box01">
+            <a href="#none"><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary_button01.png" alt="" /></a>
+        </div>
+        <div class="button_box02">
+            <a href="#none"><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary_button02.png" alt="" /></a>
+        </div>
+        <div class="button_box03">
+            <a href="#none"><img src="/html/event/1stwebtoon/mobile/images//olleh_anniversary_button03.png" alt="" /></a>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.payment.persistence.PaymentFailMapper">
+
+	<insert id="insertPaymentFail"
+			parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentFailDomain"
+			useGeneratedKeys="true"
+			keyProperty="failseq">
+		INSERT INTO 
+			ow_payment_fail 
+			(
+				regid,
+				idfg,
+				servicefg,
+				errorcode,
+				errormsg,
+				regdt
+			)
+			VALUES 
+			(
+				  #{regid}
+				, #{idfg}
+				, #{servicefg}
+				, #{errorcode}
+				, #{errormsg}
+				, #{regdt}
+			);
+    </insert>
+</mapper>

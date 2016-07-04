@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.cutplay.persistence.CutPlayEventMapper">
+	
+	<select id="selectCutPlayEventCurTimes" parameterType="java.lang.String" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayEventDomain">
+		SELECT 
+			eventtimes,
+			startdt,
+			enddt	
+		FROM ow_cutplay_event 
+		WHERE #{date} between startdt AND enddt
+    </select>
+    
+    <select id="selectCutPlayEventTimes" parameterType="java.lang.Integer" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayEventDomain">
+		SELECT 
+			eventtimes,
+			startdt,
+			enddt	
+		FROM ow_cutplay_event 
+		WHERE eventtimes = #{eventtimes}
+    </select>
+    
+    <select id="selectCutPlayEventCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_cutplay_join
+		WHERE userid = #{userid}
+		<if test="eventfg != null and eventfg != '' and eventfg == 'join'">
+		AND eventfg = 'join'
+		</if>
+		<if test="eventfg != null and eventfg != '' and eventfg == 'image'">
+		AND eventfg IN ('webtooncut','freecut')
+		</if>
+		AND idfg = #{idfg}
+		AND delyn = 'N'
+		
+		<if test="regdt != null and regdt != ''">
+		and date_format(regdt, '%Y%m%d') = date_format(#{regdt}, '%Y%m%d')
+		</if>
+    </select>
+    
+    <select id="selectCutPlayEventBest" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain"
+    		resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+    	SELECT a.*
+    	FROM (
+			SELECT    
+				a.eventseq,
+				a.eventfg,
+				a.eventtimes,
+				a.cutplaytitle,
+				a.webtoonimagepath,
+				a.imagepath,
+				a.delyn,
+				a.bestorder,
+				a.goodcnt,
+				a.declarecnt,
+				a.message,
+				date_format(a.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+				date_format(a.regdt, '%m-%d') as mregdt,
+				
+				case 
+					when a.userid = ifnull(#{userid}, '') then 'Y'
+					else 'N'
+				end as regyn,
+				
+				(
+					select COUNT(*) 
+					from ow_cutplay_comment cmt
+					where a.eventseq = cmt.eventseq
+					AND cmt.delyn != 'Y'
+				) cmcount,
+				
+			<![CDATA[
+				case
+					when a.idfg = 'olleh'  
+						 and instr(a.userid, '@') > 0
+						 and char_length(substring_index(a.userid, '@', 1)) > 3 
+						then concat(concat(concat(left(substring_index(a.userid, '@', 1), 3), repeat('*', char_length(substring_index(a.userid, '@', 1)) - 3)), '@'), substring_index(a.userid, '@', -1))
+					when a.idfg = 'olleh'                                                           
+						 and instr(a.userid, '@') > 0  
+						 and char_length(substring_index(a.userid, '@', 1)) < 3 
+						then a.userid
+					when a.idfg = 'olleh' and instr(a.userid, '@') < 1  and char_length(a.userid) > 3 
+						then concat(left(a.userid, 3), repeat('*', char_length(a.userid) - 3)) 
+					else c.nickname
+				end as userid,
+			]]>	
+			   	b.startdt,
+			   	b.enddt 
+			FROM ow_cutplay_join a
+			LEFT JOIN ow_user c ON a.idfg = 'open' AND a.userid = c.email AND c.userstatus != 'standby'
+			,ow_cutplay_event b
+			WHERE 
+				a.eventtimes = b.eventtimes 
+				AND a.delyn != 'Y'
+			    AND a.eventtimes = #{eventtimes} AND a.eventfg in ('webtooncut', 'freecut')
+			    AND a.goodcnt >= 5
+		) a
+		ORDER BY a.goodcnt desc, a.cmcount DESC 
+		LIMIT 0, 3
+    </select>
+    
+	<insert id="insertCutPlayEvent" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+	INSERT INTO ow_cutplay_join (
+			eventfg,
+			eventtimes,
+			cutplaytitle,
+			webtoonseq,
+			timesseq,
+			webtoonimagepath,
+			webtoonimagefilenm,
+			imagepath,
+			imagefilenm,
+			message,
+			phonefg,
+			phonenum, 
+			userid, 
+			idfg, 
+			regdt) 
+		VALUES (
+			#{eventfg},
+			(SELECT eventtimes FROM ow_cutplay_event WHERE #{regdt} between startdt AND enddt),
+			#{cutplaytitle}, 
+			#{webtoonseq}, 
+			#{timesseq},
+			#{webtoonimagepath},
+			#{webtoonimagefilenm},
+			#{imagepath},
+			#{imagefilenm},
+			#{message},
+			#{phonefg},  
+			HEX(AES_ENCRYPT(#{phonenum}, 'ollehwebtoon2015')), 
+			#{userid}, 
+			#{idfg},
+			#{regdt}
+		)
+    </insert>
+        
+	<select id="selectRegUser" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT * 
+		FROM ow_cutplay_join
+		WHERE userid = #{userid} AND eventfg = 'join'
+		LIMIT 0, 1
+	</select>
+	
+    <select id="selectCutPlayEventRegist" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+    		resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT 
+			eventseq,eventfg,userid,idfg,regdt,winyn,grade,degree,
+			CONVERT(AES_DECRYPT(UNHEX(phonenum), 'ollehwebtoon2015') using utf8) as phonenum
+		FROM
+			ow_cutplay_event
+		WHERE
+			userid = #{userid} 
+			AND idfg = #{idfg} 
+			AND eventfg = #{eventfg} 
+		LIMIT
+		 	0, 1
+	</select>
+	
+	<select id="selectImageListCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_cutplay_join
+		WHERE eventfg IN ('webtooncut','freecut') AND delyn = 'N'
+    </select>
+    
+    <select id="selectImageList" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT
+			tb1.eventseq,
+			tb1.eventfg,
+			tb1.eventtimes,
+			tb1.webtoonimagepath,
+			tb1.imagepath,
+			tb1.delyn,
+			tb1.bestorder,
+			tb1.goodcnt,
+			tb1.declarecnt,
+			tb1.message,
+			tb1.cutplaytitle,
+			tb1.delyn,
+			date_format(tb1.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+			date_format(tb1.regdt, '%m-%d') as mregdt,
+			
+			case 
+				when tb1.userid = ifnull(#{userid}, '') then 'Y'
+				else 'N'
+			end as regyn,
+			
+			(
+				select COUNT(*) 
+				from ow_cutplay_comment cmt
+				where tb1.eventseq = cmt.eventseq
+				AND cmt.delyn != 'Y'
+				
+			) cmcount,
+			
+		<![CDATA[
+			case
+				when tb1.idfg = 'olleh'  
+					 and instr(tb1.userid, '@') > 0
+					 and char_length(substring_index(tb1.userid, '@', 1)) > 3 
+					then concat(concat(concat(left(substring_index(tb1.userid, '@', 1), 3), repeat('*', char_length(substring_index(tb1.userid, '@', 1)) - 3)), '@'), substring_index(tb1.userid, '@', -1))
+				when tb1.idfg = 'olleh'                                                           
+					 and instr(tb1.userid, '@') > 0  
+					 and char_length(substring_index(tb1.userid, '@', 1)) < 3 
+					then tb1.userid
+				when tb1.idfg = 'olleh' and instr(tb1.userid, '@') < 1  and char_length(tb1.userid) > 3 
+					then concat(left(tb1.userid, 3), repeat('*', char_length(tb1.userid) - 3)) 
+				else tb2.nickname
+			end as userid
+		]]>
+		FROM ow_cutplay_join tb1
+		LEFT JOIN ow_user tb2 ON tb1.idfg = 'open' AND tb1.userid = tb2.email AND tb2.userstatus != 'standby'
+		WHERE tb1.eventfg IN ('webtooncut','freecut') AND tb1.delyn = 'N'
+		ORDER BY tb1.eventseq DESC
+		LIMIT #{startRowNo}, #{pageSize}
+    </select>
+    
+    <select id="selectMyImageListCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain"
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_cutplay_join
+		WHERE userid = #{userid} 
+		AND eventfg IN ('webtooncut','freecut')
+		AND idfg = #{idfg}
+    </select>
+    
+    <select id="selectMyImageList" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT 
+			a.eventseq,
+			a.eventfg,
+			a.eventtimes,
+			a.cutplaytitle,
+			a.webtoonimagepath,
+			a.imagepath,
+			a.message,
+			a.delyn,
+			a.bestorder,
+			a.goodcnt,
+			a.declarecnt,
+			a.delyn,
+			date_format(a.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+			date_format(a.regdt, '%m-%d') as mregdt,
+			'Y' as regyn,
+			
+			(
+				select COUNT(*) 
+				from ow_cutplay_comment cmt
+				where a.eventseq = cmt.eventseq
+				AND cmt.delyn != 'Y'
+				
+			) cmcount,
+			
+		<![CDATA[
+			case
+				when a.idfg = 'olleh'  
+					 and instr(a.userid, '@') > 0
+					 and char_length(substring_index(a.userid, '@', 1)) > 3 
+					then concat(concat(concat(left(substring_index(a.userid, '@', 1), 3), repeat('*', char_length(substring_index(a.userid, '@', 1)) - 3)), '@'), substring_index(a.userid, '@', -1))
+				when a.idfg = 'olleh'                                                           
+					 and instr(a.userid, '@') > 0  
+					 and char_length(substring_index(a.userid, '@', 1)) < 3 
+					then a.userid
+				when a.idfg = 'olleh' and instr(a.userid, '@') < 1  and char_length(a.userid) > 3 
+					then concat(left(a.userid, 3), repeat('*', char_length(a.userid) - 3)) 
+				else b.nickname
+			end as userid
+		]]>
+		
+		FROM ow_cutplay_join AS a
+		LEFT JOIN ow_user b ON a.idfg = 'open' AND a.userid = b.email AND b.userstatus != 'standby'
+		WHERE userid = #{userid} 
+		AND idfg = #{idfg}
+		AND eventfg IN ('webtooncut','freecut')
+		ORDER BY eventseq DESC
+		LIMIT #{startRowNo}, #{pageSize}
+    </select>
+    
+    <select id="selectCutPlayJoinDetail" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT 
+			curjoin.eventseq,
+			curjoin.eventfg,
+			curjoin.eventtimes,
+			curjoin.cutplaytitle,
+			curjoin.webtoonimagepath,
+			curjoin.imagepath,
+			curjoin.message,
+			curjoin.bestorder,
+			curjoin.goodcnt,
+			curjoin.declarecnt,
+			date_format(curjoin.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+			date_format(curjoin.regdt, '%m-%d') as mregdt,
+			case 
+				when curjoin.userid = ifnull(#{userid}, '') then 'Y'
+				else 'N'
+			end as regyn,
+			(
+				select COUNT(*) 
+				from ow_cutplay_comment cmt
+				where curjoin.eventseq = cmt.eventseq
+				AND cmt.delyn != 'Y'
+				
+			) cmcount,
+		
+		<![CDATA[
+			case
+				when curjoin.idfg = 'olleh'  
+					 and instr(curjoin.userid, '@') > 0
+					 and char_length(substring_index(curjoin.userid, '@', 1)) > 3 
+					then concat(concat(concat(left(substring_index(curjoin.userid, '@', 1), 3), repeat('*', char_length(substring_index(curjoin.userid, '@', 1)) - 3)), '@'), substring_index(curjoin.userid, '@', -1))
+				when curjoin.idfg = 'olleh'                                                           
+					 and instr(curjoin.userid, '@') > 0  
+					 and char_length(substring_index(curjoin.userid, '@', 1)) < 3 
+					then curjoin.userid
+				when curjoin.idfg = 'olleh' and instr(curjoin.userid, '@') < 1  and char_length(curjoin.userid) > 3 
+					then concat(left(curjoin.userid, 3), repeat('*', char_length(curjoin.userid) - 3)) 
+				else b.nickname
+			end as userid,
+		]]>	
+		
+		<![CDATA[
+			(
+				select eventseq 
+				from ow_cutplay_join prevjoin
+				where prevjoin.delyn != 'Y' and prevjoin.eventseq < curjoin.eventseq 
+				order by prevjoin.eventseq desc limit 0,1
+			) preveventseq,
+			
+			(
+				select eventseq 
+				from ow_cutplay_join nextjoin
+				where nextjoin.delyn != 'Y' and nextjoin.eventseq > curjoin.eventseq 
+				order by nextjoin.eventseq asc limit 0,1
+			) nexteventseq
+		]]>
+		FROM ow_cutplay_join curjoin
+		
+		LEFT JOIN ow_user b ON curjoin.idfg = 'open' AND curjoin.userid = b.email AND b.userstatus != 'standby'
+		
+		WHERE curjoin.eventseq = #{eventseq} AND curjoin.delyn != 'Y'
+		AND curjoin.eventfg IN ('webtooncut','freecut')
+		LIMIT 0, 1
+    </select>
+    
+   <!--  test -->
+    <select id="selectWebToonImagePath" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT 
+			a.webtoonseq,
+			a.webtoonimagepath
+		FROM ow_cutplay_join AS a
+		
+    </select>
+   <!--  test end -->
+   
+   <insert id="insertCutPlayComment" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain">
+	INSERT INTO ow_cutplay_comment (eventseq, comment, nameconseq, delyn, idfg, regid, nickname, regdt) 
+		VALUES (#{eventseq}, #{comment}, #{nameconseq},'N', #{idfg}, #{regid}, #{nickname}, #{regdt})
+    </insert>
+    
+    <select id="selectCommentRegId" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain" 
+			resultType="java.lang.String">
+		SELECT regid
+		FROM ow_cutplay_comment
+		WHERE commentseq = #{commentseq}
+		LIMIT 0, 1
+	</select>
+	
+	<delete id="deleteCutPlayComment" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain">
+    	UPDATE ow_cutplay_comment
+    	SET delyn = 'Y'
+		WHERE 
+			commentseq = #{commentseq}
+			and regid = #{regid} 
+    </delete>
+    
+    <select id="selectCutPlayCommentTotalCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM ow_cutplay_comment
+		WHERE delyn != 'Y'
+		<if test="eventseq != null and eventseq != '' and eventseq > 0">
+			AND eventseq = #{eventseq}
+		</if>
+    </select>
+    
+    <select id="selectCutPlayCommentList" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayCommentDomain">
+		SELECT 
+			tb1.commentseq, tb1.eventseq, tb1.comment, tb1.delyn, tb1.idfg, tb1.regid,
+			tb1.nameconseq, tb2.nameconurl, tb2.mnameconurl,
+			date_format(tb1.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+			
+			case 
+				when tb1.regid = ifnull(#{regid}, '') then 'Y'
+				else 'N'
+			end as regyn,
+		<![CDATA[
+			case
+			 	when tb1.idfg = 'olleh'  
+                  	 and instr(tb1.regid, '@') > 0  
+                  	 and char_length(substring_index(tb1.regid, '@', 1)) > 3 
+              		then concat(concat(concat(left(substring_index(tb1.regid, '@', 1), 3), repeat('*', char_length(substring_index(tb1.regid, '@', 1)) - 3)), '@'), substring_index(tb1.regid, '@', -1))
+			 	when tb1.idfg = 'olleh'                                                           
+                  	 and instr(tb1.regid, '@') > 0  
+                  	 and char_length(substring_index(tb1.regid, '@', 1)) < 3 
+              		then tb1.regid
+			 	when tb1.idfg = 'olleh' and instr(tb1.regid, '@') < 1  and char_length(tb1.regid) > 3 
+			  		then concat(left(tb1.regid, 3), repeat('*', char_length(tb1.regid) - 3)) 
+			 	else tb1.nickname
+			end as nickname
+		]]>
+		FROM ow_cutplay_comment tb1
+		LEFT JOIN ow_namecon tb2 ON tb1.nameconseq = tb2.nameconseq
+		WHERE tb1.delyn != 'Y'
+		<if test="eventseq != null and eventseq != '' and eventseq > 0">
+			AND tb1.eventseq = #{eventseq}
+		</if>
+		ORDER BY tb1.regdt desc
+		limit #{startRowNo}, #{pageSize}
+    </select>
+    
+    <select id="selectGoodcntHisCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM ow_cutplay_recommend
+		WHERE imageseq = #{eventseq} AND regid = #{userid} AND idfg = #{idfg} 
+	</select>
+	
+	<select id="selectCutPlayRegid" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.String">
+		SELECT userid
+		FROM ow_cutplay_join
+		WHERE eventseq = #{eventseq} 
+	</select>
+	
+	<insert id="insertCutPlayGoodcnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+        INSERT INTO ow_cutplay_recommend (
+             imageseq,
+             recommendno,
+             recommendfg,
+             regid,
+             idfg,
+             regdt)
+		SELECT
+			t1.eventseq,
+			IFNULL(MAX(t2.recommendno),0) + 1,
+			'good',
+			#{userid},
+			#{idfg},
+			#{regdt}
+        from
+			ow_cutplay_join t1
+		left join ow_cutplay_recommend t2 on t1.eventseq = t2.imageseq
+		where
+			t1.eventseq = #{eventseq}
+    </insert>
+    
+     <update id="cutPlayDeleteProc" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+    	UPDATE ow_cutplay_join
+    	SET delyn = 'Y'
+		WHERE eventseq = #{eventseq}
+    </update>
+    
+    <update id="updateCutPlayGoodcnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+    	UPDATE ow_cutplay_join
+    	SET goodcnt = goodcnt+1
+		WHERE eventseq = #{eventseq}
+    </update>
+    
+    <select id="selectDeclarecntHisCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM ow_cutplay_declaration
+		WHERE imageseq = #{eventseq} AND regid = #{userid} AND idfg = #{idfg} 
+	</select>
+	
+    <insert id="insertCutPlayDeclarecnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+        INSERT INTO ow_cutplay_declaration (
+             declarationseq,
+             imageseq,
+             regid,
+             idfg,
+             regdt)
+		SELECT
+			IFNULL(MAX(t2.declarationseq),0) + 1,
+			t1.eventseq,
+			#{userid},
+			#{idfg},
+			#{regdt}
+        from
+			ow_cutplay_join t1
+		left join ow_cutplay_declaration t2 on t1.eventseq = t2.imageseq
+		where
+			t1.eventseq = #{eventseq}
+    </insert>
+    
+     <update id="updateCutPlayDeclarecnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+    	UPDATE ow_cutplay_join
+    	SET declarecnt = declarecnt+1
+		WHERE eventseq = #{eventseq}
+    </update>
+    
+    <insert id="insertCutPlaySnsInfo" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+    	INSERT INTO ow_cutplay_sns (eventseq, snsfg, idfg, regid, regdt) 
+		VALUES (#{eventseq}, #{snsfg}, #{idfg}, #{userid}, #{regdt})
+    </insert>
+    
+    
+    
+    <select id="selectFreeBerryAmount" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" 
+			resultType="java.lang.Integer">
+		SELECT ifnull(sum(a.orderamount), 0) AS amount
+		FROM 
+		(
+			select ifnull(tb2.orderamount, 0) as orderamount
+			from ow_payment tb1
+			left join ow_order tb2 on tb1.paymentseq = tb2.paymentseq
+			where tb1.paymethod = 'EV' and tb1.paymentid = #{email}
+		) a
+    </select>
+    
+    <select id="selectTodayFreeBerryAmount" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" 
+			resultType="java.lang.Integer">
+		SELECT ifnull(sum(a.orderamount), 0) AS amount
+		FROM
+		(
+			select tb1.paymentdt, ifnull(tb2.orderamount, 0) as orderamount
+			from ow_payment tb1
+			left join ow_order tb2 on tb1.paymentseq = tb2.paymentseq
+			where tb1.paymethod = 'EV' and tb1.paymentid = #{email}
+		) a
+		WHERE date_format(now(), '%Y%m%d') = date_format(a.paymentdt, '%Y%m%d')
+    </select>
+    
+    <insert id="registFreePayment" parameterType="com.olleh.webtoon.common.dao.payment.domain.PaymentDomain">
+    	<selectKey keyProperty="paymentseq" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID() paymentseq
+        </selectKey>
+        
+        INSERT INTO 
+	        ow_payment
+	        (
+	        	paymentseq,
+				orgpaymentseq,
+				timesseq,
+				paymentstep,
+				freeyn,
+				partialyn,
+				paymentfg,
+				resultcode,
+				resultmsg,
+				opcode,
+				orderno,
+				payno,
+				subscrid,
+				subscridtype,
+				sessionid,
+				paymethod,
+				payamount,
+				payname,
+				orderamount,
+				displayversion,
+				clienttype,
+				paymentid,
+				paymentdt,
+				idfg,
+				regid,
+				regdt
+			) VALUES (
+				#{paymentseq},
+				#{orgpaymentseq},
+				#{timesseq},
+				#{paymentstep},
+				#{freeyn},
+				#{partialyn},
+				#{paymentfg},
+				#{resultcode},
+				#{resultmsg},
+				#{opcode},
+				#{orderno},
+				#{payno},
+				#{subscrid},
+				#{subscridtype},
+				#{sessionid},
+				#{paymethod},
+				#{payamount},
+				#{payname},
+				#{orderamount},
+				#{displayversion},
+				#{clienttype},
+				#{paymentid},
+				#{paymentdt},
+				#{idfg},
+				#{regid},
+				#{regdt}
+			)
+    </insert>
+    
+    <insert id="registFreeOrder" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.OrderDomain">
+        INSERT INTO 
+	        ow_order
+	        (
+	        	paymentseq,
+				buyseq,
+				orderno,
+				usefg,
+				orderfg,
+				orderamount,
+				orderid,
+				orderdt,
+				idfg,
+				regid,
+				regdt
+			) VALUES (
+				#{paymentseq},
+				#{buyseq},
+				#{orderno},
+				#{usefg},
+				#{orderfg},
+				#{orderamount},
+				#{orderid},
+				#{orderdt},
+				#{idfg},
+				#{regid},
+				#{regdt}
+			)
+    </insert>
+    
+    <select id="selectMobileImageListCnt" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM ow_cutplay_join
+		WHERE eventfg IN ('webtooncut','freecut')
+		AND eventseq > #{eventseq}
+    </select>
+    
+    <select id="selectMobileImageList" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayJoinDomain">
+		SELECT
+			tb1.eventseq,
+			tb1.eventfg,
+			tb1.eventtimes,
+			tb1.webtoonimagepath,
+			tb1.imagepath,
+			tb1.delyn,
+			tb1.bestorder,
+			tb1.goodcnt,
+			tb1.declarecnt,
+			tb1.message,
+			tb1.cutplaytitle,
+			tb1.delyn,
+			date_format(tb1.regdt, '%Y-%m-%d 오후 %H:%i') as regdt,
+			date_format(tb1.regdt, '%m-%d') as mregdt,
+			
+			case 
+				when tb1.userid = ifnull(#{userid}, '') then 'Y'
+				else 'N'
+			end as regyn,
+			
+			(
+				select COUNT(*) 
+				from ow_cutplay_comment cmt
+				where tb1.eventseq = cmt.eventseq
+				AND cmt.delyn != 'Y'
+				
+			) cmcount,
+			
+		<![CDATA[
+			case
+				when tb1.idfg = 'olleh'  
+					 and instr(tb1.userid, '@') > 0
+					 and char_length(substring_index(tb1.userid, '@', 1)) > 3 
+					then concat(concat(concat(left(substring_index(tb1.userid, '@', 1), 3), repeat('*', char_length(substring_index(tb1.userid, '@', 1)) - 3)), '@'), substring_index(tb1.userid, '@', -1))
+				when tb1.idfg = 'olleh'                                                           
+					 and instr(tb1.userid, '@') > 0  
+					 and char_length(substring_index(tb1.userid, '@', 1)) < 3 
+					then tb1.userid
+				when tb1.idfg = 'olleh' and instr(tb1.userid, '@') < 1  and char_length(tb1.userid) > 3 
+					then concat(left(tb1.userid, 3), repeat('*', char_length(tb1.userid) - 3)) 
+				else tb2.nickname
+			end as userid
+		]]>
+		FROM ow_cutplay_join tb1
+		LEFT JOIN ow_user tb2 ON tb1.idfg = 'open' AND tb1.userid = tb2.email AND tb2.userstatus != 'standby'
+		WHERE tb1.eventfg IN ('webtooncut','freecut')
+		AND tb1.delyn = 'N'
+
+		<if test="mlisttype != null and mlisttype != '' and mlisttype == 'next'">
+			<![CDATA[ AND tb1.eventseq >= #{eventseq} ]]>
+		</if>
+		<if test="mlisttype != null and mlisttype != '' and mlisttype == 'prev'">
+			<![CDATA[ AND tb1.eventseq < #{eventseq} ]]>
+		</if>
+		
+		ORDER BY tb1.eventseq ASC
+    </select>
+    
+    <select id="getCutPlayPrizeWinner" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayWinnerDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayWinnerDomain">
+		SELECT 
+			winner.eventtimes, winner.grade, winner.userid, winner.idfg,
+			CASE WHEN jo.eventseq is null THEN 'N'
+				ELSE 'Y' END AS agreeyn
+		FROM ow_cutplay_winner winner
+		LEFT JOIN ow_cutplay_join jo ON winner.userid = jo.userid AND jo.eventfg = 'join'
+		WHERE winner.userid = #{userid} and winner.idfg = #{idfg}
+    </select>
+    
+    <select id="getCutPlayPrizeList" parameterType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayWinnerDomain" 
+			resultType="com.olleh.webtoon.common.dao.cutplay.domain.CutPlayWinnerDomain">
+		SELECT
+			winner.eventtimes, winner.grade, winner.userid, winner.idfg,
+			CASE WHEN jo.eventseq is null THEN 'N'
+				ELSE 'Y' END AS agreeyn
+		FROM ow_cutplay_winner winner
+		LEFT JOIN ow_cutplay_join jo ON winner.userid = jo.userid AND jo.eventfg = 'join'
+		WHERE winner.userid = #{userid} and winner.idfg = #{idfg}
+		ORDER BY winner.eventtimes ASC
+    </select>
+   
+</mapper>

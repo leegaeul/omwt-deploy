@@ -1,0 +1,113 @@
+<html>
+<head>
+<title> 올레마켓웹툰 &gt; 회원가입 이메일 인증 </title>
+</head>
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="620" bgcolor="#ffffff" align="center">
+	<!-- header -->
+	<tr>
+		<td bgcolor="#2e2e2e"><a href="http://webtoon.olleh.com/main.kt" target="_blank"><img src="#domain#/images/pc/email/logo.gif" alt="올레마켓웹툰" border="0" /></a></td>
+	</tr>
+	<!-- //header -->
+
+	<tr>
+		<td style="padding:0 25px;"><table border="0" cellpadding="0" cellspacing="0" width="570" align="center">
+			<tr>
+				<td height="80"><font size="3" face="돋움" color="#2e2e2e" style="font-size:16px;"><b>[올레마켓웹툰] 회원가입 이메일 인증을 진행합니다.</b></font></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+					안녕하세요.<br />
+					회원가입을 환영합니다.
+				</font></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">
+					올레마켓웹툰 회원가입 완료를 위해 이메일 인증이 필요합니다.<br />
+					아래의 <font color="#f14b59">인증링크</font>를 클릭하여 회원가입을 완료해주세요.
+				</font></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><table border="0" cellpadding="0" cellspacing="1" bgcolor="#dfdfdf" width="100%">
+					<tr>
+						<td bgcolor="#f7f7f7" height="50"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td width="50" style="padding:0 20px;"><font size="2" face="돋움" color="#555555" style="font-size:12px;">인증링크</font></td>
+								<td style="padding:0 20px; border-left:1px solid #dfdfdf;word-break:break-all;">
+									<a href="#domain#/user/authComplete.kt?auth=#change_authkey#" target="_blank" style="color:#f14b59">
+									<font size="2" face="돋움" color="#f14b59" style="font-size:12px;"><b>#domain#/user/authComplete.kt?auth=#change_authkey#</b></font></a>
+								</td>
+							</tr>
+						</table></td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td height="5"></td>
+			</tr>
+			<tr>
+				<td><table border="0" cellpadding="0" cellspacing="1" bgcolor="#dfdfdf" width="100%">
+					<tr>
+						<td bgcolor="#f7f7f7" height="50"><table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td width="80" style="padding:0 20px;"><font size="2" face="돋움" color="#555555" style="font-size:12px;">인증유효시간</font></td>
+								<td style="padding:0 20px; border-left:1px solid #dfdfdf;"><font size="2" face="돋움" color="#555555" style="font-size:12px;">
+									<font color="#f14b59"><b><u>#auth_time#</u></b></font> 분까지
+								</font></td>
+							</tr>
+						</table></td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td height="15"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:12px; line-height:20px;">감사합니다.</font></td>
+			</tr>
+			<tr>
+				<td height="70"></td>
+			</tr>
+			<tr>
+				<td><font size="2" face="돋움" color="#2e2e2e" style="font-size:11px; line-height:20px;">
+					- 발신전용 메일입니다. 궁금하신 사항은 <a href="http://webtoon.olleh.com/support/qnaRegist.kt" target="_blank" style="color:#f14b59"><font color="#f14b59">고객센터 >1:1 문의</font></a> 로 문의해주시기 바랍니다.<br />
+					- 인증 유효시간은 메일 발송 후 3시간 이내 입니다. <br />
+					- 인증 유효시간까지 인증이 완료되지 않으면 입력한 정보가 모두 삭제되고 처음부터 다시 회원가입이 필요합니다.<br />
+					- 인증링크 클릭이 되지 않으면, 인증링크를 복사하여 웹 브라우저의 주소 입력 창에 붙여넣기 하거나 직접 입력해<br />
+					&nbsp;&nbsp; 주시기 바랍니다.<br />
+					- 타인이 고객님의 이메일을 잘못 입력한 경우 메일이 발송될 수 있습니다.<br />
+				</font></td>
+			</tr>
+		</table></td>
+	</tr>
+
+	<!-- footer -->
+	<tr>
+		<td height="20"></td>
+	</tr>
+	<tr>
+		<td background="#domain#/images/pc/email/bg_email.gif" height="1"></td>
+	</tr>
+	<tr>
+		<td height="80" style="padding:0 25px;"><table border="0" cellpadding="0" cellspacing="0" width="570" align="center">
+			<tr>
+				<td><font size="2" face="돋움" color="#999999" style="font-size:11px; line-height:16px;">
+					(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+					463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100<br />
+					Copyright &copy; 2011 kt corp. all rights reserved.
+				</font></td>
+			</tr>
+		</table></td>
+	</tr>
+	<!-- //footer -->
+</table>
+
+</body>
+</html>

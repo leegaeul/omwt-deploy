@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title> Olleh webtoon </title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="format-detection" content="telephone=no"/>
+<style type="text/css">
+/* common ~ 작업을 위해 style 초기화
+* { margin: 0; padding: 0; }
+img { border: 0; }
+ */
+
+/* 20130826 신규 style */
+.yoyozine_140319 { position: relative; max-width: 980px; margin: 0 auto; }
+.yoyozine_140319 .yoyoImg { width: 100%; display: block; }
+.relative { position: relative; }
+.btn_140319 { display: block; overflow: hidden; position: absolute; width:47%; background: #aeff00; opacity:0; filter: alpha(opacity=0); }/* 20130911 수정 */
+.btn_140319 span { display: block; font-size: 0; line-height: 150px; z-index: -1; }
+
+.btn_140319.btn_0203 { width:20%; height: 6%; left: 78%; top: 10%; }
+.btn_140319.btn_0204 { width:11%; height: 4%; left: 26%; top: 84%;}
+.btn_140319.btn_0205 { width:22%; height: 4%; left: 25%; top: 88%; }
+
+</style>
+</head>
+<body>
+
+<div style="position: relative; margin:0 auto; text-align:center; max-width: 980px;">
+	<!-- 20140319 내용 시작 -->
+	<div class="yoyozine_140319">
+	<img src="/html/event/1stwebtoon/pc/images/1year_01.png" alt="" class="yoyoImg" />
+        <img src="/html/event/1stwebtoon/pc/images/1year_02.png" alt="" class="yoyoImg" />
+
+		<div class="relative">
+			<img src="/html/event/1stwebtoon/pc/images/1year_03.png" alt="" class="yoyoImg" />
+			<a href="/mytoon/userDetail.kt" target="_parent" class="btn_140319 btn_02 btn_0203"><span>바로 보러 보기</span></a>
+			<a href="/mytoon/userDetail.kt" target="_parent" class="btn_140319 btn_02 btn_0204"><span>바로 보러 보기</span></a>
+			<a href="/support/qnaRegist.kt" target="_parent" class="btn_140319 btn_02 btn_0205"><span>바로 보러 보기</span></a>
+		</div>
+		
+  </div>
+
+	<!-- //20140319 내용 끝 -->
+</div>
+
+</body>
+</html>

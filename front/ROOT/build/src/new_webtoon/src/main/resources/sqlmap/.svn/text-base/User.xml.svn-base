@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.user.persistence.UserMapper">
+
+        
+    <select id="selectUserInfoByEmail" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.user.domain.UserDomain">           
+        SELECT userseq, email, userstatus, nickname, passwd, termsyn, certificationkey, minoritycertnum,
+               agreementdt, adultyn, birthday, adultdt, adultno, user.regdt, 'N' authoryn, user.nameconseq, 'open' idfg,
+               namecon.nameconnm, namecon.nameconurl, namecon.mnameconurl, usetermsyn,
+               TIMESTAMPDIFF(month, date_format(pwchangedt, '%Y%m%d'), date_format(now(), '%Y%m%d')) pwchange_monthdiff
+           FROM ow_user user
+           left join ow_namecon namecon on user.nameconseq = namecon.nameconseq
+           WHERE email = #{email} 
+           <![CDATA[
+           and 
+           (
+            user.userstatus != 'standby'
+            or
+            (user.userstatus = 'standby' and (date_format(now(), '%Y%m%d%H%i%s') - user.regdt) <= 30000)
+           )
+           ]]>
+           order by regdt desc
+           limit 1;
+    </select>
+    
+    <select id="selectUserInfoByCertificationkey" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        SELECT userseq, email, userstatus, nickname, passwd, termsyn,  
+               agreementdt, adultyn, birthday, adultdt, adultno
+           FROM ow_user
+           WHERE certificationkey = #{certificationkey}
+           order by regdt desc
+           limit 1;
+    </select>
+    
+    <select id="selectUserInfoBySeq" parameterType="java.lang.Long" resultType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        SELECT userseq, email, userstatus, nickname, passwd, termsyn,  
+               agreementdt, adultyn, birthday, adultdt, adultno, user.regdt, 'N' authoryn, user.nameconseq, 'open' idfg,
+               namecon.nameconnm, namecon.nameconurl, namecon.mnameconurl
+           FROM ow_user user
+           left join ow_namecon namecon on user.nameconseq = namecon.nameconseq
+           WHERE userseq = #{userseq}
+           order by regdt desc
+           limit 1;
+    </select>
+    
+    <update id="updateLastlogindt" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        UPDATE ow_user SET lastlogindt = #{lastlogindt}, logincnt = logincnt + 1, loginfailcnt = 0, loginfaildt = '', loginip = #{loginip}
+           WHERE userseq = #{userseq}
+    </update>
+        
+    <select id="userCheckCount" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">
+    	select count(userseq) from ow_user where 1=1
+    	<if test="email != null">
+    	and email = #{email} 
+    	</if>
+    	<if test="nickname != null">
+    	and nickname = #{nickname}
+    	</if>
+    	<if test="email == null and nickname == null">
+    	and email = '' and nickname = ''
+    	</if>
+    	<![CDATA[
+           and 
+           (
+            userstatus != 'standby'
+            or
+            (userstatus = 'standby' and (date_format(now(), '%Y%m%d%H%i%s') - regdt) <= 30000)
+           )
+         ]]>
+    </select>
+    
+    <select id="cancelUserCheckCount" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">
+    	select count(userseq) from ow_user 
+    	where 
+    		email = #{email} 
+           	and userstatus = 'cancel'
+    </select>
+    
+    <update id="passwdUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        UPDATE ow_user SET passwd = #{passwd}, loginfailcnt = 0, loginfaildt = ''
+           WHERE email = #{email} and nickname = #{nickname} and userstatus='use'
+    </update>
+    
+    <update id="userInsert" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        insert into ow_user(
+			email,userstatus,nickname,passwd,termsyn,agreementdt,gender,
+			
+			<if test='usetermsyn == "Y"'> usetermsyn, useagreementdt, </if>
+    		<if test='usetermsyn != "Y"'> usetermsyn, </if>
+    		
+			<if test='minorityyn == "Y"'> minorityyn, minoritycertnum, minoritycertdt, </if>
+    		<if test='minorityyn != "Y"'> minorityyn, </if>
+    		
+			adultyn,birthday,adultdt,adultno,
+			certificationkey,lastlogindt,logincnt,joindt,regdt,nameconseq, pwchangedt, lastpwchangedt
+		) values (
+			#{email},'standby',#{nickname},#{passwd},'Y',#{agreementdt},#{gender},
+			
+			<if test='usetermsyn == "Y"'> 'Y', DATE_FORMAT(now(), '%Y%m%d%H%i%s'), </if>
+    		<if test='usetermsyn != "Y"'> 'N', </if>
+    		
+			<if test='minorityyn == "Y"'> 'Y', ${minoritycertnum}, ${minoritycertdt}, </if>
+    		<if test='minorityyn != "Y"'> 'N', </if>
+    		
+			'N',${birthday},'','',
+			#{certificationkey},'',0,'',#{regdt},5,#{regdt},#{regdt}
+		);
+    </update>
+    
+    <update id="reCertificationUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		certificationkey = #{recertificationkey}, regdt = #{regdt}
+    	where certificationkey = #{certificationkey};
+    </update>
+    
+    <update id="certificationUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		userstatus='use', joindt = #{joindt}, pwchangedt = #{joindt}, lastpwchangedt = #{joindt}
+    	where certificationkey = #{certificationkey} and userstatus = 'standby'
+    	<![CDATA[ 
+    	and (DATE_FORMAT(now(), '%Y%m%d%H%i%s') - regdt) < 30000;
+		]]>
+    </update>
+    
+    <update id="ollehUserUsetermsynUpdateByOllehId" parameterType="com.olleh.webtoon.common.dao.user.domain.OllehUserDomain">
+    	UPDATE 
+    		ow_olleh_user 
+    	SET 
+    		usetermsyn = #{usetermsyn}, useagreementdt = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    	WHERE
+    		ollehid = #{ollehid}
+    </update>
+    
+    <update id="usetermsynUpdateByEmail" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	UPDATE 
+    		ow_user 
+    	SET 
+    		usetermsyn = #{usetermsyn}, useagreementdt = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    	WHERE
+    		email = #{email}
+    </update>
+    
+    <update id="adultUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	UPDATE
+    		ow_user 
+    	SET adultyn = #{adultyn}
+    		<if test="birthday != null and birthday != '' ">
+	    	, birthday = #{birthday}
+	    	</if>
+	    	, adultdt = #{adultdt}
+	    	, adultno = #{adultno}
+        WHERE
+        	userseq = #{userseq}
+       	LIMIT 1
+    </update>
+    
+    <update id="minorityUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	UPDATE
+    		ow_user 
+    	SET minorityyn = #{minorityyn}
+	    	, minoritycertdt = #{minoritycertdt}
+	    	, minoritycertnum = #{minoritycertnum}
+        WHERE
+        	userseq = #{userseq}
+       	LIMIT 1
+    </update>
+    
+    <update id="withdrawUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		userstatus='cancel'
+    	where email = #{email} and passwd = #{passwd} and (userstatus='use' or userstatus='stop')
+    </update>
+    
+	<select id="passwdCheckCount" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">
+        SELECT count(email)
+           FROM ow_user
+           WHERE email = #{email} and passwd = #{passwd} and (userstatus='use' or userstatus='stop')
+    </select>
+    
+    <update id="newPasswdUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		passwd=#{newpasswd}, pwchangedt=#{pwchangedt}, lastpwchangedt=#{pwchangedt}
+    	where email = #{email} and passwd = #{passwd} and (userstatus='use' or userstatus='stop')
+    </update>
+    
+    <select id="defualtNameconSelectList" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="com.olleh.webtoon.common.dao.user.domain.NameconDomain">           
+		select
+			regdt, buyseq, nameconseq, defaultyn, authoryn, nameconnm, nameconurl, mnameconurl
+			from (         		
+				select 
+				t1.regdt,
+				0 buyseq,
+				t5.nameconseq, 
+				CASE t1.sellfg WHEN'default' THEN 'Y' ELSE 'N' END defaultyn, 
+				t5.authoryn, 
+				t5.nameconnm, 
+				t5.nameconurl, 
+				t5.mnameconurl 
+				from 
+				ow_prd t1 left join 
+				ow_prdcon_detail t4 ON t1.prdseq = t4.prdseq left join 
+				ow_namecon t5 ON t4.iconseq = t5.nameconseq 
+				where 
+				(t1.prdfg = 'name' and t1.sellfg='default') 
+			
+				union all
+			
+				select
+				t1.regdt,
+				t3.buyseq,
+				t5.nameconseq, 
+				CASE t1.sellfg WHEN 'event' THEN 'Y' ELSE 'N' END defaultyn, 
+				t5.authoryn, 
+				t5.nameconnm, 
+				t5.nameconurl, 
+				t5.mnameconurl
+				from
+					ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+							  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+							  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+							  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+				where  
+				(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t4.iconseq is not NULL and date(t3.availdt) > date(now())) 
+			) s
+			order by 
+			s.regdt desc,
+			s.buyseq desc,
+			s.nameconseq desc
+		LIMIT 
+		 #{startRowNo},  #{pageSize}
+
+    </select>
+    
+    <select id="freeNameconSelectList" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="com.olleh.webtoon.common.dao.user.domain.NameconDomain">           
+		select
+			regdt, nameconseq, defaultyn, authoryn, nameconnm, nameconurl, mnameconurl
+			from (         
+        
+				select 
+				t1.regdt,
+				t5.nameconseq, 
+				CASE t1.sellfg WHEN'default' THEN 'Y' ELSE 'N' END defaultyn, 
+				t5.authoryn, 
+				t5.nameconnm, 
+				t5.nameconurl, 
+				t5.mnameconurl 
+				from 
+				ow_prd t1 left join 
+				ow_prdcon_detail t4 ON t1.prdseq = t4.prdseq left join 
+				ow_namecon t5 ON t4.iconseq = t5.nameconseq 
+				where 
+				(t1.prdfg = 'name' and t1.sellfg='default') 
+			
+				union all
+			
+				select
+				t1.regdt,
+				t5.nameconseq, 
+				CASE t1.sellfg WHEN 'event' THEN 'Y' ELSE 'N' END defaultyn, 
+				t5.authoryn, 
+				t5.nameconnm, 
+				t5.nameconurl, 
+				t5.mnameconurl
+				from
+					ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+							  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+							  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+							  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+				where  
+				(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.prdprice = 0 and t1.sellfg != 'BM50' and t4.iconseq is not NULL and date(t3.availdt) > date(now())) 
+			) s
+			order by 
+			s.regdt desc,
+			s.nameconseq desc
+		LIMIT 
+		 #{startRowNo},  #{pageSize}
+
+    </select>
+    
+    <select id="payNameconSelectList" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="com.olleh.webtoon.common.dao.user.domain.NameconDomain">           
+		select
+			t1.regdt,
+			t5.nameconseq, 
+			CASE t1.sellfg WHEN 'event' THEN 'Y' ELSE 'N' END defaultyn, 
+			t5.authoryn, 
+			t5.nameconnm, 
+			t5.nameconurl, 
+			t5.mnameconurl
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.prdprice != 0 and t4.iconseq is not NULL and date(t3.availdt) > date(now()))  
+		ORDER BY
+			t3.buyseq desc,
+			t5.nameconseq desc
+		LIMIT 
+		 #{startRowNo},  #{pageSize}
+
+    </select>
+   
+	 <select id="bmNameconSelectList" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="com.olleh.webtoon.common.dao.user.domain.NameconDomain">           
+		select
+			t1.regdt,
+			t5.nameconseq, 
+			CASE t1.sellfg WHEN 'event' THEN 'Y' ELSE 'N' END defaultyn, 
+			t5.authoryn, 
+			t5.nameconnm, 
+			t5.nameconurl, 
+			t5.mnameconurl
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.sellfg = 'BM50' and t4.iconseq is not NULL and date(t3.availdt) > date(now()))  
+		ORDER BY
+			t3.buyseq desc,
+			t5.nameconseq desc
+		LIMIT 
+		 #{startRowNo},  #{pageSize}
+
+    </select>
+    
+    <select id="defualtNameconSelectCnt" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">       
+		select
+			count(regdt)
+		<if test='nameconlisttype == "free"'> 
+		from ( 
+			select 
+			t1.regdt
+			from 
+			ow_prd t1 left join 
+			ow_prdcon_detail t4 ON t1.prdseq = t4.prdseq left join 
+			ow_namecon t5 ON t4.iconseq = t5.nameconseq 
+			where 
+			(t1.prdfg = 'name' and t1.sellfg='default') 
+		
+			union all
+		
+			select
+			t1.regdt
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.prdprice = 0 and t1.sellfg != 'BM50' and t4.iconseq is not NULL and date(t3.availdt) > date(now())) 
+		) s
+		</if>
+		<if test='nameconlisttype == "pay"'>
+		from(
+			select
+				t1.regdt
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.prdprice != 0 and t4.iconseq is not NULL and date(t3.availdt) > date(now()))
+		) s 
+		</if>
+		<if test='nameconlisttype == "BM50"'>
+		from(
+			select
+				t1.regdt
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t1.sellfg = 'BM50' and t4.iconseq is not NULL and date(t3.availdt) > date(now()))
+		) s 
+		</if>
+		<if test='nameconlisttype == "default"'> 
+		from ( 
+        		
+			select 
+			t1.regdt
+			from 
+			ow_prd t1 left join 
+			ow_prdcon_detail t4 ON t1.prdseq = t4.prdseq left join 
+			ow_namecon t5 ON t4.iconseq = t5.nameconseq 
+			where 
+			(t1.prdfg = 'name' and t1.sellfg='default') 
+		
+			union all
+		
+			select
+			t1.regdt
+			from
+				ow_prd t1 left join ow_prd_his t2 ON t1.prdseq = t2.prdseq
+						  left join ow_prd_avail t3 ON t2.prdhistoryseq = t3.prdhistoryseq
+						  left join ow_prdcon_detail_his t4 ON t2.prdhistoryseq = t4.prdhistoryseq
+						  left join ow_namecon t5 ON t4.iconseq = t5.nameconseq
+			where  
+			(t1.prdfg = 'name' and t3.buyid = #{email} and t3.idfg = #{idfg} and t4.iconseq is not NULL and date(t3.availdt) > date(now())) 
+		) s
+		</if>
+		
+    </select>
+    
+    <update id="defualtNameconUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	<if test='idfg == "open"'>
+    	update ow_user set 
+    		nameconseq=#{nameconseq}
+    	where email = #{email}
+    	</if>
+    	<if test='idfg == "olleh"'>
+    	update ow_olleh_user set 
+    		nameconseq=#{nameconseq}
+    	where binary(ollehid) = #{email}
+    	</if>
+    	<if test='idfg == "naver"'>
+    	update ow_naver_user set 
+    		nameconseq=#{nameconseq}
+    	where naverid = #{email}
+    	</if>
+    </update>
+    
+    <select id="ollehUserSelectDetail" parameterType="string" resultType="com.olleh.webtoon.common.dao.user.domain.OllehUserDomain">
+    	select 
+    		olleh_user.userseq, olleh_user.ollehid, olleh_user.authoryn, olleh_user.termsyn, olleh_user.agreementdt,
+    		olleh_user.adultyn, olleh_user.birthday, olleh_user.adultdt, olleh_user.adultno, olleh_user.regdt, olleh_user.usetermsyn, olleh_user.useagreementdt,
+    		<![CDATA[
+    		case
+			 when author.authorseq is not null then (select b.nameconseq from ow_author a, ow_namecon b where a.ollehid = #{ollehid} and a.nameconseq = b.nameconseq)
+			 else namecon.nameconseq
+			end as nameconseq,
+			
+			case
+			 when author.authorseq is not null then (select b.nameconnm from ow_author a, ow_namecon b where a.ollehid = #{ollehid} and a.nameconseq = b.nameconseq)
+			 else namecon.nameconnm
+			end as nameconnm,
+				
+		    case
+			 when author.authorseq is not null then (select b.nameconurl from ow_author a, ow_namecon b where a.ollehid = #{ollehid} and a.nameconseq = b.nameconseq)
+			 else namecon.nameconurl
+			end as nameconurl,
+			
+			case
+			 when author.authorseq is not null then (select b.mnameconurl from ow_author a, ow_namecon b where a.ollehid = #{ollehid} and a.nameconseq = b.nameconseq)
+			 else namecon.mnameconurl
+			end as mnameconurl,
+			]]>
+	        author.authorseq, author.nameconseq nameconseq2, namecon2.nameconnm nameconnm2, namecon2.nameconurl nameconurl2, namecon2.mnameconurl mnameconurl2,
+	        author.nickname
+    	from 
+    		ow_olleh_user olleh_user
+			left join ow_namecon namecon on olleh_user.nameconseq = namecon.nameconseq
+	        left join ow_author author on olleh_user.ollehid = author.ollehid and olleh_user.authoryn = 'Y'
+	        left join ow_namecon namecon2 on author.nameconseq = namecon2.nameconseq
+    	where
+    		binary(olleh_user.ollehid) = #{ollehid} limit 0,1
+    </select>
+    
+    <insert id="ollehUserInsert" parameterType="string">
+        insert into ow_olleh_user(
+			ollehid,termsyn,agreementdt,adultyn,birthday,adultdt,adultno,regdt,nameconseq,authoryn,usetermsyn
+		) values (
+			#{ollehid},'N',DATE_FORMAT(now(), '%Y%m%d%H%i%s'),'N','','','',DATE_FORMAT(now(), '%Y%m%d%H%i%s'),5, 'N','N'
+		);
+    </insert>
+    
+    <update id="ollehUserAgreementUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.OllehUserDomain">
+    	update ow_olleh_user set 
+    		termsyn='Y', agreementdt=DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    		<if test='usetermsyn == "Y"'>
+    		, usetermsyn = 'Y'
+    		, useagreementdt = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    		</if>
+    	where binary(ollehid) = #{ollehid};
+    </update>
+    
+    <update id="webtoonUserAgreementUpdate" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		termsyn='Y', agreementdt=DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    		<if test='usetermsyn == "Y"'>
+    		, usetermsyn = 'Y'
+    		, useagreementdt = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+    		</if>
+    	where userstatus='use' and email = #{email};
+    </update> 
+    
+    <select id="selectUserUseTermsByEmail" parameterType="string" resultType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	select 
+    		usetermsyn,
+    		useagreementdt
+   		FROM ow_user user
+        WHERE email = #{email} 
+           <![CDATA[
+           and 
+           (
+            user.userstatus != 'standby'
+            or
+            (user.userstatus = 'standby' and (date_format(now(), '%Y%m%d%H%i%s') - user.regdt) <= 30000)
+           )
+           ]]>
+           order by regdt desc
+           limit 1;
+    </select>
+
+	<update id="pushUsetermsynUpdateByEmail" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        UPDATE 
+        	ow_user 
+        SET 
+        	usetermsyn = #{usetermsyn}, useagreementdt = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+        WHERE 
+        	email = #{email}
+    </update> 
+    
+    <update id="updateEmailByUuid" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+        UPDATE ow_device SET 
+        <if test="email != null">
+        idfg = #{idfg}, 
+        userid= #{email}, 
+        </if>
+        loginyn= #{loginyn}
+        	WHERE deviceid = #{uuid}
+    </update>
+    
+    <select id="selectFailHisCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+	    select ifnull(loginfailcnt, 0) failcnt from ow_user
+		where email = #{email} and userstatus = 'use'
+		order by regdt desc limit 1;
+	</select>
+	
+	<select id="selectFailDtOveryn" parameterType="java.lang.String" resultType="java.lang.String">
+	    select
+			case
+				when ifnull(loginfaildt, '') != '' and date_format(date_add(now(), interval - 10 minute), '%Y%m%d%H%i%s') > loginfaildt then 'Y'
+				else 'N'
+			end as tenoveryn
+		from ow_user where email=#{email} and userstatus = 'use'
+	</select>
+	
+	<update id="initLoginFailInfo" parameterType="java.lang.String">
+    	update ow_user set 
+    		loginfailcnt = 0 , loginfaildt = ''
+    	where email = #{email} and userstatus = 'use'
+    </update>
+    
+    <update id="updateLoginFailInfo" parameterType="java.lang.String">
+    	update ow_user set 
+    		loginfailcnt = ifnull(loginfailcnt, 0) + 1 , loginfaildt = date_format(now(), '%Y%m%d%H%i%s')
+    	where email = #{email} and userstatus = 'use'
+    </update>
+    
+    <update id="updatePasswdChangeDate" parameterType="java.lang.String">
+    	update ow_user set 
+    		pwchangedt = date_format(date_add(date_add(now(), interval -3 month), interval 14 day),'%Y%m%d%H%i%s')
+    	where email = #{email} and userstatus = 'use'
+    </update>
+    
+    <select id="selectOpenUserNameconseq" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">
+	    select nameconseq from ow_user
+		where email = #{email} and userstatus = 'use'
+	</select>
+	
+	<select id="selectOllehUserNameconseq" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain" resultType="java.lang.Integer">
+		select nameconseq from ow_olleh_user
+		where ollehid = #{email}
+	</select>
+	
+	<update id="updateOpenUserNameconseq" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_user set 
+    		nameconseq = #{nameconseq}
+    	where email = #{email} and userstatus = 'use'
+    </update>
+    
+    <update id="updateOllehUserNameconseq" parameterType="com.olleh.webtoon.common.dao.user.domain.UserDomain">
+    	update ow_olleh_user set 
+    		nameconseq = #{nameconseq}
+    	where ollehid = #{email}
+    </update>
+    
+
+	<select id="selectNaverUserDetail" parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.user.domain.UserDomain">	               
+		select 
+    		naver_user.userseq, naver_user.naverid email, naver_user.termsyn, naver_user.agreementdt,
+    		naver_user.adultyn, naver_user.birthday, naver_user.adultdt, naver_user.adultno, naver_user.regdt, naver_user.usetermsyn, naver_user.useagreementdt,
+    		naver_user.nameconseq, namecon.nameconnm,  naver_user.minoritycertnum, naver_user.minoritycertdt, namecon.nameconurl, namecon.mnameconurl
+    	from 
+    		ow_naver_user naver_user
+			left join ow_namecon namecon on naver_user.nameconseq = namecon.nameconseq
+    	where
+    		binary(naver_user.naverid) = #{userid} limit 0,1
+	</select>
+	
+	
+    
+</mapper>

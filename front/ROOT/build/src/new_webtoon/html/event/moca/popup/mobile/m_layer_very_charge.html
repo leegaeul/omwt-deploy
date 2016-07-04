@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0, target-densityDpi=medium-dpi">
+<meta name="format-detection" content="telephone=no">
+<title> 올레마켓웹툰 </title>
+<script type="text/javascript" src="http://webtoon.olleh.com/js/common/common_util.js?dt=2014100800000"></script>
+<script type="text/javascript" src="http://webtoon.olleh.com/js/common/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="http://webtoon.olleh.com/js/jquery/jquery.cookie.js"></script><!-- jquery -->
+</head>
+
+<body>
+        <!-- 20141022 레이어 추가 -->
+        <!-- 베리베리 충전&플러스 이벤트 스타일 -->
+        <style type="text/css">
+        * {margin: 0;padding:0;}
+        body{min-width:320px;margin:0;padding:0;width:100%}
+        /* 20141022 수정/추가 */
+        .layer_very_charge_wrapper h3, h4, p, dt, dd, span, input, label, textarea, li{font-family:'맑은 고딕', Malgun Gothic}
+        .layer_very_charge_wrapper{min-width:320px;background-color:#fff;width:100%;vertical-align:top}
+        .layer_very_charge_wrapper a{text-decoration:none}
+        .layer_very_charge_wrapper li{list-style:none}
+        .layer_very_charge_wrapper img{vertical-align:top}
+        .layer_very_charge_wrapper .layer_top{background-color:#2e2e2e;height:28px;position:relative}
+        .layer_very_charge_wrapper .layer_top .layer_title{height:28px;line-height:25px;color:#fff;font-size:12px;padding-left:25px}
+        .layer_very_charge_wrapper .layer_top .button_close{position:absolute;top:9px;right:18px;display:block}
+        .layer_very_charge_wrapper .layer_top .button_close img{width:9px;height:9px}
+        .layer_very_charge_wrapper .layer_middle{margin:15px 12px 23px;position:relative}
+        .layer_very_charge_wrapper .layer_middle_top{padding:30px 0;;border-bottom:1px solid #d0d0d0}
+        .layer_very_charge_wrapper .layer_middle_top .layer_event_info{font-size:12px;color:#5a5a5a;line-height:12px;font-weight:bold;text-align:center;}
+        .layer_very_charge_wrapper .layer_middle .button_check{display:block;width:62px;margin:0 auto 12px}
+        .layer_very_charge_wrapper .layer_middle .button_check img{width:62px;height:auto}
+        .layer_very_charge_wrapper .layer_middle .sub_title{font-size:12px;color:#373737;line-height:18px;font-weight:bold;margin-bottom:10px}
+        .layer_very_charge_wrapper .layer_middle .layer_event_info2{font-size:9px;color:#373737;font-weight:bold;margin-bottom:5px}
+        .layer_very_charge_wrapper .layer_middle  dl{position:relative}
+        .layer_very_charge_wrapper .layer_middle  dl:after{clear:both;display:block;content:""}
+        .layer_very_charge_wrapper .layer_middle  dl dt{font-size:10px;color:#373737;font-weight:bold;width:56px;float:left;padding-top:7px;line-height: 14px}
+        .layer_very_charge_wrapper .layer_middle  dl dd{font-size:10px;color:#373737;font-weight:bold;float:left;margin:7px 0;width:414px;position:relative}
+        .layer_very_charge_wrapper .layer_middle  dl dd:after{clear:both;display:block;content:""}
+        .layer_very_charge_wrapper .layer_middle  dl dd input{border:1px solid #bfbfbf;height:15px;padding-left:8px;font-weight:bold;color:#373737;float:left;font-size:9px;font-weight:normal;-webkit-border-radius:0;-webkit-appearance:none;}
+        .layer_very_charge_wrapper .layer_middle  dl dd input:focus{background-color:#fffcd9}
+        .layer_very_charge_wrapper .layer_middle  dl dd .name{width:152px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .title_name{width:404px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .e_mail{width:256px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .button_duplicate_check{border:1px solid #9b9b9b;background-color:#a7a7a7;color:#fff;font-size:13px;height:30px;float:left;margin-left:8px;font-weight:normal;width:100px;text-align:center;line-height:26px}
+        .layer_very_charge_wrapper .layer_middle  dl dd .comment_name{width:100%;float:left;color:#9c9c9c;font-size:12px;font-weight:normal;padding:5px 0}
+
+        .layer_very_charge_wrapper .layer_middle .phone{position:relative;z-index:2;margin-bottom:5px}
+        .layer_very_charge_wrapper .layer_middle .phone dt{width:67px}
+        .layer_very_charge_wrapper .layer_middle .phone dd{width:200px}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_number{width:55px;padding:0;text-align:center}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number{position:relative;z-index:1;width:55px;height:15px;padding:0 2px;border:1px solid #bfbfbf;background:#fff;line-height:19px;float:left}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel{display:block;*zoom:1}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel:after{display:block;clear:both;content:''}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number a.btn_sel:hover .cnt,.selComp a.btn_sel:focus .cnt{text-decoration:underline}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .cnt{overflow:hidden;float:left;width:40px;height:15px;font-size:9px;color:#373737;line-height:15px;padding-left:3px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .arrow{display:block;float:right;width:5px;height:3px;margin-top:-1px;background:#FFF url(./images/icon_select_arrow.gif) no-repeat right center;text-indent:-9999px;margin:6px 2px 0 0;background-size:5px 3px}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap{display:none;overflow-x:hidden;overflow-y:scroll;position:absolute;top:16px;left:-1px;width:100%;max-height:115px;height:expression(this.scrollHeight > 120 ? '120' :'auto' );border:1px solid #D2D2D2;background:#fff;z-index:100}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li{width:100%;padding:2px}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li.on{background:#eee}
+        .layer_very_charge_wrapper .layer_middle .phone dd .phone_first_number .sel_list_wrap .sel_list li a{display:block;overflow:hidden;;height:12px;font-size:9px;color:#373737;line-height:11px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .phone dd .dash{float:left;margin:0 2px;color:#c5c5c5;font-size:9px;font-weight:normal;height:17px;line-height:13px}
+
+        .layer_very_charge_wrapper .layer_middle .term_agree dt{float:none;display:block;width:100%}
+        .layer_very_charge_wrapper .layer_middle .term_agree dt a{border:1px solid #9b9b9b;background-color:#a7a7a7;color:#fff;font-size:9px;height:12px;margin-left:5px;font-weight:normal;width:48px;text-align:center;line-height:12px;display:inline-block;*display:inline}
+        .layer_very_charge_wrapper .layer_middle .term_agree dd{float:none;display:block;width:100%;margin:10px 0}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box{position:absolute;top:0px;left:210px;width:98px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list{float:left;display:block}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list{z-index:1;position:relative}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list:after{display:block;content:'';clear:both}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li{float:left;margin-right:4px;position:relative;width:35px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list .last_list{margin:0;width:58px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li input{display:none;}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li label{position:relative;float:left;font-size:9px;font-weight:normal;height:11px;line-height:11px;padding-left:12px;cursor:pointer;z-index:2;background:url(./images/radio_design.png) no-repeat 0 0;background-size: 15px 30px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list li input:checked + label{background-position:0 -15px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2{float:left}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2{z-index:1;position:relative}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2:after{display:block;content:'';clear:both}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li{float:left;margin-right:4px;position:relative;width:35px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 .last_list{margin:0;width:58px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li input{display:none;}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li label{position:relative;float:left;font-size:9px;font-weight:normal;height:11px;line-height:11px;padding-left:12px;cursor:pointer;z-index:2;background:url(./images/radio_design.png) no-repeat 0 0;background-size: 15px 30px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .radio_box .radio_list2 li input:checked + label{background-position:0 -15px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1{border:1px solid #bfbfbf;padding:10px;height:33px;overflow:hidden;font-size:9px;color:#9c9c9c;font-weight:normal;letter-spacing:-1px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1 p{padding-bottom:2px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt1 ul li{padding-bottom:1px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2{border:1px solid #bfbfbf;padding:10px;height:33px;overflow:hidden;font-size:9px;color:#9c9c9c;font-weight:normal;letter-spacing:-1px;font-weight:normal}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2 p{padding-bottom:2px}
+        .layer_very_charge_wrapper .layer_middle .term_agree .term_box .term_txt2 ul li{padding-bottom:1px}
+        .layer_very_charge_wrapper .layer_middle .button_app{display:block;width:102px;margin:0 auto;padding-top:7px}
+        .layer_very_charge_wrapper .layer_middle .button_app img{width:102px;height:auto}
+        #layerVeryChargeComplete{display:none}
+        #layerVeryChargeComplete .layer_middle{padding-bottom:0}
+        /* //20141022 수정/추가 */
+        </style>
+        <!-- //베리베리 충전&플러스 이벤트 스타일 -->
+
+        <!-- 베리베리 충전&플러스 이벤트 스크립트 -->
+        <script type="text/javascript">
+        $(document).ready(function(){
+            /* 디자인 셀렉트박스 */
+            $.fn.designSelectBox = function (options) {
+                var opts = $.extend({
+                    selectType:"click",
+                    linkFunc:null,
+                    aTarget:'_self'
+                }, options);
+                return this.each(function () {
+                    var isOpen = false,
+                        linkFunc = opts.linkFunc,
+                        valueArr = [],
+                        $self = $(this),
+                        $replaceSelectBox,
+                        $btn,
+                        $selList,
+                        $selectUl,
+                        $selectLl,
+                        $lstBtn;
+
+                    function setting(){
+                        var realSelectBox = $self.find('option'), lst='', isSelect='', addHref='#', aTarget='', firTl='선택하기';
+                        realSelectBox.each(function(){
+                            if($(this).attr('selected')=='selected') isSelect = 'on';
+                            else isSelect = '';
+                            if(linkFunc != null){
+                                if( $(this).attr('value') == "" ) return;
+                                valueArr.push($(this).attr('value'));
+                                addHref = '#';
+
+                                lst += '<li class="'+isSelect+'"><a href="'+addHref+'"'+aTarget+'>'+$(this).text()+'</a></li>';
+                            }else{
+                                addHref = $(this).attr('value');
+                                aTarget = ' target="'+opts.aTarget+'"';
+                                if(opts.aTarget == '_blank') aTarget += ' title="새창"';
+                                if(addHref != '') lst += '<li class="'+isSelect+'"><a href="'+addHref+'"'+aTarget+'>'+$(this).text()+'</a></li>';
+                                else firTl = $(this).text();
+                            }
+                        });
+
+                        var replaceSelectBox = '<div class="'+$self.attr('class')+'">';
+                        replaceSelectBox+='<a class="btn_sel" href="#">';
+                        replaceSelectBox+='<span class="cnt">'+firTl+'</span>';
+                        replaceSelectBox+='<span class="arrow"></span>';
+                        replaceSelectBox+='</a>';
+                        replaceSelectBox+='<div class="sel_list_wrap">';
+                        replaceSelectBox+='<ul class="sel_list">';
+                        replaceSelectBox+= lst;
+                        replaceSelectBox+='</ul>';
+                        replaceSelectBox+='</div>';
+
+                        $replaceSelectBox = $(replaceSelectBox);
+                        $self.parent().prepend($replaceSelectBox);
+                        $self.remove();
+
+                        init();
+                    }
+
+                    setting();
+
+                    function init(){
+                        $btn = $replaceSelectBox.find('.btn_sel');
+                        $selList = $replaceSelectBox.find('.sel_list_wrap');
+                        $selectUl = $replaceSelectBox.find('.sel_list');
+                        $selectLl = $replaceSelectBox.find('.sel_list > li');
+                        $lstBtn = $selectLl.find('a');
+
+                        if( $selectUl.find('.on').text() != "")
+                            setSelectTxt();
+
+                        if( opts.selectType == "click" ){
+                            $btn.bind("click", function(){
+                                if( !isOpen ) setShowList(true);
+                                else setShowList(false);
+                                return false;
+                            });
+                        }else{
+                            $replaceSelectBox.bind('mouseenter focusin', function(){setShowList(true);});
+                        }
+
+                        $replaceSelectBox.bind('mouseleave', function(){if(isOpen){setShowList(false);}});
+
+                        $lstBtn.bind({
+                            'click':function(){
+                                        if( linkFunc != null ){
+                                            $selectLl.removeClass('on');
+                                            $(this).parent().addClass('on');
+                                            setSelectTxt();
+                                            setShowList(false);
+                                            linkFunc(valueArr[$(this).parent().index()]);
+                                            return false;}},
+                            'focusin': function(){setShowList(true);}
+                        });
+                        $lstBtn.eq(-1).bind('focusout', function(){setShowList(false);});
+                    }
+
+                    function setShowList(flag){
+                        if( flag ) $selList.show();
+                        else $selList.hide();
+                        isOpen = flag;
+                    }
+
+                    function setSelectTxt(){$btn.find('.cnt').text($selectUl.find('.on').text());}
+                });
+            };
+			$('.phone_first_number').designSelectBox({selectType:'click', linkFunc:null});
+
+            /* 전문보기 슬라이딩-1 */
+            $("a.button_term1_all").bind({
+                "click" : function() {
+                    var txtMaxHeight = $(".term_txt1 > .txt_area").height();
+                    var txtMinHeight = 33;
+
+                    if($(this).parent().siblings(".term_box").children(".term_txt1").length > 0){
+                        if($(this).parent().siblings(".term_box").children(".term_txt1").hasClass("on")){
+                            $(this).parent().siblings(".term_box").children(".term_txt1").removeClass("on");
+                           $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMinHeight});
+                            return false;
+                        }else{
+                            $(this).parent().siblings(".term_box").children(".term_txt1").addClass("on");
+                            $(this).parent().siblings(".term_box").children(".term_txt1").stop().animate({height:txtMaxHeight});
+                            return false;
+                        };
+                    }else{
+                        return false;
+                    };
+                }
+            });
+
+            /* 전문보기 슬라이딩-2 */
+            $("a.button_term2_all").bind({
+                "click" : function() {
+                    var txtMaxHeight = $(".term_txt2 > .txt_area").height();
+                    var txtMinHeight = 33;
+
+                    if($(this).parent().siblings(".term_box").children(".term_txt2").length > 0){
+                        if($(this).parent().siblings(".term_box").children(".term_txt2").hasClass("on")){
+                            $(this).parent().siblings(".term_box").children(".term_txt2").removeClass("on");
+                           $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMinHeight});
+                            return false;
+                        }else{
+                            $(this).parent().siblings(".term_box").children(".term_txt2").addClass("on");
+                            $(this).parent().siblings(".term_box").children(".term_txt2").stop().animate({height:txtMaxHeight});
+                            return false;
+                        };
+                    }else{
+                        return false;
+                    };
+                }
+            });
+
+            /* 레이어 닫기 */
+            $(".button_close").click(function(){
+                $(".button_close").parent().parent("#layerVeryCharge").css({"display" : "none"});
+                return false;
+            });
+
+        });
+        </script>
+        <!-- //베리베리 충전&플러스 이벤트 스크립트 -->
+
+        <!-- ###[레이어]베리베리 충전&플러스 이벤트### -->
+        <div id="layerVeryCharge" class="layer_very_charge_wrapper">
+            <!-- 레이어 상단 -->
+            <div class="layer_top">
+                <h3 class="layer_title">베리베리~100베리 충전 & 플러스 이벤트</h3>
+                <a href="#none" class="button_close"><img src="./images/m_button_completition_close.jpg" alt="레이어닫기"></a>
+            </div>
+            <!-- //레이어 상단 -->
+
+            <!-- 20141022 추가 -->
+            <div class="layer_middle_top">
+                <p class="layer_event_info">100베리 충전이 완료되었습니다!<br/>익일 정오에 MY>MY베리를 확인 해주세요~</p>
+            </div>
+            <!-- //20141022 추가 -->
+
+            <!-- 레이어 중단 -->
+            <div class="layer_middle">
+                <h4 class="sub_title"> + PLUS 이벤트</h4>
+                <p class="layer_event_info2">경품 받으실 핸드폰 번호를 입력해주세요</p>
+                <dl class="phone">
+                    <dt>휴대전화번호</dt>
+                    <dd>
+                        <select name="rowsPerPage" class="phone_first_number">
+                            <option value="010" selected="selected">010</option><!-- (D) 해당 전달값 value에 삽입 처리 -->
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="018">018</option>
+                        </select>
+                        <span class="dash">-</span>
+                        <input type="text" class="phone_number" />
+                        <span class="dash">-</span>
+                        <input type="text" class="phone_number" />
+                    </dd>
+                </dl>
+                <dl class="term_agree">
+                    <dt>개인정보 수집, 활용에 대한 동의<a href="#none" class="button_term1_all">전문보기</a></dt>
+                    <dd class="radio_box">
+                        <ul class="radio_list">
+                            <li>
+                                <input type="radio" id="agree1" name="term_agree1">
+                                <label for="agree1">동의</label>
+                            </li>
+                            <li class="last_list">
+                                <input type="radio" id="agree2" name="term_agree1">
+                                <label for="agree2">동의 안함</label>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd class="term_box">
+                        <div class="term_txt1">
+                            <div class="txt_area">
+                                <p>고객님이 입력한 개인정보는 ‘정보통신망 이용촉진 및 정보보호 등에 관한 법률’에 따라 kt가 수집, 이용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다.</p>
+                                <p>입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 이용되지 않습니다.</p>
+                                <ul>
+                                    <li>1) 개인정보 수집 및 이용목적 - 이벤트 대상 여부 및 본인 확인, 경품 배송</li>
+                                    <li>2) 수집하는 개인정보 항목 - 휴대폰번호</li>
+                                    <li>3) 개인정보 보유 및 이용기간 - 당첨자 발표 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)</li>
+                                    <li>4) 본 이벤트 참여 고객은 개인정보 수집, 이용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+                <dl class="term_agree">
+                    <dt>개인정보 취급 위탁 동의<a href="#none" class="button_term2_all">전문보기</a></dt>
+                    <dd class="radio_box">
+                        <ul class="radio_list2">
+                            <li>
+                                <input type="radio" id="agree3" name="term_agree2">
+                                <label for="agree3">동의</label>
+                            </li>
+                            <li class="last_list">
+                                <input type="radio" id="agree4" name="term_agree2">
+                                <label for="agree4">동의 안함</label>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd class="term_box">
+                        <div class="term_txt2">
+                            <div class="txt_area">
+                                <p>회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급 위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+                                <ul>
+                                    <li>1) 개인정보 취급위탁을 받는 자 - 업체명 : 케이티하이텔㈜, ㈜케이티엠하우스 문의 : 올레마켓웹툰 서비스 로그인 후 1:1문의를 통해 문의</li>
+                                    <li>2) 위탁목적 - 이벤트 참여자 문의시 본인 확인 및 응대, 경품 발송</li>
+                                    <li>3) 위탁범위 - 본 개인정보수집, 이용, 위탁 방침에 동의한 이용자가 입력한 개인정보</li>
+                                    <li>4) 위탁기간 - 이벤트 종료 후 10일 이내 폐기</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </dd>
+                <a href="#none" class="button_app"><img src="./images/m_button_very_charge_app.jpg" alt="확인" /></a>
+                </dl>
+            </div>
+            <!-- //레이어 중단 -->
+        </div>
+        <!-- //###[레이어]베리베리 충전&플러스 이벤트### -->
+        <!-- //20141022 레이어 추가 -->
+</body>
+</html>

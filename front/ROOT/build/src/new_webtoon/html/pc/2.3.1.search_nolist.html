@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+<script type="text/javascript" src="js/main.js"></script><!-- main jquery -->
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 수정 20140718 ~ 메인메뉴 추가 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#">
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+			<!-- 베리 충전소 링크 추가 -->
+			<div class="topMenuEtc">
+				<a href="#"><img src="img/top_menu_bnr.png" alt="베리 충전소" /></a>
+			</div>
+			<!-- //베리 충전소 링크 추가 -->
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 20140507 수정 -->
+		<div class="subMenu subMenu02">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">실시간 랭킹</a> |</li>
+					<li><a href="#">월간 랭킹</a> |</li>
+					<li><a href="#">베댓 랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 20140507 수정 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 2차 오픈 범위
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>-->
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 -->
+		<div class="subMenu subMenu06"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">추천</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li><a href="#">스티콘</a> |</li>
+					<li><a href="#">네임콘</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //Shop 하위메뉴 -->
+<!-- //메뉴 수정 20140718 ~ 메인메뉴 추가 -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+
+		<!-- layout_left -->
+		<div class="layout_left">
+			
+			<!-- 검색 결과 -->
+			<div class="toon_search_list">
+				<div class="sch_tit">
+					‘강풀’ 검색결과 <span>8개</span>
+				</div>
+
+				<!-- 검색결과 없을 때 -->
+				<div class="sch_nolist">
+					검색된 작품이 없습니다.
+				</div>
+				<!-- //검색결과 없을 때 -->
+			</div>
+			<!-- //검색 결과 -->
+
+			<!-- 관련 올레마켓 서비스 20140512 2차 오픈 범위
+			<div class="search_recom_service">
+				<div class="tit">‘강풀’ <img src="img/search_tit.gif" alt="검색하신 분들이 많이 찾는 올레마켓 서비스" /></div>
+				<ul>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+					<li><a href="#">
+						<img src="img/temp/tmp_toon_recom.jpg" alt="개천고" class="thumb" />
+						<span class="name">개천고 개천고 개천고 개천고 개천고</span>
+						<span class="author">채준</span>
+					</a></li>
+				</ul>
+			</div>-->
+			<!-- //관련 올레마켓 서비스 -->
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right 20140718-->
+		<div class="layout_right">
+
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- 실시간 랭킹 20140703 수정 -->
+			<div class="m_weekly_ranking">
+				<div class="tit">
+					<img src="img/main_tit_rank.gif" alt="월간 랭킹" />
+				</div>
+				<ol class="list">
+					<!-- 1st list -->
+					<li class="first">
+						<a href="http://webtoon.olleh.com/main/times_list.kt?webtoonSeq=40" class="listA">
+							<div class="thumb">
+								<span class="order o01">1</span>
+								<img src="img/temp/thumb_01_140703.jpg" alt="썸툰 시즌2" class="thum01" />
+								<span class="bg_thum01"></span>
+							</div>
+							<div class="cont">
+								<div class="name">썸툰 시즌2</div>
+								<div class="cntEtc">
+									<span class="author">모히또모히칸</span>
+								</div>
+								<div class="viewDt">연재일 : 월 목</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>부러우면 지는거다! 매번 지면서 보는 썸툰~ 정주행 해도 안~~생겨요~~</span>
+						</div>
+					</li>
+					<!-- //1st list -->
+
+					<!-- 2nd list -->
+					<li>
+						<a href="http://webtoon.olleh.com/main/times_list.kt?webtoonSeq=11" class="listA">
+							<div class="thumb">
+								<span class="order o02">2</span>
+								<img src="img/temp/thumb_02_140703.jpg" alt="개천고" class="thum" />
+								<span class="bg_thum"></span>
+							</div>
+							<div class="cont">
+								<div class="name">개천고</div>
+								<div class="cntEtc">
+									<span class="author">채준</span>
+								</div>
+								<div class="viewDt">연재일 : 월 수 금</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>개천의 용이 될 것인가, 이무기가 될 것인가?</span>
+						</div>
+					</li>
+					<!-- //2nd list -->
+
+					<!-- 3rd list -->
+					<li>
+						<a href="http://webtoon.olleh.com/main/times_list.kt?webtoonSeq=28" class="listA">
+							<div class="thumb">
+								<span class="order o03">3</span>
+								<img src="img/temp/thumb_03_140703.jpg" alt="수상한 그녀의 밥상" class="thum" />
+								<span class="bg_thum"></span>
+							</div>
+							<div class="cont">
+								<div class="name">수상한 그녀의 밥상</div>
+								<div class="cntEtc">
+									<span class="author">두순</span>
+								</div>
+								<div class="viewDt">연재일 : 금</div>
+							</div>
+						</a>
+						<div class="story">
+							<span>수상한 그녀를 둘러싼 엇갈리는 삼각관계</span>
+						</div>
+					</li>
+					<!-- //3rd list -->
+				</ol>
+				<div class="more">
+					<a href="http://webtoon.olleh.com/ranking/monthList.kt">더보기</a>
+				</div>
+			</div>
+			<!-- //실시간 랭킹 20140703 수정-->
+
+			<!-- m_main_notice -->
+			<div class="m_main_notice">
+				<div class="tit"><img src="img/main_tit_notice.gif" alt="공지사항" /></div>
+				<ul>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+					<li><a href="#">공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다. 공지사항입니다. 공지사항이 들어갑니다.</a></li>
+				</ul>
+				<div class="more"><a href="#">더보기</a></div>
+			</div>
+			<!-- //m_main_notice -->
+
+			<!-- mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+			<div class="mytoon_quickbtn">
+				<a href="#" class="faq">FAQ 자주 묻는 질문</a>
+				<!--<a href="#" class="userguide">이용가이드</a> 삭제 -->
+				<a href="#" class="qna">1:1 문의</a>
+				<a href="#" class="app">APP 다운로드</a>
+			</div>
+			<!-- //mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+
+		</div>
+		<!-- //layout_right 20140718-->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

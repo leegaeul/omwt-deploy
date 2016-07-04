@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.orderbuy.persistence.BuyMapper">
+
+	<insert id="insertBuy"
+			parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain"
+			useGeneratedKeys="true"
+			keyProperty="buyseq">
+		INSERT INTO ow_buy (
+			prdhistoryseq
+			, buyfg
+			, buyid
+			, idfg
+			, buyamount
+			, buyblueamount
+			, blueprdname
+			, ownblueberry
+			, validblueamount
+			, invalidblueamount
+			, buydt
+			, regid
+			, regdt
+		) VALUES (
+			#{prdhistoryseq}
+			, #{buyfg}
+			, #{buyid}
+			, #{idfg}
+			, #{buyamount}
+			, #{buyblueamount}
+			, #{blueprdname}
+			, #{ownblueberry}
+			, #{validblueamount}
+			, #{invalidblueamount}
+			, #{buydt}
+			, #{regid}
+			, #{regdt}
+		);
+    </insert>
+    
+    <insert id="insertOtBuy"
+			parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain"
+			useGeneratedKeys="true"
+			keyProperty="buyseq">
+		INSERT INTO ow_buy (
+			prdhistoryseq
+			, buyfg
+			, buyid
+			, idfg
+			, buyamount
+			, buyblueamount
+			, buyraspamount
+			, blueprdname
+			, ownblueberry
+			, validblueamount
+			, invalidblueamount
+			, buydt
+			, regid
+			, regdt
+		) VALUES (
+			#{prdhistoryseq}
+			, #{buyfg}
+			, #{buyid}
+			, #{idfg}
+			, #{buyamount}
+			, #{buyblueamount}
+			, #{buyraspamount}
+			, #{blueprdname}
+			, #{ownblueberry}
+			, #{validblueamount}
+			, #{invalidblueamount}
+			, #{buydt}
+			, #{regid}
+			, #{regdt}
+		);
+    </insert>
+    
+     <select id="buySelectListCnt" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_buy buy
+			left join ow_prd_his ph on buy.prdhistoryseq = ph.prdhistoryseq
+			left join ow_webtoon wt on ph.webtoonseq = wt.webtoonseq
+		where buy.buyid = #{buyid}
+		and
+			buy.idfg = #{idfg}
+    	and 
+    		(ph.sellfg = 'sell' or ph.sellfg = 'sale' or ph.sellfg = 'promotion')
+		and
+			date_format(buy.buydt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')
+		and 
+			ifnull(buy.purchasefg, '') != 'mediapack'		
+		<if test="prdfg != null and prdfg != ''">
+			<if test="prdfg != 'webtoon' and prdfg != 'toon' and prdfg != 'novel'">
+        	and prdfg = #{prdfg}
+        	</if>
+        	<if test="prdfg == 'webtoon' or prdfg == 'toon' or prdfg == 'novel'">
+        	and (prdfg = 'times' or prdfg = 'webtoon' or prdfg = 'package')
+	        	<if test="prdfg == 'toon' or prdfg == 'novel'">
+	        	and wt.toonfg = #{prdfg}
+	        	</if>
+        	</if>
+        </if>
+	</select>
+	
+	<select id="berryuseSelectList" parameterType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain" resultType="com.olleh.webtoon.common.dao.orderbuy.domain.BuyDomain">
+		select
+			format(buy.buyamount, 0) as buyamount,
+			format(buy.buyblueamount, 0) as buyblueamount,
+			format(buy.buyraspamount, 0) as buyraspamount,
+			date_format(buy.buydt, '%Y.%m.%d %H:%i') buydt,
+			date_format(buy.buydt, '%Y.%m.%d') substrbuydt,
+			date_format(date_add(buy.buydt, interval +ph.prdterm day), '%Y.%m.%d') expiredt,
+			datediff(date_format(date_add(buy.buydt, interval +ph.prdterm day), '%Y.%m.%d'), curdate()) expired, 
+			ph.prdfg,
+			ph.prdterm,
+			ph.purchasefg,
+			IFNULL(ph.prdtypefg, '') AS prdtypefg, 
+			ifnull(tm.timestitle, '') timestitle,
+			ph.webtoonseq,
+			
+			case 
+				when ph.prdfg = 'package' then ph.stimesseq 
+		    	else ph.timesseq
+		    end as timesseq,
+		    
+			case 
+				when ph.prdfg = 'package' then ifnull(ptm.thumbpath, '') 
+		    	else ifnull(tm.thumbpath, '')
+		    end as tthumbpath,
+		    
+		    case 
+				when ph.prdfg = 'package' then ifnull(ptm.thumbpath1, ptm.thumbpath) 
+		    	else ifnull(tm.thumbpath1, tm.thumbpath)
+		    end as tthumbpath1,
+
+		    ph.webtoonseq,
+		    ifnull(wt.webtoonnm, '') webtoonnm,
+		    ifnull(wt.thumbpath1, wt.thumbpath1) as wthumbpath,
+		    wt.toonfg,
+		    wt.agefg,
+		    buy.buyfg,
+		    ph.thumbpath,
+        	ph.prdnm,
+        	ph.prdseq,
+        	ph.prdhistoryseq,
+        	ph.berryuseyn,
+        	ph.blueberryuseyn,
+        	ph.raspberryuseyn
+		from ow_buy buy
+			left join ow_prd_his ph on buy.prdhistoryseq = ph.prdhistoryseq
+			left join ow_webtoon wt on ph.webtoonseq = wt.webtoonseq
+			left join ow_times tm on ph.timesseq = tm.timesseq
+			left join ow_times ptm on ph.stimesseq = ptm.timesseq
+		where 
+			buy.buyid = #{buyid}
+		and
+			buy.idfg = #{idfg}
+    	and 
+    		(ph.sellfg = 'sell' or ph.sellfg = 'sale' or ph.sellfg = 'promotion')
+		and
+			date_format(buy.buydt,'%Y%m%d%') BETWEEN date_format(date_add(now(), interval -6 month), '%Y%m%d%') AND date_format(now(), '%Y%m%d%')
+		and 
+			ifnull(buy.purchasefg, '') != 'mediapack'	
+				
+		<if test="prdfg != null and prdfg != ''">
+			<if test="prdfg != 'webtoon' and prdfg != 'toon' and prdfg != 'novel'">
+        	and prdfg = #{prdfg} 
+        	</if>
+        	<if test="prdfg == 'webtoon' or prdfg == 'toon' or prdfg == 'novel'">
+        	and (prdfg = 'times' or prdfg = 'webtoon' or prdfg = 'package')
+	        	<if test="prdfg == 'toon' or prdfg == 'novel'">
+	        	and wt.toonfg = #{prdfg}
+	        	</if>
+        	</if>
+        </if>
+        
+		<if test="initialword != null and initialword == 'date'">
+        order by buy.buydt ${sort}
+        </if>
+		<if test="initialword != null and initialword == 'title'">
+        order by ph.prdnm ${sort}, wt.webtoonnm ${sort}, buy.buydt desc
+        </if>		 	 
+		limit 
+			#{startRowNo}, #{pageSize}
+    </select>
+    
+    <select id="selectBuyseq" parameterType="com.olleh.webtoon.common.dao.premium.domain.ProductAvailDomain" resultType="java.lang.Integer">
+    	select buyseq from ow_buy
+    	where
+    		buyid = #{buyid} and idfg = #{idfg}  
+    		and prdhistoryseq = #{prdhistoryseq} and buyfg = 'order'
+    	order by buyseq desc
+    	limit 1
+    </select>
+    
+    <update id="deleteBuy" parameterType="java.lang.Integer">
+    	UPDATE ow_buy SET buyfg = 'cancel'
+           WHERE buyseq = #{buyseq} 
+    </update>
+    
+</mapper>

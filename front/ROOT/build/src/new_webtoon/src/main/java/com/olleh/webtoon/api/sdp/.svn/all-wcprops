@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp
+END
+SDPRequest.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPRequest.java
+END
+SDPApiService.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPApiService.java
+END
+SDPConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPConstants.java
+END
+SDPUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPUtil.java
+END
+SDPClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPClient.java
+END
+SDPResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPResponse.java
+END
+SDPApiCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/api/sdp/SDPApiCode.java
+END

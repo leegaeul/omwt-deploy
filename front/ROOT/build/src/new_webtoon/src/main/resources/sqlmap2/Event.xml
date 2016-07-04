@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.applay.persistence.EventMapper">
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+	
+	<select id="eventSelectListCnt" parameterType="com.olleh.webtoon.common.dao.applay.domain.EventDomain" resultType="java.lang.Integer">
+		select
+			count(*)
+		from
+			ow_event
+		where
+		<if test='mobileyn == null or mobileyn == "N"'>
+		<![CDATA[
+			displayyn = 'Y' 
+			and((directdisplayyn = 'N' and (date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(enddt, '%Y%m%d')))
+			or (directdisplayyn = 'Y' and (date_format(now(), '%Y%m%d') <= date_format(directdisplayenddt, '%Y%m%d'))))
+		]]>
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+		<![CDATA[
+			mdisplayyn = 'Y' 
+			and((mdirectdisplayyn = 'N' and (date_format(now(), '%Y%m%d') >= date_format(mstartdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(menddt, '%Y%m%d')))
+			or (mdirectdisplayyn = 'Y' and (date_format(now(), '%Y%m%d') <= date_format(mdirectdisplayenddt, '%Y%m%d'))))
+		]]>
+		</if>
+	</select>
+	
+	<select id="eventSelectList" parameterType="com.olleh.webtoon.common.dao.applay.domain.EventDomain"  resultType="com.olleh.webtoon.common.dao.applay.domain.EventDomain">
+	
+		select
+			eventseq,
+			thumbpath,
+			mthumbpath,
+			title,
+			subtitle,
+			regfg,
+			popyn,
+			mpopyn,
+			eventyn,
+			displayfg,
+			contentsurl,
+			mcontentsurl,
+			date_format(eventstartdt, '%Y.%m.%d') eventstartdt,
+			date_format(eventenddt, '%Y.%m.%d') eventenddt,
+		<![CDATA[ 
+			case 
+	          when (date_format(NOW(), '%Y%m%d') > eventenddt) then 'Y'
+	        else 'N'
+	        end as eventendyn
+	     ]]>
+		from
+			ow_event
+		where
+		<if test='mobileyn == null or mobileyn == "N"'>
+		<![CDATA[
+			displayyn = 'Y' 
+			and((directdisplayyn = 'N' and (date_format(now(), '%Y%m%d') >= date_format(startdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(enddt, '%Y%m%d')))
+			or (directdisplayyn = 'Y' and (date_format(now(), '%Y%m%d') <= date_format(directdisplayenddt, '%Y%m%d'))))
+		]]>
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+		<![CDATA[
+			mdisplayyn = 'Y' 
+			and((mdirectdisplayyn = 'N' and (date_format(now(), '%Y%m%d') >= date_format(mstartdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(menddt, '%Y%m%d')))
+			or (mdirectdisplayyn = 'Y' and (date_format(now(), '%Y%m%d') <= date_format(mdirectdisplayenddt, '%Y%m%d'))))
+		]]>
+		</if>
+		order by
+			displayorder asc, eventseq desc
+		limit 
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="eventSelectDetail" parameterType="com.olleh.webtoon.common.dao.applay.domain.EventDomain"  resultType="com.olleh.webtoon.common.dao.applay.domain.EventDomain">
+		select
+			eventseq,
+			thumbpath,
+			mthumbpath,
+			title,
+			subtitle,
+			regfg,
+			popyn,
+			mpopyn,
+			urllink,
+			contentsurl,
+			mcontentsurl,
+			contents,
+			date_format(eventstartdt, '%Y.%m.%d') eventstartdt,
+			date_format(eventenddt, '%Y.%m.%d') eventenddt
+		from 
+			ow_event
+		where
+			eventseq = #{eventseq}
+	</select>
+	
+	<select id="eventSelectImageList" parameterType="java.lang.Integer"  resultType="com.olleh.webtoon.common.dao.applay.domain.EventImageDomain">
+		select
+			eventseq,
+			displayorder,
+			imagesize,
+			imagepath
+		from 
+			ow_event_image
+		where
+			eventseq = #{eventseq}
+		order by 
+			displayorder asc, eventseq desc
+	</select>
+	
+	<update id="readCntUpdate" parameterType="java.lang.Integer">
+        update 
+        	ow_event 
+        set 
+        	readcnt = readcnt + 1
+        where 
+        	eventseq = #{eventseq}
+    </update>
+    
+    
+    <insert id="insertSns" parameterType="com.olleh.webtoon.common.dao.applay.domain.SnsDomain">
+    	insert into ow_sns (
+             articleseq,
+             articlefg,
+             snsfg,
+             regid,
+             idfg,
+             regdt)
+		values (
+			#{articleseq},
+	        #{articlefg},
+	        #{snsfg},
+	        #{regid},
+	        #{idfg},
+	        #{regdt})
+    </insert>
+    
+    <select id="rnbEventSelect" resultType="com.olleh.webtoon.common.dao.applay.domain.EventDomain">
+		SELECT
+			event.eventseq,
+			event.thumbpath,
+			event.title,
+			event.subtitle,
+			event.regfg,
+			event.popyn,
+			event.mpopyn,
+			event.urllink,
+			event.contentsurl,
+			event.mcontentsurl
+		from
+			ow_rnb_app rnb
+		left join 
+			ow_event event on rnb.appseq = event.eventseq
+		where
+		<![CDATA[
+			rnb.rnbfg = 'event' and 
+			(
+				rnb.displayyn = 'Y' 
+				and ((rnb.directdisplayyn = 'N' and (	date_format(now(), '%Y%m%d') >= date_format(rnb.startdt, '%Y%m%d') and date_format(now(), '%Y%m%d') <= date_format(rnb.enddt, '%Y%m%d')	))
+				or  (rnb.directdisplayyn = 'Y' and date_format(now(), '%Y%m%d') <= date_format(rnb.directdisplayenddt, '%Y%m%d')))
+			) 
+		]]>
+		order by 
+			rnb.rnbappseq DESC
+		limit
+			0, 1
+	</select>
+	
+</mapper>

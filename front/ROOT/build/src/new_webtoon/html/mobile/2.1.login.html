@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js" type="text/javascript"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" >
+$(document).ready(function(){
+	$('#agree_chk').ezMark();//체크박스 이미지처리
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<nav class="titleArea">
+		<a href="#"><img src="img/btn_pre_top.png" alt=""/> 이전</a>
+		<h2>로그인</h2> 
+	</nav>
+</header>
+
+<!--본문 ~ 20141127 전체적으로 수정-->
+<article class="contents member">	
+	<div class="loginbox">
+		<h3><img src="img/bl_red_arrow.png"> 올레마켓 웹툰<strong>아이디(이메일)</strong>로 로그인 하기</h3>		
+		<div class="box">
+			<ul>
+				<li class="id"><input type="text" name="" value="" placeholder="이메일을 입력하세요"/></li>
+				<li class="pass"><input type="password" name="" value="" placeholder="비밀번호를 입력하세요"/></li>
+				<li class="check"><label><input type="checkbox" id="agree_chk"/> 2시간 미사용 시 자동 로그아웃</label></li>
+				<li class="txt btm">* 보안을 위해 자동로그아웃 기능을 설정하실 수 있으며 별도 설정이 없으신 경우엔 로그인 상태가 유지됩니다.</li>
+			</ul>
+		</div>
+	</div>
+
+	<!--captcha_box ~ 로그인 5회 실패시 노출 20141128-->
+	<div class="captcha_box">
+		<!--<div class="captcha_tit">
+			자동 입력 방지 문자
+		</div>
+
+		<div class="captcha_input mb15">
+			<div class="row thumb">
+				<div class="left"><img src="img/temp/captcha.png" alt="" /></div>
+				<div class="right"><a href="#" class="refresh_btn">새로고침</a></div>
+			</div>
+			<div class="row thumb_etc">
+				<div class="left"><input type="text" /></div>
+				<div class="right colorRd">불일치</div>
+			</div>
+		</div>-->
+
+		<div class="captcha_btn">
+			<a href="#" class="btn_small red">로그인</a>
+		</div>
+	</div>
+	<!--//captcha_box-->
+
+	<!--<div class="joinbox">
+		<ul>
+			<li>
+				<h4>아직 올레마켓 웹툰 회원이 아니세요?</h4>		
+				<span><a href="#">오픈 ID로 회원가입</a></span>
+			</li>
+			<li>
+				<h4>아이디/비밀번호를 잊으셨나요?</h4>
+				<span><a href="#">아이디/비밀번호 찾기</a></span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="olleh_loginbox">
+		<h3>KT회원이 아니어도 누구나 올레닷컴 ID로 로그인 및 회원가입 하실 수 있습니다.</h3>		
+		<a href="#">올레 ID<br/> 로그인</a>
+	</div>-->
+
+	<!--20140611 추가-->
+	<div class="joinbox2">
+		<ul>
+			<li><a href="#">비밀번호 찾기</a>	</li>
+			<li><a href="#">회원가입</a></li>
+		</ul>
+	</div>
+
+	<div class="olleh_loginbox2">
+		<span><a href="#">olleh 로그인</a></span>
+	</div>
+	<!--//20140611 추가-->
+
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> © KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기</a>
+</footer>
+
+ 
+
+</body>
+</html>

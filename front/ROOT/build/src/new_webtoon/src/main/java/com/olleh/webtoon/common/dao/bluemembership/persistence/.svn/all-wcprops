@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence
+END
+BMJoinFailMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMJoinFailMapper.java
+END
+BMOrderMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMOrderMapper.java
+END
+BMPaymentMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMPaymentMapper.java
+END
+BMPrdOptionMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMPrdOptionMapper.java
+END
+BMJoinMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMJoinMapper.java
+END
+BMPrdMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMPrdMapper.java
+END
+BMJoinTermMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/persistence/BMJoinTermMapper.java
+END

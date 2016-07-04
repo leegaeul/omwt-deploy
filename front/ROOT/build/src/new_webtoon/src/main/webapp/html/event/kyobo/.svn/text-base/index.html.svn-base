@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+       html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b,u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th,td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video 
+	   {
+	      margin: 0;
+	      padding: 0;
+	      border: 0;
+	      vertical-align: middle;
+	      list-style:none;
+	   }
+	   .event{display:block; overflow:hidden; width:980px; height:2860px; background:url('/html/event/kyobo/images/kyobo_web.jpg') 
+	   no-repeat 0 0; margin:0 auto;}
+	   .event .sec, .sec2, .sec3{position:relative;}
+	   .event .sec a, .sec2 a, .sec3 a{position:absolute; text-indent:-9999px;}	   
+	   .event .sec{margin-top:751px; height:606px}
+	   .event .sec2{height:549px; margin-top:61px}
+	   .event .sec a, .sec2 a{display:block; left:320px; bottom:52px; width:343px; height:63px;}
+	   .event .sec3{height:776px; margin-top:60px}
+	   .event .sec3 a{left:520px; width:150px; height:50px;}
+	   .event .sec3 .link1{top:242px;}
+	   .event .sec3 .link2{top:392px;}
+    </style>
+</head>
+<body>
+	<div class="event">
+    	  <div class="sec">
+        	<a href="http://www.kyobobook.co.kr/event/eventViewByPid.laf?eventPid=28007&classGb=KOR&PRE=Y" target="_blank">교보문고 온라인으로 가기</a>
+        </div>
+    	<div class="sec2">
+        	<a href="http://webtoon.olleh.com/eventpromotion/contestEvent.kt" target="_blank">제 2회 올레마켓 공모전</a>
+        </div>
+    	<div class="sec3">
+        	<a href="http://image.kyobobook.co.kr/ink/images/storeinfo/img_location2.jpg" target="_blank" class="link1">위치 보러가기</a>
+	    	<a href="http://image.kyobobook.co.kr/ink/images/storeinfo/img_location3.jpg" target="_blank" class="link2">위치보러가기</a>
+        </div>    
+	</div>
+</body>
+</html>

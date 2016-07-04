@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+/* COMMON */
+body,	p,	ul,	ol,	li,	dl,	dt,	dd,	form,	table,	th,	td,	fieldset,	input,	textarea,	select,	button,	h1,	h2,	h3,	h4,	h5,	h6,	pre	{margin:0; padding:0;}
+body,	input,	textarea,	select,	button	{color:#666; font-size:12px; line-height:16px; font-family:Dotum,돋움, Arial, Apple-Gothic, Gulim,굴림, Helvetica75, sans-serif;}
+body	{background-color:#fff;}
+fieldset,	img	{border:0;}
+table	{border-collapse:collapse;}
+legend,	caption	{position:absolute; overflow:hidden; visibility:hidden; width:0; height:0; font-size:0; line-height:0;}
+ul,	ol	{list-style:none;}
+a	{color:#666; text-decoration:none;}
+em	{font-style:normal;}
+
+/* coding_left */
+#content_guide_list	{}
+#content_guide_list h1	{margin-bottom:10px; padding:10px; background:none; border-bottom:1px solid #E9E9E9; color:#444; font-size:16px;}
+#content_guide_list h2	{padding:0 0 0 10px; font-size:12px;}
+#content_guide_list ol	{margin-bottom:10px; padding-left:10px;}
+#content_guide_list ol li	{list-style:decimal; list-style-position: inside; line-height:14px;}
+#content_guide_list ol li span	{margin-left: -5px; font-size:11px;}
+
+.dtree 	{padding-left:5px; color:#999; font-size:11px; white-space:nowrap;}
+.dtree .area_btn	{margin:25px 0 -20px; text-align:right;}
+.dtree img	{margin-top:-2px; vertical-align:middle;}
+.dtree a	{color:#999; text-decoration:none;}
+.dtree a.node,	.dtree a.nodeSel	{padding: 1px 2px 1px 2px; white-space:nowrap;}
+.dtree a.nodeSel	{background-color: #f0ff00;}
+.dtree .clip	{overflow: hidden;}
+
+.txt_ing	{color:#ccc;}
+.txt_ask	{color:#37e;}
+.txt_script	{color:#75e;}
+.txt_confirm	{color:#333;}
+.txt_modify	{color:#f55;}
+
+/* coding_guide */
+#content_guide	{padding:0 20px 10px 30px;}
+#content_guide h1.title	{margin:0 -20px; padding:5px 0 10px 5px; background:#58626F; color:white; font-size:18px;}
+#content_guide h2.title	{margin:30px 0 10px -10px; padding:0; color:#444; font-size:16px; line-height:20px;}
+#content_guide h3.title	{margin:20px 0 5px; padding:0; font-size:14px; line-height:16px;}
+#content_guide h4.title,	#content_guide .view	{margin:10px 0 5px 5px; padding:0; font-size:12px; line-height:16px;}
+#content_guide h5.title	{font-size:11px; line-height:14px;}
+.area_con,	.area_con#content	{overflow:auto; margin:0 0 10px; padding:9px; border:1px dashed #bbb; _zoom:1;}
+.area_view	{overflow:auto; margin:0 0 10px; padding:15px 10px; background-color:#999; color:#fff; font:11px Tahoma; line-height:14px;}
+.area_con .txt_gt	{color:#4a0;}
+.area_view em	{color:#cd6;}
+.area_info	{margin-bottom:5px;}

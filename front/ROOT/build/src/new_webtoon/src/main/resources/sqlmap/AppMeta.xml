@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.api.persistence.AppMetaMapper">		
+	<select id="selectAppMeta"
+	parameterType="com.olleh.webtoon.common.dao.api.domain.AppMetaDomain" 
+	resultType="com.olleh.webtoon.common.dao.api.domain.AppMetaDomain">
+		SELECT 
+			*
+		FROM 
+			ow_appmeta
+		WHERE
+			os = #{os}
+			and version = #{version}
+		<if test="marketfg != null and marketfg != ''">
+			and marketfg = #{marketfg}
+		</if>
+		ORDER BY 
+			metaseq DESC
+		LIMIT
+			1
+		;
+	</select>
+</mapper>

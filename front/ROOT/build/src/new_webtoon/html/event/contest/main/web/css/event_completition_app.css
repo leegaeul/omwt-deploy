@@ -1,0 +1,105 @@
+@charset "utf-8";
+.completition_app_wrap{width:980px;margin:0 auto;z-index:0;position:relative}
+
+/* 네비게이션 */
+.navigation{background:url(../images/completition_nav_bg.png) repeat 0 0;height:65px;width:980px;position:fixed;z-index:10}
+.navigation ul{width:471px;margin:17px auto 0}
+.navigation ul:after{display:block;clear:both;content:""}
+.navigation ul li{float:left;margin-right:21px}
+.navigation ul .last_nav{margin:0}
+.navigation ul li a{display:block;width:102px;height:30px;overflow:hidden}
+.navigation ul li a.active img{margin-top:-30px}
+.navigation .d_day_box{position:absolute;top:10px;right:30px;background:url(../images/completition_nav_dday_bg.png) no-repeat 0 0;width:53px;height:45px}
+.navigation .d_day_box p{font-weight:bold;color:#ff4921;font-size:16px;font-family:'맑은 고딕', Malgun Gothic;margin:15px 0 0 8px}
+
+/* 헬프바 */
+.help_bar{position:fixed;top:700px;left:50%;margin-left:425px;width:65px;overflow:hidden;height:39px;z-index:10}
+.help_bar ul{width:242px}
+.help_bar ul:after{display:block;clear:both;content:""}
+.help_bar ul li{float:left}
+
+/* 작가 심사단 */
+.dream_challenge_wrap .audit_wrap ul{margin:0 50px;position:relative}
+.dream_challenge_wrap .audit_wrap ul:after{display:block;clear:both;content:""}
+.dream_challenge_wrap .audit_wrap ul li{float:left}
+.dream_challenge_wrap .audit_wrap ul li .audit_comment{display:none;position:absolute}
+.dream_challenge_wrap .audit_wrap ul li.active .audit_comment{display:block}
+.dream_challenge_wrap .audit_wrap ul .audit01 .audit_comment{top:0;left:293px}
+.dream_challenge_wrap .audit_wrap ul .audit03 .audit_comment{top:0;right:294px}
+.dream_challenge_wrap .audit_wrap ul .audit04 .audit_comment{bottom:0;left:293px}
+.dream_challenge_wrap .audit_wrap ul .audit05 .audit_comment{bottom:0;right:0}
+
+/* 응모 요건 및 응모하기 */
+.dream_challenge_wrap .needs_app_wrap .app_area{position:relative}
+.dream_challenge_wrap .needs_app_wrap .app_area a{position:absolute;top:100px;right:108px}
+
+/* 꿈의 실현 */
+.dream_realize_wrap{position:relative}
+.dream_realize_wrap a{position:absolute;top:102px;right:242px}
+
+/* 꿈 나누기 */
+.dream_div_wrap{margin-bottom:70px}
+.dream_div_wrap .step_list{overflow:hidden;margin:0 0 27px 70px}
+.dream_div_wrap .step_list > li{float:left;position:relative}
+.dream_div_wrap .step_list > li .phone_input{border:1px solid #e0e0e0;position:absolute;top:137px;left:51px;font-size:12px;height:20px;line-height:12px;padding:5px;width:148px;text-align:left;color:#858585}
+.dream_div_wrap .step_list > li .comment_txt{border:1px solid #e0e0e0;position:absolute;top:110px;left:19px;width:210px;height:50px;padding:5px;overflow-y:auto}
+.dream_div_wrap .step_list > li .radio_list{position:absolute;top:132px;left:46px}
+.dream_div_wrap .step_list > li .radio_list:after{display:block;content:'';clear:both}
+.dream_div_wrap .step_list > li .radio_list li{float:left;margin-right:28px;position:relative;width:70px}
+.dream_div_wrap .step_list > li .radio_list .last_list{margin:0;width:89px}
+.dream_div_wrap .step_list > li .radio_list li label{position:relative;float:left;font-size:14px;font-weight:normal;height:43px;line-height:14px;padding-left:26px;cursor:pointer;z-index:2}
+.dream_div_wrap .step_list > li .radio_list li .design_radio{background:url(../images/completition_radio.png) no-repeat 0 0;height:20px;width:20px;position:absolute;top:11px;left:0;cursor:pointer;z-index:1;display:block}
+.dream_div_wrap .step_list > li .radio_list .select .design_radio{background-position:0 -30px}
+
+.dream_div_wrap .term_agree_box{overflow:hidden;margin:0 0 30px 70px}
+.dream_div_wrap .term_agree_box ul{background:url(../images/completition_agree_bg.jpg) no-repeat 0 0;width:813px;height:146px;;padding:29px 0 0 27px}
+.dream_div_wrap .term_agree_box ul li{position:relative;width:382px;float:left;margin-right:23px}
+.dream_div_wrap .term_agree_box ul li .term_box1 dt{display:block;height:34px}
+.dream_div_wrap .term_agree_box ul li .term_box1 dt input{position:absolute;left:-9999px}
+.dream_div_wrap .term_agree_box ul li .term_box1 dt label{position:relative;font-size:14px;font-weight:normal;height:36px;line-height:14px;padding-left:26px;cursor:pointer;z-index:2}
+.dream_div_wrap .term_agree_box ul li .term_box1 dt .design_radio{background:url(../images/completition_check.png) no-repeat 0 0;height:25px;width:24px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block}
+.dream_div_wrap .term_agree_box ul li .term_box1 dt.select .design_radio{background-position:0 -30px}
+.dream_div_wrap .term_agree_box ul li .term_box1 .preview_txt{background-color:#fff;font-size:12px;color:#555555;padding:14px 15px;line-height:19px;text-align:left}
+.dream_div_wrap .term_agree_box ul li .term_box1 .all_view{position:absolute;top:3px;right:0}
+.dream_div_wrap .term_agree_box ul li .term_box2 dt{display:block;height:34px}
+.dream_div_wrap .term_agree_box ul li .term_box2 dt input{position:absolute;left:-9999px}
+.dream_div_wrap .term_agree_box ul li .term_box2 dt label{position:relative;font-size:14px;font-weight:normal;height:36px;line-height:14px;padding-left:26px;cursor:pointer;z-index:2}
+.dream_div_wrap .term_agree_box ul li .term_box2 dt .design_radio{background:url(../images/completition_check.png) no-repeat 0 0;height:25px;width:24px;position:absolute;top:0;left:0;cursor:pointer;z-index:1;display:block}
+.dream_div_wrap .term_agree_box ul li .term_box2 dt.select .design_radio{background-position:0 -30px}
+.dream_div_wrap .term_agree_box ul li .term_box2 .preview_txt{background-color:#fff;font-size:12px;color:#555555;padding:14px 15px;line-height:19px}
+.dream_div_wrap .term_agree_box ul li .term_box2 .all_view{position:absolute;top:3px;right:0}
+.dream_div_wrap .btn_rumors{display:block;margin:0 auto;width:395px;margin-bottom:42px}
+
+.dream_div_wrap .cheer_post_board{margin:0 70px}
+.dream_div_wrap .cheer_post_board .board_title{border-bottom:1px solid #cccccc}
+.dream_div_wrap .cheer_post_board .board_list li{border-bottom:1px solid #cccccc}
+.dream_div_wrap .cheer_post_board .board_list li dl{overflow:hidden}
+.dream_div_wrap .cheer_post_board .board_list li dl dt{float:left;padding:14px 24px}
+.dream_div_wrap .cheer_post_board .board_list li dl dd{float:left;padding:16px}
+.dream_div_wrap .cheer_post_board .board_list li dl dd .comment_top{padding-bottom:9px}
+.dream_div_wrap .cheer_post_board .board_list li dl dd .comment_top .name{font-size:12px;color:#444444}
+.dream_div_wrap .cheer_post_board .board_list li dl dd .comment_top .date{font-size:12px;color:#888888}
+.dream_div_wrap .cheer_post_board .board_list li dl dd .comment_txt{font-size:12px;color:#444444}
+
+/* paging */
+.dream_div_wrap .paging{overflow:hidden;text-align:center;margin-top:30px}
+.dream_div_wrap .paging li{vertical-align:top;display:inline-block;*display:inline;*zoom:1}
+.dream_div_wrap .paging .first a{margin-right:0}
+.dream_div_wrap .paging .end a{margin-left:0}
+.dream_div_wrap .paging .prev a{margin-right:4px}
+.dream_div_wrap .paging .next a{margin-left:4px}
+.dream_div_wrap .paging li a{display:block;margin:0;padding:0}
+.dream_div_wrap .paging .page_count a{font-size:12px;color:#444444;font-weight:bold;text-decoration:none;display:block;;margin:0;padding:0;width:30px;height:24px;line-height:24px;margin:0 1px}
+.dream_div_wrap .paging li.on a{color:#f14b59;border:1px solid #e8e8e8}
+
+/* layer */
+.layer_first{width:610px;height:365px;position:absolute;top:80%;left:185px;z-index:999;display:none}
+.layer_first .layer_top{width:100%;height:37px;background-color:#2f2f2f;position:relative}
+.layer_first .layer_top .layer_title{padding:7px 0 0 15px;display:block}
+.layer_first .layer_top .layer_top_btn{position:absolute;top:11px;right:16px}
+.layer_first .layer_content{border-width:0 1px 1px 1px;border-style:solid;border-color:#2f2f2f;background-color:#fff;padding:30px 24px}
+.layer_first .layer_content .layer_sub_title{font-size:16px;color:#f14b59;padding:0 0 20px 8px}
+.layer_first .layer_content .layer_txt_area{border:1px solid #dfdfdf;height:130px;overflow-y:auto;margin-bottom:20px;font-size:12px;padding:25px 15px}
+.layer_first .layer_content .layer_txt_area .txt_title{font-weight:bold;color:#444444;padding-bottom:5px}
+.layer_first .layer_content .layer_txt_area p{line-height:20px}
+.layer_first .layer_content .btn_layer_close{width:109px;margin:0 auto;display:block}

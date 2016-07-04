@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<![endif]-->
+<script src="common/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="common/js/html5shiv.js" type="text/javascript"></script>
+<script src="common/js/placeholder-uncompressed.js" type="text/javascript"></script>
+<![endif]-->
+<script src="common/js/jquery.ezmark.js" type="text/javascript"></script><!-- jquery.ezmark.js -->
+<script src="common/js/common.js" type="text/javascript"></script>
+<link href="common/css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="common/css/event.css" rel="stylesheet" type="text/css"/> <!-- 20140807 이벤트용 css 추가 -->
+<script type="text/javascript" >
+$(document).ready(function(){
+	$('.ev_select input').ezMark();//checkbox 이미지처리
+	$('.query_kt .one select').styledSelect( {innerClass:'select_add2'} ); //셀렉트바
+	$('.ev_ruleBox .more_rule').toggle(//약관 더보기 토글
+			function(){
+				$(this).parent().find(".text").height(100+"%");
+				$(this).find("span").html("닫기");
+				$(this).find("img").attr("src", $(this).find("img").attr("src").replace("bl_down.png","bl_up.png"));//
+			},
+			function(){
+				$(this).parent().find(".text").height(45);
+				$(this).find("span").html("펼쳐보기");
+				$(this).find("img").attr("src", $(this).find("img").attr("src").replace("bl_up.png","bl_down.png"));//
+			}
+	);
+});
+</script>
+</head>
+<body>
+
+<header>
+	<div class="global">
+		<h1><a href="#"><img src="img/logo_top.png" alt="올레마켓 웹툰"/></a><img src="img/special_logo.png" alt="스페셜 로고"/></h1>
+		<ul>
+			<!--20141017-->
+			<li class="blue"><a href="#"><img src="img/icn_blue_n.png" alt="blue membership"/></a></li><!--블루멤버십 비가입자-->
+			<!--<li class="blue"><a href="#"><img src="img/icn_blue_y.png" alt="blue membership"/></a></li>블루멤버십 가입자-->
+			<!--//20141017-->
+			<li><a href="#"><img src="img/icn_my.png" alt="my"/></a></li>
+			<li><a href="#"><img src="img/icn_search.png" alt="search"/></a></li>
+			<li class="bery"><a href="#"><img src="img/icn_bery.png" alt="search"/></a></li><!-- 20140715 bery추가 -->
+		</ul>	
+	</div>
+	<!-- 20140715 네비수정-->
+	<nav class="navi">
+		<ul>
+			<li class="toon"><a href="#">Toon</a></li>
+			<li class="premium"><a href="#" class="on">Premium</a></li>
+			<li class="applay"><a href="#">ApPlay</a></li>
+			<li class="yoyo"><a href="#">Yoyozine</a></li>
+			<li class="yoshop"><a href="#">Shop</a></li>
+		</ul>		
+	</nav>
+	<!--// 20140715 네비수정-->
+	<div class="ap_top_title">
+		<a href="#"><img src="img/bl_btn_pre.png" alt=""/> 이전</a>
+		<h2>홀딱 반한 아이스크림 이벤트</h2> 		
+	</div>
+</header>
+
+<!--본문-->
+<article class="contents">	
+	<!-- 20140807 이벤트 -->
+	<section class="eventArea">
+		<div class="tab">
+			<img src="img/event/ev0807_tab01.jpg" alt=""/>
+			<a href="13.1.2.ev0807.html" class="tab2">2. 소문내기</a>
+		</div>
+		<div class="ev_pic one"><img src="img/event/ev0807_01.jpg" alt=""/></div>
+		<div class="ev_pic two">
+			<img src="img/event/ev0807_02.jpg" alt=""/>
+			<a href="#" class="btn_small">당첨자 보기</a>
+		</div>
+		<div class="inquery_contct">
+			<div class="query_kt">
+				<ul class="phone">
+					<li class="tl">휴대폰 번호</li>
+					<li class="one">
+						<span class="bd_inbox">
+							<select>
+								<option>010</option>
+							</select>						
+						</span>
+						<span class="sign">-</span>
+					</li>
+					<li class="two">
+						<span class="bd_inbox"><input type="text"></span>
+						<span class="sign">-</span>
+					</li>
+					<li class="three">
+						<span class="bd_inbox"><input type="text"></span>
+					</li>
+				</ul>
+				<ul class="certify">
+					<li class="tl">인증 번호</li>
+					<li class="one">
+						<span class="bd_inbox"><input type="text"></span>
+						<span class="bd_btn">
+							<a href="#" class="btn_small ww">인증번호 받기</a>
+							<!--<a href="#" class="btn_small ww">재전송</a>-->
+						</span>
+					</li>
+				</ul>
+				<span class="txt_timer">(2분59초)</span>
+				<div class="btn_area">
+					<a href="#"  class="btn_small red">응모하기</a>
+				</div>
+			</div>
+			<span class="thumimg"><img src="img/event/ev0807_pic01.jpg" alt=""/></span>
+		</div>
+		<div class="ev_agreeBox">
+			<div class="ev_select first">
+				<p><label><input type="checkbox"/> <strong>개인정보 수집,활용에 대한 동의</strong>에 동의합니다.</label></p>
+			</div>
+			<div class="ev_ruleBox">
+				<div class="text">
+					<h3>개인정보 수집, 활용에 대한 동의 </h3>
+					<p>고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등 에 관한 법률'에 따라 kt가 수집, 활용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다. 입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 활용되지 않습니다.</p>
+					<ul>
+						<li>
+							1) 개인정보 수집 및 이용목적
+							<dl>
+								<dd>가. 이벤트 대상 여부 및 본인 확인, 경품 배송</dd>
+							</dl>
+						</li>
+						<li>
+							2) 수집하는 개인정보 항목
+							<dl>
+								<dd>가. 이벤트 응모자의 핸드폰 번호</dd>
+								<dd>나. 이벤트 응모자의 아이디</dd>
+							</dl>
+						</li>
+						<li>
+							3) 개인정보 보유 및 이용기간<br/>
+							- 당첨자 발표 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)
+						</li>
+						<li>4) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다.	</li>
+					</ul>
+				</div>
+				<a href="#" class="more_rule"><span>펼쳐보기</span> <img src="img/bl_down.png" alt=""/></a>	
+			</div>
+			<div class="ev_select">
+				<p><label><input type="checkbox"/> 이벤트 참여자의 <strong>개인정보 수집 및 위탁업무</strong>에 동의합니다.</label></p>
+			</div>
+			<div class="ev_ruleBox">
+				<div class="text">
+					<h3>개인정보 취급 위탁 동의</h3>
+					<p>회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+					<ul>
+						<li>1) 개인정보 취급위탁을 받는 자<br/>
+							- 업체명 : (주)케이티하이텔<br/>
+							- 문의 : 올레마켓 웹툰 이벤트 담당자 (02) 02-3289-2414 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외) 
+						</li>
+						<li>
+							2) 위탁목적<br/>
+							- 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송
+						</li>
+						<li>
+							3) 위탁범위<br/>
+							- 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보
+						</li>
+						<li>
+							4) 위탁기간<br/>
+							- 이벤트 종료 후 10일 이내 폐기
+						</li>
+					</ul>
+				</div>
+				<a href="#" class="more_rule"><span>펼쳐보기</span> <img src="img/bl_down.png" alt=""/></a>	
+			</div>
+		</div>
+		<div class="ev_pic three"><img src="img/event/ev0807_03.jpg" alt=""/></div>
+		<!--공유하기-->
+		<div class="view_cont sns">
+			<h3>공유하기</h3>
+			<div class="share_link">
+				<a href="#" class="icn_fadebook"><img src="img/icn_fadebook.png" alt=""/></a>
+				<a href="#" class="icn_twiter"><img src="img/icn_twiter.png" alt=""/></a>
+				<a href="#" class="icn_line"><img src="img/icn_line.png" alt=""/></a>
+				<a href="#" class="icn_kakao"><img src="img/icn_kakao.png" alt=""/></a>
+				<a href="#" class="icn_kakaostory"><img src="img/icn_kakaostory.png" alt=""/></a>
+				<a href="#" class="icn_band"><img src="img/icn_band.png" alt=""/></a>
+				<a href="#" class="icn_instar"><img src="img/icn_instar.png" alt=""/></a>
+				<a href="#" class="url_copy">URL 복사</a>
+			</div>
+		</div>
+		<!--//공유하기-->
+	</section>
+	<!--// 20140807 이벤트 -->
+</article>
+<!--//본문-->
+
+<footer class="footer">
+	<h2 class="caption">사이트 정보</h2>
+	<ul class="footer_menu">
+		<li class="customer"><a href="#">고객센터</a></li>
+		<li class="login"><a href="#">로그인</a></li>
+		<li class="join"><a href="#">회원가입</a></li>
+	</ul>
+	<!--20140522 추가/수정-->
+	<ul class="signature">
+		<li><a href="#">이용약관</a></li>
+		<li><a href="#">개인정보 보호방침</a></li>
+		<li><span> &copy; KT Corp.</span></li>
+	</ul>
+	<a href="#" class="comInfo">사업자 정보보기 <img src="img/bl_cominfo.png" alt=""/></a>
+	<div class="comInfo_txt">
+		(주)케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945<br/>
+		통신판매업신고 : 2002-경기성남-0048 · Tel 국번없이 100<br/>
+		463-711 경기도 성남시 분당구 불정로 90 (정자동 206번지)
+	</div>
+	<!--//20140522 추가/수정-->
+</footer>
+
+<!--20140522-->
+<div class="bottom_bnrArea">
+	<a href="#" class="bt_list_bnr">
+		<img src="img/icn_market_app.png" alt=""/>
+		<span>올레마켓 웹툰 <strong>홈화면에 바로가기 추가</strong></span>
+	</a>
+</div>
+<!--//20140522-->
+
+ 
+
+</body>
+</html>

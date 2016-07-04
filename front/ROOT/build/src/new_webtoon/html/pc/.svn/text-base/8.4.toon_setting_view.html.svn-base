@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### header ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a></h1>
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+	</div>
+	<!-- ### //header ### -->
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+		<!-- 본문영역 -->
+		
+		<!-- layout_left -->
+		<div class="layout_left">
+
+			<!-- mytoon 상단영역 20141110-->
+			<div class="mytoon_com_top mytoon_com_top2nd">
+				<div class="tit">
+					<img src="img/mytoon_tit.gif" alt="MY TOON" />
+					<a href="#" class="bt_mytoon_setting">설정</a>
+				</div>
+				<ul class="tab">
+					<li class="favor"><a href="#"><span>즐겨찾기</span></a></li>
+					<li class="bookmark"><a href="#"><span>책갈피</span></a></li>
+					<li class="recent"><a href="#"><span>최근 본 작품</span></a></li><!--20141124 텍스트 수정-->
+					<li class="myberry"><a href="#"><span>My 베리</span></a></li>
+					<li class="bluemem"><a href="#"><span>블루멤버십</span></a></li>
+					<li class="myqna"><a href="#"><span>내 문의 내역</span></a></li>
+				</ul>
+			</div>
+			<!-- //mytoon 상단영역-->
+
+			<form action="">
+				<div class="set_account_area setting_layer_area">
+					<div class="s_tit"><img src="img/mytoon_set_tit01.gif" alt="계정관리" /></div>
+					<div class="s_cont">
+						<div class="s_left">
+							<img src="img/temp/tmp_sticker_author.png" alt="" class="thumb" />
+							<button type="button" class="edit">수정</button>
+						</div>
+						<div class="s_right">
+							<dl>
+								<dt>닉네임</dt>
+								<dd>별별별</dd>
+								<dt>이메일</dt>
+								<dd>ollehgood@gmail.com</dd>
+							</dl>
+						</div>
+						<div class="s_clear">
+							<button type="button" class="bt_setting_save">저장</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<form action="">
+				<div class="set_pw_area setting_layer_area">
+					<div class="s_tit"><img src="img/mytoon_set_tit02.gif" alt="비밀번호 변경" /></div>
+					<div class="s_cont">
+						<dl class="s_dl">
+							<dt class="first">현재 비밀번호</dt>
+							<dd class="first">
+								<input type="text" class="basic_ipt" value="현재 비밀번호를 입력해주세요." />
+								<div class="alert">비밀번호가 일치하지 않습니다.</div><!-- 현재 비밀번호와 일치하지 않을 경우 노출 -->
+							</dd>
+							<dt>새 비밀번호</dt>
+							<dd>
+								<input type="text" class="basic_ipt" value="10~16자 영문,숫자,특수문자 중 2가지 이상 조합" />
+							</dd>
+							<!--20141127 수정 및 자동 입력 방지 추가-->
+							<dt>새 비밀번호 입력</dt>
+							<dd class="first">
+								<input type="text" class="basic_ipt" value="새 비밀번호와 동일하게 입력" />
+								<div class="alert">사용가능한 비밀번호 입니다.</div><!-- 8~20자 영문/숫자/특수기호 조합으로 이루어진 유효한 비밀번호일 경우 노출 -->
+							</dd>
+
+							<dd class="first onlyTxt">
+								* 비밀번호는 10~16자의 영문 대/소문자, 숫자, 특수문자를 조합하셔야 하며, 아이디, 기존의 비밀<br />
+								번호, 연속된 숫자/문자, 생일 등 쉽게 유추 가능한 문자는 입력하실 수 없습니다.
+							</dd>
+							
+							<dt>자동 입력 방지</dt>
+							<dd>
+								<div class="captcha_input">
+									<img src="img/temp/tmp_captcha.png" alt="" class="thumb" />
+									<div class="thumb_etc">
+										<a href="#" class="refresh_btn">새로고침</a>
+										<input type="text" class="basic_ipt" style="width:172px;" />
+									</div>
+								</div>
+							</dd>
+							<!--//20141127 수정-->
+						</dl>
+						<div class="s_clear">
+							<button type="button" class="bt_setting_save">저장</button>
+						</div>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		<!-- //layout_left -->
+
+		<!-- layout_right -->
+		<div class="layout_right">
+			<!-- toon_day_bnr02 -->
+			<div class="toon_day_bnr02">
+				<a href="#"><img src="img/temp/tmp_s_custom02.jpg" alt="생생한 업무 경험과 노하우를 바로바로 듣는 삼성 멘토링" /></a>
+			</div>
+			<!-- //toon_day_bnr02 -->
+
+			<!-- mytoon_infoList -->
+			<div class="mytoon_infoList">
+				<div class="info_tit">
+					붉은매 <img src="img/mytoon_info_txt.gif" alt="님 환영합니다." />
+				</div>
+
+				<div class="info_list">
+					<div class="tit">현재 보유 코인 <strong>500코인</strong> 
+						<a href="#" class="bts_normal_gyline"><span>코인구매</span></a>
+					</div>
+				</div>
+				<div class="info_list">
+					<div class="tit">최근 본 TOON <strong>3</strong></div>
+					<div class="cont">- 코난 김전일 10화</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">즐겨찾기 <strong>5</strong></div>
+					<div class="cont">- 즐거우리 우리네 인생</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">책갈피 <strong>10</strong></div>
+					<div class="cont">- 아만자</div>
+					<a href="#" class="more">+</a>
+				</div>
+				<div class="info_list">
+					<div class="tit">구매내역 <strong>15</strong></div>
+					<div class="cont">- 개천고 10화</div>
+					<a href="#" class="more">+</a>
+				</div>
+			</div>
+			<!-- //mytoon_infoList -->
+			
+			<!-- mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+			<div class="mytoon_quickbtn">
+				<a href="#" class="faq">FAQ 자주 묻는 질문</a>
+				<!--<a href="#" class="userguide">이용가이드</a> 삭제 -->
+				<a href="#" class="qna">1:1 문의</a>
+				<a href="#" class="app">APP 다운로드</a>
+			</div>
+			<!-- //mytoon_quickbtn ~ 20140827 APP 다운로드 배너 추가 -->
+		</div>
+		<!-- //layout_right -->
+
+
+		<!-- //본문영역 -->
+	</div>
+	<!-- ### //container ### -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+</body>
+</html>

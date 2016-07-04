@@ -1,0 +1,17 @@
+####################################################
+# MySQL Sample DB Properties
+####################################################
+#webtoondb.driverClassName=net.sf.log4jdbc.DriverSpy
+#webtoondb.url=jdbc:log4jdbc:mysql:replication://172.27.76.125:3306,172.27.46.31:3306/newwebtoondb?characterEncoding=utf8&characterSetResults=utf8
+
+webtoondb.driverClassName=com.mysql.jdbc.Driver
+webtoondb.url=jdbc:mysql:replication://172.27.76.125:3306,172.27.251.214:3306/newwebtoondb?characterEncoding=utf8&characterSetResults=utf8
+
+#webtoondb.driverClassName=net.sf.log4jdbc.DriverSpy
+#webtoondb.url=jdbc:log4jdbc:mysql:replication://172.27.76.125:3306,172.27.246.119:3306/newwebtoondb?characterEncoding=utf8&characterSetResults=utf8
+
+webtoondb.username=webtoon
+webtoondb.password=ollehwebtoon123!()
+webtoondb.maxIdle=5
+webtoondb.maxActive=30
+webtoondb.maxWait=5000

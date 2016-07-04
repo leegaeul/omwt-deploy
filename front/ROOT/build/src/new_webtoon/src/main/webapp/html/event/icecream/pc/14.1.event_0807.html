@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓웹툰 </title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><!-- 최신 브라우저 랜더링 20140801 추가 -->
+<link rel="stylesheet" href="/css/pc/design.css" type="text/css" /><!-- css -->
+<link rel="stylesheet" href="/css/pc/event.css" type="text/css" /><!-- 201408070 event css 추가 -->
+<script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="/js/pc/common.js"></script><!-- common jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.ezmark.js"></script><!-- checkbox etc jquery -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.phone_select').styledSelect({ innerClass:'select_event' });//대표번호 셀렉트
+	$('.checkClass').ezMark({checkboxCls: 'ez-checkbox-evt', checkedCls: 'ez-checked-evt'});//checkbox 이미지처리
+});
+//팝업 불러오기
+$(window).load(function(){
+	//init_popup('popup_evt_policy');
+});
+
+//팝업 실행
+function init_popup(popup){
+	$('.'+popup).fadeIn('fast');
+	var popupY = 0;
+	if ($(window).height() < $('.'+popup).outerHeight())
+	{
+		popupY = $(window).scrollTop();
+	} else {
+		popupY = $(window).scrollTop() + ($(window).height()/2) - ($('.'+popup).outerHeight()/2);
+	}
+	$('.'+popup).css({ top: popupY });
+	$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});
+	$('.com_popup_bglayer').show();
+}
+//팝업 닫기
+function close_popup(popup){
+	$('.'+popup).fadeOut('fast');
+	$('.com_popup_bglayer').hide();
+}
+</script>
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- ### container ### -->
+	<div id="container">
+		<h2 class="hidden">본문영역</h2>
+		<!-- 본문영역 -->
+		<div class="ev_layout">
+			<div class="porel">
+				<ul class="tab">
+					<li><img src="/images/pc/event/0807/pic011.jpg" alt="event 1 지금당장 !"/></li>
+					<li><a href="14.2.event_0807.html"><img src="/images/pc/event/0807/pic012.jpg" alt="event 2 소문내기 !"/></a></li>
+				</ul>
+			</div>			
+			<div class="porel"><img src="/images/pc/event/0807/pic02.jpg" alt=""/></div>			
+			<div class="porel">
+				<img src="/images/pc/event/0807/pic03.jpg" alt=""/>
+				<a href="#" class="poabs btn_price"><img src="/images/pc/event/0807/btn_price.gif" alt="당첨자보기"/></a>
+			</div>			
+			<div class="porel">
+				<img src="/images/pc/event/0807/pic04.jpg" alt=""/>
+				<!--응모하기-->
+				<ul class="poabs info_input1">
+					<li>
+						<li class="select">
+							<select class="phone_select">
+								<option>010</option>
+								<option>011</option>
+								<option>018</option>
+							</select>
+						</li>
+						<li class="num1"><input type="text"></li>
+						<li class="num2"><input type="text"></li>
+					</li>
+				</ul>
+				<ul class="poabs info_input2">
+					<li>
+						<li class="num1"><input type="text"/></li>
+						<li class="btn_submit">
+							<a href="#"><img src="/images/pc/event/0807/btn_license.gif" alt="인증번호 받기"/></a>
+							<!--<a href="#"><img src="/images/pc/event/0807/btn_license_re.gif" alt="재전송"/></a>-->
+						</li>
+					</li>
+				</ul>
+				<span class="poabs txt_timer">( 2분 59초)</span>
+				<span class="poabs info_submit"><a href="#"><img src="/images/pc/event/0807/btn_submit.gif" alt="응모하기"/></a></span>
+				<!--//응모하기-->
+			</div>			
+			<div class="porel">
+				<img src="/images/pc/event/0807/pic05.jpg" alt=""/>
+				<span class="poabs check1">
+					<input type="checkbox" class="checkClass" id="agree_chk1"/> <label for="agree_chk1"><img src="/images/pc/event/0807/txt_chk1.gif" alt="개인정보 수집,활용에 대한 동의에 동의합니다."/></label>
+				</span>
+				<span class="poabs ev_agree one">
+					고객님이 입력한 개인정보는 ‘정보통신망 이용촉진 및 정보보호 
+					등에 관한 법률’에 따라 KT가 수집, 활용 및 취급 위탁 시 본인의 
+					동의를  얻어야 하는 정보입니다.
+				</span>
+				<span class="poabs btn_more1">
+					<a href="#" onclick="init_popup('popup_evt_policy01');return false;"><img src="/images/pc/event/0807/btn_more.gif" alt="자세히 보기"/></a>
+				</span>
+				<span class="poabs check2">
+					<input type="checkbox" class="checkClass" id="agree_chk2"/> <label for="agree_chk2"><img src="/images/pc/event/0807/txt_chk2.gif" alt="이벤트 참여자의 개인정보 수집 및 위탁업무에 동의합니다."/></label>
+				</span>
+				<span class="poabs ev_agree two">
+					고객님이 입력한 개인정보는 ‘정보통신망 이용촉진 및 정보보호 
+					등에 관한 법률’에 따라 KT가 수집, 활용 및 취급 위탁 시 본인의 
+					동의를  얻어야 하는 정보입니다.
+				</span>
+				<span class="poabs btn_more2">
+					<a href="#" onclick="init_popup('popup_evt_policy02');return false;"><img src="/images/pc/event/0807/btn_more.gif" alt="자세히 보기"/></a>
+				</span>
+			</div>			
+			<div class="porel"><img src="/images/pc/event/0807/pic06.jpg" alt="웹툰 만들기 tip"/></div>			
+		</div>
+		<!-- //본문영역 -->
+	</div>
+	<!-- ### //container ### -->
+
+</div>
+<!-- //wrap -->
+
+<div class="com_popup_bglayer"></div><!-- 팝업 배경 레이어 -->
+<!-- 이용약관 팝업 -->
+<div class="com_popup_layout popup_evt_policy popup_evt_policy01">
+	<div class="popup_tit01">
+		<img src="/images/pc/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+	<div class="popup_com_cont">
+		<div class="tit1dth">개인정보 수집, 활용에 대한 동의</div>
+		<div class="policy_box">
+			<div class="mb10">고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등 에 관한 법률'에 따라 kt가 수집, 활용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다. 입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 활용되지 않습니다.</div>
+			<div class="mb10">
+				1) 개인정보 수집 및 이용목적
+				<div class="ml10">
+					가. 이벤트 대상 여부 및 본인 확인, 경품 배송
+				</div>
+			</div>
+			<div class="mb10">
+				2) 수집하는 개인정보 항목
+				<div class="ml10">
+					가. 이벤트 응모자의 핸드폰 번호<br />
+					나. 이벤트 응모자의 아이디
+				</div>
+			</div>
+			<div class="mb10">
+				3) 개인정보 보유 및 이용기간<br />
+				- 당첨자 발표 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)<br />
+			</div>
+			<div class="mb10">
+				4) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다.
+			</div>
+		</div>
+		<div class="policy_btn">
+			<button type="button" class="bt_normal_confirm" onclick="close_popup('popup_evt_policy01');">확인</button>
+		</div>
+	</div>
+
+	<div class="popup_close"><a href="#" onclick="close_popup('popup_evt_policy01');return false;"><img src="/images/pc/btn_close01.gif" alt="close" /></a></div>
+</div>
+<div class="com_popup_layout popup_evt_policy popup_evt_policy02">
+	<div class="popup_tit01">
+		<img src="/images/pc/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+	<div class="popup_com_cont">
+		<div class="tit1dth">개인정보 취급 위탁 동의</div>
+		<div class="policy_box">
+			<p class="mb10">회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.</p>
+			<div class="mb10">
+				1) 개인정보 취급위탁을 받는 자<br />
+				- 업체명 : (주)케이티하이텔<br />
+				- 문의 : 올레마켓 웹툰 이벤트 담당자 (02) 02-3289-2414 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외)
+			</div>
+			<div class="mb10">
+				2) 위탁목적<br />
+				- 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송
+			</div>
+			<div class="mb10">
+				3) 위탁범위<br />
+				- 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보
+			</div>
+			<div class="mb10">
+				4) 위탁기간<br />
+				- 이벤트 종료 후 10일 이내 폐기
+			</div>
+		</div>
+		<div class="policy_btn">
+			<button type="button" class="bt_normal_confirm" onclick="close_popup('popup_evt_policy02');">확인</button>
+		</div>
+	</div>
+
+	<div class="popup_close"><a href="#" onclick="close_popup('popup_evt_policy02');return false;"><img src="/images/pc/btn_close01.gif" alt="close" /></a></div>
+</div>
+<!-- //이용약관 팝업 -->
+
+</body>
+</html>

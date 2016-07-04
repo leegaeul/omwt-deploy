@@ -1,0 +1,269 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap
+END
+Ticker.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Ticker.xml
+END
+Yoyozine.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Yoyozine.xml
+END
+ProductAvail.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/ProductAvail.xml
+END
+Device.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Device.xml
+END
+Logo.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Logo.xml
+END
+Author.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Author.xml
+END
+ProductHistory.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/ProductHistory.xml
+END
+AppLatestVersion.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/AppLatestVersion.xml
+END
+CommentEvent.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/CommentEvent.xml
+END
+Banner.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Banner.xml
+END
+FAQ.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/FAQ.xml
+END
+PaymentFail.xml
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/PaymentFail.xml
+END
+Advertisement.xml
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Advertisement.xml
+END
+BMJoin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMJoin.xml
+END
+Toon.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Toon.xml
+END
+Notice.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Notice.xml
+END
+Event.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Event.xml
+END
+Novel.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Novel.xml
+END
+CutPlayEvent.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/CutPlayEvent.xml
+END
+AppMeta.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/AppMeta.xml
+END
+EventPromotion.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/EventPromotion.xml
+END
+Ranking.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Ranking.xml
+END
+DcbEvent.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/DcbEvent.xml
+END
+BMOrder.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMOrder.xml
+END
+PhotoEvent.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/PhotoEvent.xml
+END
+BMPayment.xml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMPayment.xml
+END
+BMPrdOption.xml
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMPrdOption.xml
+END
+Buy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Buy.xml
+END
+Service.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Service.xml
+END
+Comment.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Comment.xml
+END
+BMPrd.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMPrd.xml
+END
+KmcFail.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/KmcFail.xml
+END
+BMJoinTerm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMJoinTerm.xml
+END
+Shop.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Shop.xml
+END
+BMJoinFail.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/BMJoinFail.xml
+END
+RecommendApp.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/RecommendApp.xml
+END
+Order.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Order.xml
+END
+KmcLog.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/KmcLog.xml
+END
+Payment.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Payment.xml
+END
+Mediapack.xml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Mediapack.xml
+END
+Premium.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Premium.xml
+END
+User.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/User.xml
+END
+Contest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/Contest.xml
+END
+QNA.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/resources/sqlmap/QNA.xml
+END

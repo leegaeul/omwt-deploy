@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> 올레마켓 웹툰 </title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" href="css/design.css" type="text/css" /><!-- css -->
+<link rel="stylesheet" href="css/event.css" type="text/css" /><!-- 20150107 event css -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script><!-- jquery -->
+<script type="text/javascript" src="js/common.js"></script><!-- common jquery -->
+<script type="text/javascript" src="js/jquery.ezmark.js"></script><!-- checkbox etc jquery -->
+<script type="text/javascript" src="js/jquery.flexslider.js"></script><!-- flexslider ~ rolling banner js -->
+<script type="text/javascript">
+$(document).ready(function(){
+	/*//회차 선택 셀렉트 20140801 삭제
+	$('#other_select').styledSelect({ innerClass:'select_add' });*/
+
+	$('#toon_select').styledSelect({ innerClass:'select_jsselS2' });//20140801 회차 선택 셀렉트
+
+	$('.com_sticker_attach .stickerCntEtc .area input').ezMark({checkboxCls: 'ez-checkbox-sticker', checkedCls: 'ez-checked-sticker'});//checkbox 이미지처리
+
+	//20140721 추가 시작
+	//스티콘 슬라이드 
+	$('#main_cmt_area .stickon_select_area .flexslider').flexslider({
+		animation: "slide",
+		animationLoop: false,
+		itemWidth: 38,
+		itemMargin: 0,
+		slideshow: false,
+		controlNav: false
+	});
+
+	//스티콘 레이어 닫기 
+	$('#main_cmt_area .stickon_select_area .flexlayer_viewer a').click(function(){
+		$('#main_cmt_area .stickon_select_area .flexlayer').hide();
+		$(this).hide();
+		return false;
+	});
+
+	//스티콘 선택하면 스티콘 등록 영역 보임 
+	$('#main_cmt_area .stickon_select_area .flexlayer a').click(function(){
+		$('#main_cmt_area .stickon_select_area .flexlayer a').removeClass('on');
+		$(this).addClass('on');
+		
+		$('#main_cmt_area .icon_wr img').attr('src', $(this).find('img').attr('src'));
+		return false;
+	});
+
+	//대표 스티콘 클릭했을 때 
+	$('#main_cmt_area .stickon_select_area .flexslider .slides a').click(function(){
+		$('#main_cmt_area .stickon_select_area .flexlayer_viewer a').show();
+		$('#main_cmt_area .stickon_select_area .flexslider .slides li').removeClass('on');
+		$(this).parent().addClass('on');
+		$('#main_cmt_area .stickon_select_area .flexslider .slides li').each(function(){
+			$(this).find('img').attr('src', $(this).find('img').attr('src').replace('_sel', '_dim'));
+		});
+		$(this).find('img').attr('src', $(this).find('img').attr('src').replace('_dim', '_sel'));
+		$('#main_cmt_area .stickon_select_area .flexlayer').show();
+
+		$('#main_cmt_area').addClass('right_write_on');
+		return false;
+	});
+
+	//대댓글 스티콘 슬라이드 
+	$('#sub_cmt_area01 .stickon_select_area .flexslider').flexslider({
+		animation: "slide",
+		animationLoop: false,
+		itemWidth: 38,
+		itemMargin: 0,
+		slideshow: false,
+		controlNav: false
+	});
+
+	//대댓글 스티콘 레이어 닫기 
+	$('#sub_cmt_area01 .stickon_select_area .flexlayer_viewer a').click(function(){
+		$('#sub_cmt_area01 .stickon_select_area .flexlayer').hide();
+		$(this).hide();
+		return false;
+	});
+
+	//대댓글 스티콘 선택하면 스티콘 등록 영역 보임 
+	$('#sub_cmt_area01 .stickon_select_area .flexlayer a').click(function(){
+		$('#sub_cmt_area01 .stickon_select_area .flexlayer a').removeClass('on');
+		$(this).addClass('on');
+		
+		$('#sub_cmt_area01 .icon_wr img').attr('src', $(this).find('img').attr('src'));
+		return false;
+	});
+
+	//대댓글 대표 스티콘 클릭했을 때 
+	$('#sub_cmt_area01 .stickon_select_area .flexslider .slides a').click(function(){
+		$('#sub_cmt_area01 .stickon_select_area .flexlayer_viewer a').show();
+		$('#sub_cmt_area01 .stickon_select_area .flexslider .slides li').removeClass('on');
+		$(this).parent().addClass('on');
+		$('#sub_cmt_area01 .stickon_select_area .flexslider .slides li').each(function(){
+			$(this).find('img').attr('src', $(this).find('img').attr('src').replace('_sel', '_dim'));
+		});
+		$(this).find('img').attr('src', $(this).find('img').attr('src').replace('_dim', '_sel'));
+		$('#sub_cmt_area01 .stickon_select_area .flexlayer').show();
+
+		$('#sub_cmt_area01').addClass('right_write_on');
+		return false;
+	});
+	//20140721 추가 끝
+
+	//20150107 추가 시작
+	$('.checkClass').ezMark({checkboxCls: 'ev-checkbox', checkedCls: 'ev-checked'});//checkbox 이미지처리
+	$('.com_popup_bglayer').css({opacity: 0, height: $(document).height()});//팝업 배경 레이어 css 초기화
+	//20150107 추가 끝
+});
+
+//20150107 추가 시작
+function init_popup(popup){//팝업 열기
+	$('.' + popup).fadeIn('fast');
+	var popupY = 0;
+	if ($(window).height() < $('.' + popup).outerHeight())
+	{
+		popupY = $(window).scrollTop();
+	} else {
+		popupY = $(window).scrollTop() + ($(window).height()/2) - ($('.' + popup).outerHeight()/2);
+	}
+	$('.' + popup).css({ top: popupY });
+	$('.com_popup_bglayer').show();
+}
+
+function shut_popup(popup){//팝업 열기
+	$('.' + popup).fadeOut('fast');
+	$('.com_popup_bglayer').hide();
+}
+//20150107 추가 끝
+
+$(window).load(function(){
+	//올레마켓 즐기기 배너
+	$('.toon_view_other .slides_wrap').flexslider({
+		animation: "slide",
+		animationLoop: false,
+		itemWidth: 114,
+		itemMargin: 0,
+		slideshow: false,
+		controlNav: false
+	});
+});
+
+//fncSticker 20140528
+function fncSticker(num){
+	stickerCnt = num;
+	for(var i=1 ; i <= 5 ; i++){
+		if(i <= num){
+			$("#sticker"+i).attr("src", "img/temp/sticker_on.png");
+			$("#sticker"+i).parent().next().removeClass("dis");
+		} else {
+			$("#sticker"+i).attr("src", "img/temp/sticker.png");
+			$("#sticker"+i).parent().next().addClass("dis");
+		}
+	}
+}
+
+//리모컨 시작 20140829
+$(document).ready(function(){
+	var b_remocon_half_height = 87;//확장모드 리모컨 높이값의 반값
+	$(".extend_remocon_wrap").css({ top: ($(window).height()/2) - b_remocon_half_height });
+
+	var dir_half_height = 23;//미니모드 이전다음 버튼 높이값의 반값
+	var s_remocon_half_height = 50;//미니모드 리모컨 높이값의 반값
+	$("a.mini_remocon_prev").css({ top: ($(window).height()/2) - dir_half_height });//미니모드 이전 버튼
+	$("a.mini_remocon_next").css({ top: ($(window).height()/2) - dir_half_height });//미니모드 다음 버튼
+	$(".mini_remocon_wrap .dir_etc_bt").css({ top: ($(window).height()/2) - s_remocon_half_height });
+
+	$('.mini_remocon_wrap a.extend').click(function(){//리모컨 확장모드 버튼 클릭
+		$('.mini_remocon_wrap').hide();
+		$('a.mini_remocon_prev, a.mini_remocon_next').hide();
+		$('.extend_remocon_wrap').show();
+		scroll_toon_view();
+		return false;
+	});
+
+	$('.extend_remocon_wrap a.mini').click(function(){//리모컨 미니모드 버튼 클릭
+		$('.mini_remocon_wrap').show();
+		$('a.mini_remocon_prev, a.mini_remocon_next').show();
+		$('.extend_remocon_wrap').hide();
+		scroll_toon_view();
+		return false;
+	});
+	
+	scroll_toon_view();
+	$(window).scroll(function(){
+		scroll_toon_view();
+	});
+
+	function scroll_toon_view(){//화면 스크롤 했을 때 따라 움직이는 리모컨
+		if ( $(window).scrollTop() > 0 )
+		{	
+			$(".mini_remocon_wrap .dir_etc_bt").css({ position: 'fixed' });
+			$(".extend_remocon_wrap").css({ position: 'fixed' });
+			
+			if ( $(window).scrollTop() >= ($('.toon_view_content').offset().top + $('.toon_view_content').outerHeight()) - (($(window).height()/2) - dir_half_height) )
+			{
+				$("a.mini_remocon_prev, a.mini_remocon_next").css({ 
+					position: 'absolute',
+					top: $('#header').outerHeight() + $('.toon_view_topArea').outerHeight() + $('.toon_view_content').outerHeight()
+				});
+			} else {
+				$("a.mini_remocon_prev, a.mini_remocon_next").css({ 
+					position: 'fixed',
+					top: ($(window).height()/2) - dir_half_height
+				});
+			}
+		}
+	}
+
+	//리모컨 아래로 버튼 클릭
+	$(".extend_remocon_wrap .v_bt a.btm, .mini_remocon_wrap .v_bt a.btm").click(function(e){
+		var obj = $(this).attr("href");
+		var posY = $(obj).offset().top;
+		$("html,body").stop().animate({'scrollTop':posY - $(window).height() + ($(window).height()/2) - s_remocon_half_height},500);
+		e.preventDefault();
+	});
+	//리모컨 맨위로 버튼 클릭
+	$(".extend_remocon_wrap .v_bt a.top, .mini_remocon_wrap .v_bt a.top").click(function(e){
+		var obj = $(this).attr("href");
+		var posY = $(obj).offset().top;
+		$("html,body").stop().animate({'scrollTop':0},500);
+		e.preventDefault();
+	});
+
+});
+//리모컨 끝 20140829
+
+function fncShowSubComment(commentseq)
+{	
+	// Subcomment show
+	if($('#subCmt'+commentseq).css("display") == "none")  { $('#subCmt'+commentseq).show(); return; }
+	// Subcomment hide
+	$('#subCmt'+commentseq).hide();
+}
+</script>
+</head>
+<body>
+
+<!-- wrap -->
+<div id="wrap">
+	<!-- ### header 20140801 ### -->
+	<div id="header">
+		<!-- top 20140422 edit -->
+		<div class="top">
+			<h1><a href="#"><img src="img/logo.gif" alt="올레마켓 웹툰" /></a><img src="img/special_logo.png" alt="올레마켓 웹툰" class="special" /></h1><!-- 20140610 스페셜 로고 추가 -->
+			<h2 class="hidden">상단영역</h2>
+		<!--20141107 수정-->
+			<div class="h1Etc">
+				<!-- gnb -->
+				<div class="h_gnb">
+					<!--그외-->
+					<a href="#">로그아웃</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>
+					<!--그외-->
+
+					<!--해지자, 미가입자, 비로그인 시
+					<a href="#">로그인</a> | 
+					<a href="#">회원가입</a> | 
+					<a href="#">MY</a> | 
+					<a href="#">고객센터</a>-->
+					<!--해지자, 미가입자, 비로그인 시-->
+				</div>
+				<!-- //gnb -->
+
+				<!--h_gnb_etc-->
+				<div class="h_gnb_etc">
+					<!--h_loginInfo-->
+					<div class="h_loginInfo">
+						<!--가입자 로그인시-->
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>600</strong> 블루베리</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>
+						<!--//가입자 로그인시-->
+
+						<!--가입자, 블루베리가 0혹은 마이너스일 경우
+						<span class="first_txt blue">web***님 환영합니다.</span> |
+						<span class="berry_txt"><strong>0</strong> 블루베리(다음 충전일 : 2014.11.11)</span>
+						<a href="#" class="mymem_btn">My 멤버십</a>-->
+						<!--//가입자, 블루베리가 0혹은 마이너스일 경우-->
+
+						<!--해지자, 미가입자, 비로그인 시
+						<span class="first_txt">블루멤버십</span> |
+						<span class="berry_txt">매월 블루베리가 쏟아진다.</span>-->
+						<!--//해지자, 미가입자, 비로그인 시-->
+					</div>
+					<!--//h_loginInfo-->
+
+					<!-- 검색 -->
+					<div class="h_sch">
+						<form action="">
+							<fieldset>
+								<legend class="hidden">작품 또는 작가로 검색하기</legend>
+								<!--<div class="sel">
+									<select name="comSchSelect" id="comSchSelect" title="카테고리 선택">
+										<option value="">전체</option>
+									</select>
+								</div> delete-->
+								<input type="text" value="작품 또는 작가 검색" title="작품 또는 작가 검색" />
+								<button type="submit"><img src="img/btn_search.gif" alt="검색" /></button>
+							</fieldset>
+						</form>
+					</div>
+					<!-- //검색 -->
+				</div>
+				<!--//h_gnb_etc-->
+			</div>
+		<!--//20141107 수정-->
+		</div>
+		<!-- //top 20140422 edit -->
+
+<!-- 메뉴 수정 20140725 ~ 랭킹 하위메뉴 변경 -->
+		<!-- 메인메뉴 -->
+		<div class="topEtc">
+			<ul>
+				<li><a href="#" class="on"><!-- 현재 페이지에 해당하는 카테고리면 a태크에 on 클래스 붙임 -->
+					<img src="img/top_menu01.gif" alt="Toon" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu02.gif" alt="랭킹" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu03.gif" alt="ApPLAY" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu04.gif" alt="Yoyozine" class="menu" />
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu05.gif" alt="Premium" class="menu" />
+					<img src="img/top_menu_new.gif" alt="new" class="new" /><!-- new 아이콘 -->
+				</a></li>
+				<li><a href="#">
+					<img src="img/top_menu06.gif" alt="Shop" class="menu" />
+				</a></li>
+			</ul>
+			<!-- 베리 충전소 링크 추가 -->
+			<div class="topMenuEtc">
+				<a href="#"><img src="img/top_menu_bnr.png" alt="베리 충전소" /></a>
+			</div>
+			<!-- //베리 충전소 링크 추가 -->
+		</div>
+		<!-- //메인메뉴 -->
+
+		<!-- TOON 하위메뉴 -->
+		<div class="subMenu subMenu01">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">요일별</a> |</li>
+					<li><a href="#">장르별</a> |</li>
+					<li><a href="#">작품별</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //TOON 하위메뉴 -->
+
+		<!-- 랭킹 하위메뉴 20140507 수정 -->
+		<div class="subMenu subMenu02"><!-- subMenuOn 클래스 붙이면 노출됨 -->
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">실시간 랭킹</a> |</li><!-- 현재 페이지 표시는 li 태그에 on 클래스 붙이면 됨 -->
+					<li><a href="#">월간 Top 10</a> |</li>
+					<li><a href="#">Yo랭킹</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //랭킹 하위메뉴 20140507 수정 -->
+
+		<!-- ApPLAY 하위메뉴 -->
+		<div class="subMenu subMenu03">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">이벤트</a> |</li>
+					<li><a href="#">앱추천</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //ApPLAY 하위메뉴 -->
+
+		<!-- YOYOZINE 하위메뉴 2차 오픈 범위
+		<div class="subMenu subMenu04">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">사心가득 인터뷰</a> |</li>
+					<li><a href="#">추천 TOON</a> |</li>
+					<li><a href="#">APP ZINE</a> |</li>
+					<li><a href="#">YOYOSPECIAL</a></li>
+				</ul>
+			</div>
+		</div>-->
+		<!-- //YOYOZINE 하위메뉴 -->
+
+		<!-- premium 하위메뉴 없음 -->
+		<!-- Shop 하위메뉴 -->
+		<div class="subMenu subMenu06">
+			<div class="topEtcDepth2">
+				<ul>
+					<li><a href="#">추천</a> |</li>
+					<li><a href="#">스티콘</a> |</li>
+					<li><a href="#">네임콘</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- //Shop 하위메뉴 -->
+<!-- //메뉴 수정 20140725 ~ 랭킹 하위메뉴 변경 -->
+
+	</div>
+	<!-- ### //header 20140801 ### -->
+
+	<!-- 웹툰 상세 -->
+		<!-- toon_view_topArea 20140801 -->
+		<div class="toon_view_topArea">
+			<div class="center">
+				110화 개천 용의 부모 
+				<a href="#" class="bt_sBookmark">책갈피</a>
+			</div>
+			<div class="left">
+				<a href="#" class="bt_sBoardList">리스트</a>
+				<!--<a href="#" class="bt_sFavorites">즐겨찾기</a> 20150107 삭제-->
+			</div>
+			<div class="right">
+				<a href="#" class="bt_sSticker">스티커</a>
+				<a href="#" class="bt_sComment">댓글</a>
+				<a href="#" class="bt_sShare">공유</a>
+			</div>
+		</div>
+		<!-- //toon_view_topArea 20140801 -->
+
+		<!-- toon_header 20140801 삭제 
+		<div class="toon_header">
+			<div class="header">
+				<div class="h_left">
+					<h1><a href="#"><img src="img/logo2.gif" alt="올레마켓 웹툰" /></a></h1>
+					<div class="toon_tit"><strong>샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 </strong>(귤소녀)</div>
+				</div>
+				<div class="h_right">
+					<div class="other_sel">
+						<select name="other_select" id="other_select" title="회차 선택">
+							<option value="2487" >92화 - 몸풀기 게임</option>
+							
+							<option value="2467" >91화 - 제가 갈게요 소미씨!</option>
+							
+							<option value="2442" >90화 - 용과 산 정상에서.avi</option>
+							
+							<option value="2421" >89화 - 남자의 자격</option>
+							
+							<option value="2388" >88화 - 아주 무서운 드래곤</option>
+							
+							<option value="2371" >87화 - 석상과의 승부</option>
+							
+							<option value="2351" >86화 - 정상에서 만나요</option>
+							
+							<option value="2326" >85화 - 사나이들의 우정</option>
+							
+							<option value="2302" >84화 - 매너남의 선택</option>
+							
+							<option value="2282" >83화 - 암흑비기</option>
+							
+							<option value="2258" >82화 - 동상이몽</option>
+							
+							<option value="2230" >81화 - 일어나 박철!</option>
+							
+							<option value="2213" >80화 - 모두의 염원</option>
+							
+							<option value="2191" >79화 - 남자 vs 여자</option>
+							
+							<option value="2163" >78화 - 무서운 이야기</option>
+							
+							<option value="2148" >77화 - 염소우의 실각</option>
+							
+							<option value="2126" >76화 - 염소우의 위기</option>
+							
+							<option value="2098" >75화 - 신물 나는 풍경</option>
+							
+							<option value="2083" >74화 - 레드카펫</option>
+							
+							<option value="1975" >72화 - 지각변동</option>
+							
+							<option value="1974" >71화 - 염소우의 변화</option>
+							
+							<option value="1973" >70화 - 폭풍전야</option>
+							
+							<option value="1964" >69화 - 판도라의 상자</option>
+							
+							<option value="1948" >68화 - 홍진용의 앙심</option>
+							
+							<option value="1933" >67화 - 홍진용 VS 최비열</option>
+							
+							<option value="1894" >65화 - 마초의 상징</option>
+							
+							<option value="1828" >64화 - 끝나지 않은 싸움</option>
+							
+							<option value="1827" >63화 - 아름다운 만화</option>
+							
+							<option value="1826" >62화 - 거름종이</option>
+							
+							<option value="1822" >61화 - 존재하지 않는 세계</option>
+							
+							<option value="1805" >60화 - 봉기</option>
+							
+							<option value="1783" >설특집</option>
+							
+							<option value="1772" >59화 - 커플탄생</option>
+							
+							<option value="1746" >58화 - 엇갈린 사랑</option>
+							
+							<option value="1725" >57화 - 못먹어도 고!</option>
+							
+							<option value="1712" >56화 - 최후의 일격</option>
+							
+							<option value="1691" >55화 - 교육과 계층</option>
+							
+							<option value="1654" >54화 - 승리를 향한 집념</option>
+							
+							<option value="1633" >53화 - 축적된 노하우</option>
+							
+							<option value="1594" >52화 - 나도 서민출신이다!</option>
+							
+							<option value="1572" >51화 - 상남자 손시진</option>
+							
+							<option value="1536" >50화 - 손시진의 NEW아이템</option>
+							
+							<option value="1512" >49화 - 패션의 완성</option>
+							
+							<option value="1470" >48화 - 교실의 풍경</option>
+							
+							<option value="1450" >47화 - 허용된 룰</option>
+							
+							<option value="1411" >46화 - 일그러진 영웅</option>
+							
+							<option value="1386" >45화 - 처형식</option>
+							
+							<option value="1350" >44화 - 불변의 법칙</option>
+							
+							<option value="1324" >43화 - 니가 처음이야</option>
+							
+							<option value="1246" >42화 - 선택의 시간</option>
+							
+							<option value="1245" >41화 - 양손에 꽃</option>
+							
+							<option value="1232" >40화 - 사랑의 테러리스트</option>
+							
+							<option value="1194" >39화 - 또다른 적</option>
+							
+							<option value="1154" >38화 - 시진의 마음</option>
+							
+							<option value="1130" >37화 - 달콤한 유혹</option>
+							
+							<option value="1093" >36화 - 끝나지 않은 승부</option>
+							
+							<option value="1068" >35화 - 헛바람 넣기</option>
+							
+							<option value="1032" >34화 - 어른의 논리</option>
+							
+							<option value="1008" >33화 - 대한민국 고등학생</option>
+							
+							<option value="972" >32화 - 현질만능주의</option>
+							
+							<option value="948" selected='selected'>31화 - 만물의 이치와 배수</option>
+							
+							<option value="912" >30화 - 염소우의 굴욕</option>
+							
+							<option value="887" >29화 - You Are Not Alone~</option>
+							
+							<option value="787" >28화 - 비싼 건 가격값을 한다!</option>
+							
+							<option value="763" >27화 - 단 한사람의 용자</option>
+							
+							<option value="729" >26화 - 치킨게임</option>
+							
+							<option value="705" >25화 - 제로와 한없이 제로에 가까운 확률</option>
+							
+							<option value="671" >24화 - 비료가 되어라!</option>
+							
+							<option value="492" >18화 - 나를 위한 너의 마음</option>
+							
+							<option value="472" >17화 - VVIP의 실력</option>
+							
+							<option value="437" >16화 - 격투고사의 비밀</option>
+							
+							<option value="414" >15화 - 돌아올 수 없는 길</option>
+							
+							<option value="382" >14화 - 만물의 이치와 분수</option>
+							
+							<option value="358" >13화 - 날아라, 손시진!</option>
+							
+							<option value="326" >12화 - 불빛에 이끌린 나방</option>
+							
+							<option value="304" >11화 - 상류층의 생활</option>
+							
+							<option value="272" >10화 - 틀리면 죽음</option>
+							
+							<option value="247" >9화 - 약자의 마음</option>
+							
+							<option value="192" >7화 - 적과의 동침</option>
+							
+							<option value="160" >6화 - 복수의 기회</option>
+							
+							<option value="137" >5화 - 공부못하면 죄인</option>
+							
+							<option value="108" >4화 - 개천고에 온것을 환영합니다.</option>
+							
+							<option value="88" >3화 - 격투고사</option>
+							
+							<option value="51" >2화 - 여긴 어디?</option>
+							
+							<option value="24" >1화 - 높은 수의 세상</option>
+
+						</select>
+					</div>
+					<div class="other_btn">
+						<a href="#" class="prev">이전화</a>
+						<a href="#" class="next">다음화</a>
+					</div>
+					<div class="other_list">
+						<a href="#" class="list">목록</a>
+					</div>
+					<div class="other_mark">
+						<a href="#" class="mark">책갈피</a>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<!-- //toon_header 20140801 삭제 -->
+
+		<!-- toon_container -->
+		<div class="toon_container">
+			<!-- toon_view_content 20140801-->
+			<div class="toon_view_content alignC"><!--20150107 alignC 클래스 추가-->
+				<!-- 웹툰 상세 -->
+				<div class="view">
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+					<p><img src="img/temp/tmp_toon_view.jpg" alt="" /></p>
+				</div>
+				<!-- //웹툰 상세 -->
+				<!-- 리모컨 영역 20140829 ~ 미니모드 이전/다음 버튼 위치, 클래스 변경 -->
+				<div class="view_etc">
+					
+				</div>
+				<!-- //리모컨 영역 20140829 ~ 미니모드 이전/다음 버튼 위치, 클래스 변경 -->
+			</div>
+			<!-- //toon_view_content 20140801-->
+
+			<!-- 퀵메뉴 20140801 삭제
+			<div class="toon_view_quick">
+				<div class="top">
+					<a href="#" class="t_btn">맨위로</a>
+					<a href="#" class="b_btn">아래로</a>
+				</div>
+				<div class="btm">
+					<a href="#" class="v_btn">관련상품 보기</a>
+				</div>
+			</div>-->
+			<!-- //퀵메뉴 -->
+
+			<!-- toon_view_custom 광고 20140512 수정 -->
+			<div class="toon_view_custom">
+				<a href="#"><img src="img/temp/tmp_s_custom05.jpg" alt="올레 LTE 뭉치면 인터넷이 무료! ~ 좋은 결합편 보러가기" /></a>
+			</div>
+			<!-- //toon_view_custom 광고 20140512 수정 -->
+
+		
+			<div class="toon_view_btmArea">
+				<div class="left">
+					<a href="#" class="bt_txtBoardList">목록</a>
+					<!--<a href="#" class="bt_txtFavorites">즐겨찾기</a> 20150107 삭제-->
+				</div>
+				<div class="right">
+					<!--<a href="#" class="bt_txtBookmark">책갈피</a> 20150107 삭제-->
+					<span style="" class="other_sel">
+						<select name="" id="toon_select" class="basic_jsselS">
+							<option value="">회차 바로 가기</option>
+						</select>
+					</span>
+					<span class="other_btn">
+						<a href="#" class="prev">이전</a> |
+						<a href="#" class="next">다음</a>
+					</span>
+				</div>
+			</div>
+
+			<!-- 작가님의 말/관련 회차 보기 삭제 20150107 
+			<div class="toon_view_authorCmt" id="toon_view_authorCmt">
+				<div class="tit">
+					<img src="img/tit_toon_view01.gif" alt="작가님의 말" />
+					(버내노)
+					<a href="#" class="bt_type_intro">작가소개</a>
+				</div>
+				<div class="cont">흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요. 모두 독자님들의 관심이 있었기 때문이에요. 여러분 캄사 작가의말은 두줄까지 흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요. 모두 독자님들의 관심이 있었기 때문이에요. 여러분 캄사 작가의말은 두줄까지 흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요. 모두 독자님들의 관심이 있었기 때문이에요. 여러분 캄사 작가의말은 두줄까지 흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요. 모두 독자님들의 관심이 있었기 때문이에요. 여러분 캄사 작가의말은 두줄까지 흑 저 자신이 이번화 그리는 것에 너무 힘이 들었어요. 모두 독자님들의 관심이 있었기 때문이에요. 여러분 캄사 작가의말은 두줄까지</div>
+			</div>
+			
+			<div class="toon_relative_toon">
+				<div class="tit"><img src="img/tit_toon_view06.gif" alt="관련 회차 보기" /></div>
+				<div class="cont">
+					▶ <a href="#">47화 - 내노살롱</a>
+				</div>
+			</div>-->
+
+			<!-- 공유하기 -->
+			<div class="toon_view_share">
+				<div class="tit"><img src="img/tit_toon_view02.gif" alt="공유하기" /></div>
+				<a href="#" class="bt_type_fb">facebook</a>
+				<a href="#" class="bt_type_twit">twitter</a>
+				<a href="#" class="bt_type_band">band</a>
+				&nbsp; &nbsp;
+				<a href="#" class="bt_type_copy">URL 복사</a>
+			</div>
+			<!-- //공유하기 -->
+
+			<!--20150107 신규 이벤트-->
+			<div class="ev_layout_150107">
+				<div><img src="img/event/0107/main2.jpg" alt="2015.01.12 ~ 2015.01.31 작가의 꿈 응원 이벤트 - 이벤트 응모 준비가 완료 되었습니다! 응원의 댓글, 스티커를 달아주시면 당첨 확률이 UP!" usemap="#main" /></div>
+
+				<map name="main">
+					<area shape="rect" coords="601,747,710,758" href="https://webtoon.olleh.com/support/qnaRegist.kt" alt="고객센터 &gt; 1:1문의 바로가기" />
+				</map>
+			</div>
+			<!--//20150107 신규 이벤트-->
+
+			<!-- 스티커주기 20140528-->
+			<div class="com_sticker_attach">
+				<div class="tit">
+					<img src="img/tit_toon_view03.gif" alt="스티커주기" />
+					<p>내가 붙이는 스티커 하나에 작가님 에너지 불끈!! 스티커를 붙여주세요!</p>
+				</div>
+				<div class="regist">
+					<div class="stickerCnt">
+						<span class="sticker"><img src="img/temp/sticker_on.png" alt="" /></span>
+						<span class="cnt">
+							<span class="cnt_t01">스티커</span>
+							2,300<span class="cnt_t02">개</span>
+						</span>
+					</div>
+					<div class="stickerCntEtc">
+						<form action="">
+							<fieldset>
+								<legend>스티커 붙이기</legend>
+								<div class="area">
+									<span class="bt_sticker"><button type="button" onclick="fncSticker('1');"><img src="img/temp/sticker_on.png" alt="" id="sticker1" /></button><span class="su">1</span></span>
+									<span class="bt_sticker"><button type="button" onclick="fncSticker('2');"><img src="img/temp/sticker_on.png" alt="" id="sticker2" /></button><span class="su">2</span></span>
+									<span class="bt_sticker"><button type="button" onclick="fncSticker('3');"><img src="img/temp/sticker_on.png" alt="" id="sticker3" /></button><span class="su">3</span></span>
+									<span class="bt_sticker"><button type="button" onclick="fncSticker('4');"><img src="img/temp/sticker_on.png" alt="" id="sticker4" /></button><span class="su">4</span></span>
+									<span class="bt_sticker"><button type="button" onclick="fncSticker('5');"><img src="img/temp/sticker_on.png" alt="" id="sticker5" /></button><span class="su">5</span></span>
+								</div>
+								<!-- 스티거 주기 참여했다면 아래 버튼 영역 안보이게 처리 20140526 -->
+								<div class="btn"><button type="submit">스티커 붙이기</button></div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- 스티커주기 20140528-->
+
+			<!-- AD 20150107 삭제
+			<div class="toon_view_ad">
+				<div class="tit"><img src="img/tit_toon_view05.gif" alt="따끈따끈한 추천 신작" /></div>
+				<ul>
+					<li>▶<a href="#">성적 걱정 이제는 끝! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에! 효율적인 공부 방법이 여기에!</a></li>
+					<li>▶<a href="#">성적 걱정 이제는 끝! 효율적인 공부 방법이 여기에!</a></li>
+					<li>▶<a href="#">성적 걱정 이제는 끝! 효율적인 공부 방법이 여기에!</a></li>
+				</ul>
+			</div>-->
+
+			<!-- 댓글 20140801 수정 -->
+			<div class="com_comment_area" id="com_comment_area"><!-- 20140829 com_comment_area id값 -->
+				<div class="tit_area">
+					<img src="img/tit_comment.gif" alt="댓글" /> <strong>(300)</strong> &nbsp; 내가 쓰는 댓글 하나에 작가님, 우리 모두 기분 up! 댓글을 남겨주세요~<!-- 20140528 수정 -->
+				</div>
+				<form action="" class="com_comment_frm"><!-- 20140721 com_comment_frm 클래스 추가 -->
+					<fieldset>
+						<legend>댓글 등록</legend>
+						<div class="write_area">
+							<!-- 20140716 추가 ~ 기본 댓글 선택영역 추가 -->
+							<div class="top_cmt">
+								<div class="left">
+									<span class="ico">댓글</span>댓글이 막막하다면 Yo 댓글~
+								</div>
+								<div class="right_wrap">
+									<div class="right">
+										<span class="cmt">
+											첫 회부터 정주행 할랍니다!
+										</span>
+										<a href="#">새로고침</a>
+									</div>
+								</div>
+							</div>
+							<!-- //20140716 추가 ~ 기본 댓글 선택영역 추가 -->
+							<div class="left_sel">
+								<img src="img/temp/tmp_sticker_author.png" alt="" class="thumbEx" />
+								<button type="button" class="thumbSel">작성자 아이콘 선택</button>
+							</div>
+							<!-- 20140721 수정 -->
+							<div class="right_write" id="main_cmt_area"><!-- 스티콘을 선택했을 때 right_write_on 클래스 붙음 -->
+								<div class="write">
+									<div class="icon_wr">
+										<img src="img/bg_stickon_area.gif" alt="" />
+									</div>
+									<div class="text_wr">
+										<textarea name="" id="" cols="30" rows="10" title="댓글 작성">첫 회부터 정주행 할랍니다!</textarea>
+										<div class="txt"><span>0/500</span></div>
+									</div>
+									<div class="btn_wr">
+										<button type="submit">등록</button>
+									</div>
+								</div>
+								<!-- 스티콘 댓글 20140619 삭제
+								<div class="stickon_wr"> 
+									<div class="tit"><span></span>스티콘 댓글</div>
+									<div class="thumbExList">
+										<button type="button"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></button>
+										<button type="button"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></button>
+										<button type="button"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></button>
+									</div>
+									<div class="thumbMore">
+										<a href="#" class="more">더보기</a>
+										<div class="thumbLayer"></div>
+									</div>
+								</div>-->
+								<!-- //스티콘 댓글 20140619 -->
+								<div class="stickon_select_area">
+									<div class="flexslider">
+										<ul class="slides">
+											<li><a href="#"><img src="img/stickon_all_dim.png" alt="스티콘 전체 보기" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/sticon_thum_dim.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/stickon_shop_dim.png" alt="스티콘 샵으로 가기" /></a></li>
+										</ul>
+									</div>
+									<div class="flexlayer_viewer">
+										<a href="#" class="">스티콘 더 보기</a>
+									</div>
+									<div class="flexlayer">
+										<ul>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+											<li><a href="#"><img src="img/temp/tmp_sticker_cmt.png" alt="" /></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<!-- //20140721 수정 -->
+						</div>
+					</fieldset>
+				</form>
+
+				<!-- 20140805 -->				
+				<ul id="commentListCell">
+					<ul id="160598">
+						<div class="list_area" id="sCmtundefined">
+							<img src="img/temp/tmp_sticker_author.png" alt="" class="profile">
+							<div class="left_etc">
+								<div class="left_etc_inner">
+									<div class="top_etc"><span class="userNickname">kwo*****</span><span class="date"> (2014-08-05 00:07)</span>
+									</div>
+									<div class="cont_etc" id="cmt160598">팬이에요 좋은내용감사해요^^</div>
+									<div class="cmt_etc"><a href="javascript:fncShowSubComment(160598);">대댓글 <strong name="subcmtcnt160598" id="subcmtcnt160598">0</strong></a>
+									</div>
+								</div>
+							</div>
+							<div class="right_etc">
+								<div class="recom"><a href="#" onclick="javascript:fncSetRecomm(160598, 'G');return false;" class="recom_y" id="goodImg160598"><span></span>좋아요 <strong name="goodcnt160598" id="goodcnt160598">2</strong></a> |<a href="#" onclick="javascript:fncSetRecomm(160598, 'B');return false;" class="recom_n" id="badImg160598"><span></span>싫어요 <strong name="badcnt160598" id="badcnt160598">1</strong></a>
+								</div><a href="#" class="call" onclick="fncCheckDeclare(160598, 'main'); return false;">신고</a>
+							</div>
+						</div>
+					</ul>
+					<ul id="subCmt160598" style="display: none;">
+						<div class="list_cmt_area">
+							<ul id="subCmtReg160598">
+								<div class="write_area">
+									<div class="left_sel">
+										<img src="img/temp/tmp_sticker_author.png" alt="" class="thumbEx" style="width:68px">
+										<button type="button" class="thumbSel" onclick="fncShowPopup('namecon'); return false;">작성자 아이콘 선택</button>
+									</div>
+									<div class="right_write">
+										<div class="write">
+											<div class="text_wr">
+												<textarea class="webtoonLoginBtn" onkeypress="webtoonLoginBtn();return false;" onclick="webtoonLoginBtn();return false;" name="subcomment160598" id="subcomment160598" cols="30" rows="10" style="IME-MODE:active;">오늘 하루 걱정거리를 잊게 해주는 작품이네요.</textarea>
+												<div class="txt"><span class="subcommentLength">0/500</span>
+												</div>
+											</div>
+											<div class="btn_wr">
+												<button type="button" onclick="fncRegistration('sub', 160598); return false;">등록</button>
+											</div>
+										</div>
+										<div class="stickon_wr">
+											<div class="thumbExList"></div>
+											<div class="thumbMore">
+												<div class="thumbLayer"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</ul>
+							<ul id="subCmtList160598"></ul>
+						</div>
+					</ul>
+				</ul>
+				<div class="list_cmt_area">
+					<!--  대댓글 등록 -->
+					<ul id="sub_cmt_reg"></ul>
+					<!--  대댓글 리스트 -->
+					<ul id="subCommentListCell"></ul>
+				</div>
+				<!-- //20140805 -->				
+
+				<!-- 페이징 -->
+				<div class="com_paging">
+					<a href="#" class="direction prev_first">이전 10개</a>
+					<a href="#" class="direction prev">이전 페이지</a>
+					<div class="pageNum">
+						<a href="#" class="cur">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+						<a href="#">5</a>
+						<a href="#">6</a>
+						<a href="#">7</a>
+						<a href="#">8</a>
+						<a href="#">9</a>
+						<a href="#">10</a>
+					</div>
+					<a href="#" class="direction next">다음 페이지</a>
+					<a href="#" class="direction next_last">다음 10개</a>
+				</div>
+				<!-- //페이징 -->
+			</div>
+			<!-- //댓글 20140801 수정 -->
+
+			<!-- 올레마켓 즐기기 -->
+			<div class="toon_view_other">
+				<div class="tit"><img src="img/tit_toon_view04.gif" alt="올레마켓 즐기기" /></div>
+				<div class="slides_wrap">
+					<ul class="slides">
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li class="on"><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">28화 - 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 샌드위치를 먹다 </span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+						<li><a href="#">
+							<span class="thumb"><img src="img/temp/tmp_toon_bnr.jpg" alt="" /></span>
+							<span class="txt">29화 - 고마워</span>
+						</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- //올레마켓 즐기기 -->
+		</div>
+		<!-- //toon_container -->
+	<!-- //웹툰 상세 -->
+
+	<!-- ### footer 20140522 edit ### -->
+	<div id="footer">
+		<h2 class="hidden">하단영역</h2>
+		<ul class="footerMenu">
+			<li><a href="#">회사소개</a> |</li>
+			<li><a href="#">이용약관</a> |</li>
+			<li><strong><a href="#">개인정보취급방침</a></strong> |</li>
+			<li><a href="#">청소년 보호정책</a></li>
+		</ul>
+		<div class="footerCopy">
+			㈜케이티 대표이사 황창규 · 사업자등록번호 : 102-81-42945 · 통신판매업신고 : 2002-경기성남-0048<br />
+			463-711 경기도 성남시 분당구 불정로 90(정자동 206번지) · Tel 국번없이 100  Copyright © 2011 kt corp. all rights reserved.
+		</div>
+	</div>
+	<!-- ### //footer 20140522 edit ### -->
+
+</div>
+<!-- //wrap -->
+
+<!-- 리모컨 위치 수정 20140829 -->
+<div class="mini_remocon_wrap">
+	<div class="dir_etc_bt">
+		<div class="v_bt">
+			<a href="#wrap" class="top">맨위로</a>
+			<a href="#com_comment_area" class="btm">아래로</a>
+		</div>
+		<div class="mode_bt">
+			<a href="#" class="extend">확장모드</a>
+		</div>
+	</div>
+</div>
+
+<a href="#" class="mini_remocon_prev">이전</a>
+<a href="#" class="mini_remocon_next">다음</a>
+
+<div class="extend_remocon_wrap">
+	<div class="tit_bt">
+		<a href="#">괜찮아 yo 괜찮아 yo 괜찮아 yo 괜찮아 yo </a>
+	</div>
+	<a href="#" class="dir_prev">이전</a>
+	<a href="#" class="dir_next">다음</a>
+	<div class="dir_etc_bt">
+		<div class="v_bt">
+			<a href="#wrap" class="top">맨위로</a>
+			<a href="#com_comment_area" class="btm">아래로</a>
+		</div>
+		<div class="mode_bt">
+			<a href="#" class="extend">확장모드</a>
+			<a href="#" class="mini">미니모드</a>
+		</div>
+	</div>
+	<div class="etc_bt">
+		<a href="#">스티커</a> |
+		<a href="#">댓글</a> |
+		<a href="#">공유</a>
+	</div>
+	<div class="prod_bt">
+		<a href="#">관련상품보기</a>
+	</div>
+</div>
+<!-- //리모컨 위치 수정 20140829 -->
+
+<!--20150107 신규 이벤트 팝업-->
+<div class="com_popup_bglayer"></div><!-- 팝업 배경 레이어 -->
+<!-- 개인정보 취급 위탁 동의 -->
+<div class="com_popup_layout popup_150107 popup_150107_01">
+	<div class="popup_tit01">
+		<img src="img/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+	<div class="popup_com_cont">
+		<div class="tit1dth">개인정보 취급 위탁 동의</div>
+
+		<div class="policy_box">
+			회사는 서비스 향상 및 원활한 진행을 위하여 개인정보취급을 위탁하며, 개인정보 취급위탁을 받는 자 및 위탁을 하는 업무는 아래와 같습니다.<br /><br />
+			1) 개인정보 취급위탁을 받는 자<br />
+			- 업체명 : 케이티하이텔(주), 케이티엠하우스㈜, 투니드엔터테인먼트㈜<br />
+			- 문의 : 올레마켓 웹툰 이벤트 담당자 (02)3289-4133 (평일 10:00 ~ 12:00, 13:00~17:00, 토/일요일 및 공휴일 제외) <br /><br />
+			2) 위탁목적<br />
+			- 이벤트 참여자 문의시 본인 확인 및 응대, 경품발송 <br /><br />
+			3) 위탁범위<br />
+			- 본 개인정보수집, 활용, 위탁 방침에 동의한 이용자가 입력한 개인정보 <br /><br />
+			4) 위탁기간<br />
+			- 이벤트 종료 후 10일 이내 폐기
+		</div>
+		<div class="policy_btn">
+			<button type="button" class="bt_normal_confirm" onclick="shut_popup('popup_150107_01');">확인</button>
+		</div>
+	</div>
+
+	<div class="popup_close"><a href="#" onclick="shut_popup('popup_150107_01');return false;"><img src="img/btn_close01.gif" alt="close" /></a></div>
+</div>
+<!-- //개인정보 취급 위탁 동의 -->
+
+<!-- 개인정보 수집, 활용에 대한 동의 -->
+<div class="com_popup_layout popup_150107 popup_150107_02">
+	<div class="popup_tit01">
+		<img src="img/tit_popup01.gif" alt="올레마켓 웹툰" />
+	</div>
+	<div class="popup_com_cont">
+		<div class="tit1dth">개인정보 수집, 활용에 대한 동의</div>
+
+		<div class="policy_box">
+			고객님이 입력한 개인정보는 '정보통신망 이용촉진 및 정보보호 등 에 관한 법률'에 따라 kt가 수집, 활용 및 취급 위탁 시 본인의 동의를 얻어야 하는 정보입니다. 입력하신 개인정보는 아래의 목적으로 이벤트 대행사 및 경품배송업체에만 제공되며, 이외의 용도로는 활용되지 않습니다.<br /><br />
+			1) 개인정보 수집 및 이용목적 <br />
+			가. 이벤트 대상 여부 및 본인 확인, 경품 배송 <br /><br />
+			2) 수집하는 개인정보 항목 <br />
+			가. 이벤트 응모자의 이메일<br />
+			나. 이벤트 응모자의 핸드폰 번호<br />
+			다. 이벤트 응모자의 아이디<br /><br />
+			3) 개인정보 보유 및 이용기간<br />
+			- 이벤트 종료 후 10일 이내 폐기(단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 관련 법령에 따라 보관)<br /><br />
+			4) 본 이벤트 참여 고객은 개인정보 수집, 활용에 대하여 동의를 거부할 권리가 있으며, 개인정보 수집, 활용에 대한 미동의시 이벤트에 참여하실 수 없습니다. 
+		</div>
+		<div class="policy_btn">
+			<button type="button" class="bt_normal_confirm" onclick="shut_popup('popup_150107_02');">확인</button>
+		</div>
+	</div>
+
+	<div class="popup_close"><a href="#" onclick="shut_popup('popup_150107_02');return false;"><img src="img/btn_close01.gif" alt="close" /></a></div>
+</div>
+<!-- //개인정보 수집, 활용에 대한 동의 -->
+<!--//20150107 신규 이벤트 팝업-->
+
+</body>
+</html>

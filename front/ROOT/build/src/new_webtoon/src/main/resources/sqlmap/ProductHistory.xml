@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.olleh.webtoon.common.dao.premium.persistence.ProductHistoryMapper">
+
+	<select id="selectProductDetail"
+		parameterType="hashmap"
+		resultType="com.olleh.webtoon.common.dao.premium.domain.ProductHistoryDomain">
+		SELECT
+			prdhistoryseq,
+			prdseq,
+			purchasefg,
+			webtoonseq,
+			timesseq,
+			berryuseyn,
+			blueberryuseyn,
+			raspberryuseyn,
+			prdfg,
+			prdnm,
+			sellyn,
+			prdterm,
+			sellstartdt,
+			sellenddt,
+			discountsellstartdt,
+			discountsellenddt,
+		<![CDATA[ 
+			case 
+			  when sellfg = 'sale' 
+			       and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= discountsellstartdt 
+			       and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= discountsellenddt then prddiscountprice	  
+			else prdprice
+			end as prdprice
+		FROM
+			ow_prd_his
+		WHERE
+			sellyn ="Y" 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		<if test='prdfg == null or prdfg == "times" or prdfg == "webtoon"'>
+			and prdhistoryseq = (select prdhistoryseq from ow_prd_his
+						         where prdfg = ifnull(#{prdfg}, 'times') and webtoonseq = #{webtoonseq} 
+							<if test='prdfg == null or prdfg == "times"'>
+								 and timesseq = #{timesseq}
+							</if>
+								 order by prdhistoryseq desc
+								 limit 1)
+		</if>
+		<if test='prdfg == "name" or prdfg == "comment"'>
+			and prdhistoryseq = (select prdhistoryseq from ow_prd_his
+								 where prdfg = #{prdfg} and prdseq = #{prdseq}
+								 order by prdhistoryseq desc
+							     limit 1 )		
+		</if>
+	</select>
+	
+	<select id="selectExistTimesprd" parameterType="java.lang.String" resultType="java.lang.String">
+		select "Y" 
+		from ow_prd 
+		where
+		<![CDATA[  
+			prdfg = 'times' and webtoonseq = #{webtoonseq} and sellyn ="Y" 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+		limit 0, 1
+	</select>
+	
+	<select id="selectProductDetailBySeq"
+		parameterType="java.lang.String" resultType="com.olleh.webtoon.common.dao.premium.domain.ProductHistoryDomain">
+		SELECT 
+			prdhistoryseq,
+			prdseq,
+			purchasefg,
+			webtoonseq,
+			timesseq,
+			prdfg,
+			prdnm,
+			sellyn,
+			prdterm,
+			sellstartdt,
+			sellenddt,
+			discountsellstartdt,
+			discountsellenddt,
+		<![CDATA[ 
+			case 
+			  when sellfg = 'sale' 
+			       and DATE_FORMAT(now(), '%Y%m%d%H%i%s') >= discountsellstartdt 
+			       and DATE_FORMAT(now(), '%Y%m%d%H%i%s') <= discountsellenddt then prddiscountprice	  
+			else prdprice
+			end as prdprice
+		FROM ow_prd_his
+		WHERE
+			prdhistoryseq = #{param} 
+			and sellyn ="Y" 
+			and date_format(now(), '%Y%m%d%H%i%s') >= date_format(sellstartdt, '%Y%m%d%H%i%s') 
+			and date_format(now(), '%Y%m%d%H%i%s') <= date_format(sellenddt, '%Y%m%d%H%i%s')
+		]]>
+	</select>
+	
+	<select id="selectFreeProductDetailBySeq"
+		parameterType="java.lang.Integer" resultType="com.olleh.webtoon.common.dao.premium.domain.ProductHistoryDomain">
+		SELECT 
+			prdhistoryseq,
+			prdseq,
+			purchasefg,
+			webtoonseq,
+			timesseq,
+			prdfg,
+			prdnm,
+			sellyn,
+			prdterm,
+			sellstartdt,
+			sellenddt,
+			discountsellstartdt,
+			discountsellenddt
+		FROM ow_prd_his
+		WHERE prdseq = #{param} 
+		ORDER BY prdhistoryseq desc
+		LIMIT 1
+	</select>
+</mapper>

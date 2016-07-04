@@ -1,0 +1,87 @@
+@charset 'utf-8';
+
+/* 20140808 아이스크림 이벤트 */
+.select_event{height:38px; line-height:38px; width:48px; background: url('../img/bg_select02.png') no-repeat right center; overflow:hidden; padding:0 20px 0 10px; color:#444; font-size:16px; font-weight:bold;}
+.ez-checkbox-evt{width:35px; height:35px; display:inline-block; *display:inline; zoom:1; vertical-align:middle; overflow:hidden; background:url('../img/event/0807/icn_chk_off.gif') no-repeat 0 0; cursor:pointer;} 
+.ez-checked-evt{ background:url('../img/event/0807/icn_chk_on.gif') no-repeat 0 0; cursor:pointer;}
+.ez-radio-evt{width:34px; height:35px; display:inline-block; *display:inline; zoom:1; vertical-align:middle; overflow:hidden; background:url('../img/event/0807/icn_radio.png') no-repeat 0 0;}
+.ez-radio-evt .ez-hide{margin-top:8px;}
+.ez-radiock-evt{background-position:0 -35px;}
+
+.ev_layout{width:1002px; margin:0 auto;} 	
+	.ev_layout .porel{clear:both; position:relative;}
+	.ev_layout .porel .tab{display:block; margin-left:11px;}
+	.ev_layout .porel .tab li{display:block; float:left;}
+	.ev_layout .porel .tab li a{display:block;}
+	.ev_layout .porel .poabs{display:block; position:absolute;}
+	.ev_layout .porel .btn_price{top:245px; left:754px;} /*당첨자 보기*/
+	.ev_layout .porel .info_input1{top:31px; left:388px;} /*응모 정보 입력 - 휴대폰*/
+	.ev_layout .porel .info_input1 li{display:block; float:left;}
+	.ev_layout .porel .info_input1 .select{padding:0 5px;}
+	.ev_layout .porel .info_input1 select{width:100%; font-size:16px; font-weight:bold; display:block; margin-top:10px;}
+	.ev_layout .porel .info_input1 .num1{padding:4px 0 0 22px;}
+	.ev_layout .porel .info_input1 .num2{padding:4px 0 0 52px;}
+	.ev_layout .porel .info_input1 input{width:85px; height:32px; background:#f6f6f6; line-height:32px; font-size:16px; font-weight:bold;}  
+	.ev_layout .porel .info_input2{top:86px; left:388px;} /*응모 정보 입력 - 인증번호*/
+	.ev_layout .porel .info_input2 li{display:block; float:left;}
+	.ev_layout .porel .info_input2 .num1{padding:4px 0 0 10px;}
+	.ev_layout .porel .info_input2 input{width:195px; height:32px; background:#f6f6f6; line-height:32px; font-size:16px; font-weight:bold;}  
+	.ev_layout .porel .info_input2 .btn_submit{padding:0px 0 0 15px;}
+	.ev_layout .porel .txt_timer{display:block; top:138px; left:388px;}/*인증번호 시간*/
+	.ev_layout .porel .info_submit{display:block; top:171px; left:388px;} /*응모하기 버튼*/
+	.ev_layout .porel .check1{top:58px; left:113px;}
+	.ev_layout .porel .check2{top:58px; left:556px;}
+	.ev_layout .porel .ev_agree{width:330px; border:1px solid #dedede; padding:10px 15px; background:#fff; line-height:20px;}
+	.ev_layout .porel .ev_agree.one{top:104px; left:113px;}
+	.ev_layout .porel .ev_agree.two{top:104px; left:556px;}
+	.ev_layout .porel .btn_more1{top:198px; left:385px;}
+	.ev_layout .porel .btn_more2{top:198px; left:830px;}
+	.ev_layout .ev_share{padding:20px 0 0 11px;}
+	.ev_layout .tl_share{ display:inline-block; *display:inline; zoom:1; margin-right:10px;}
+	.ev_layout .bt_url_evnt{ display:inline-block; *display:inline; zoom:1;  margin-left:10px;}
+.popup_evt_policy{width:608px; margin:0 0 0 -305px; position:absolute;}
+	.popup_evt_policy .tit1dth{color:#f14b59; font-size:16px; font-weight:bold; padding-bottom:15px;}
+	.popup_evt_policy .tit2dth{color:#f14b59; font-size:14px; font-weight:bold; padding-bottom:15px;}
+	.popup_evt_policy .tit3dth{font-weight:bold;}
+	.popup_evt_policy .policy_box{padding:20px 15px; overflow-y:auto; height:138px; border:1px solid #dfdfdf; line-height:1.8;}
+	.popup_evt_policy .policy_btn{margin-top:25px; text-align:center;}
+
+/* 20140811 아이스크림 이벤트 추가 */
+.ev_layout .porel2{clear:both; position:relative; width:980px; margin:0 auto;}
+.ev_layout .porel_result_form{}
+	.ev_layout .porel_result_form .info_input{position:absolute; top:103px; left:366px;}
+	.ev_layout .porel_result_form .info_input li{display:block; float:left;}
+	.ev_layout .porel_result_form .info_input .select{padding:0 5px;}
+	.ev_layout .porel_result_form .info_input select{width:100%; font-size:16px; font-weight:bold; display:block; margin-top:10px;}
+	.ev_layout .porel_result_form .info_input .num1{padding:4px 0 0 22px;}
+	.ev_layout .porel_result_form .info_input .num2{padding:4px 0 0 52px;}
+	.ev_layout .porel_result_form .info_input input{width:85px; height:32px; background:#f6f6f6; line-height:32px; font-size:16px; font-weight:bold;}
+	.ev_layout .porel_result_form .info_submit{position:absolute; left:366px; top:173px;}
+	.ev_layout .porel_result_form .info_btns{position:absolute; left:0; top:291px; width:100%; text-align:center;}
+	.ev_layout .porel_result_form .info_btns a{margin:0 2px;}
+	.ev_layout .porel_result_form .info_scroll{position:absolute; left:281px; top:103px; line-height:24px; width:418px; height:120px; overflow-y:auto; font-size:14px; color:#2484c6; font-weight:bold;}
+.ev_layout .porel a.bt_result_view{position:absolute; left:754px; top:271px;}
+.ev_layout .porel textarea.txt_share_view{position:absolute; left:295px; top:129px; background:#f6f6f6; width:412px; height:92px;}
+.ev_layout .porel .info_input3{position:absolute; top:109px; left:370px;}
+	.ev_layout .porel .info_input3 li{display:block; float:left;}
+	.ev_layout .porel .info_input3 .select{padding:0 5px;}
+	.ev_layout .porel .info_input3 select{width:100%; font-size:16px; font-weight:bold; display:block; margin-top:10px;}
+	.ev_layout .porel .info_input3 .num1{padding:4px 0 0 22px;}
+	.ev_layout .porel .info_input3 .num2{padding:4px 0 0 52px;}
+	.ev_layout .porel .info_input3 input{width:85px; height:32px; background:#f6f6f6; line-height:32px; font-size:16px; font-weight:bold;}
+.ev_layout .porel .info_sns{position:absolute; left:0; top:99px; width:100%; text-align:center;}
+	.ev_layout .porel .info_sns .sns{display:inline-block; vertical-align:middle; width:70px; margin:0 3px;}
+	.ev_layout .porel .info_sns img{margin-bottom:8px;}
+	.ev_layout .porel .info_sns label{cursor:pointer;}
+.ev_layout .porel .info_btn{position:absolute; left:0; top:302px; width:100%; text-align:center;}
+.ev_layout .porel_sns_list{width:800px; margin:0 auto; padding:0 89px 55px; margin:0 11px; border:1px solid #ccc; border-top:0;}
+	.ev_layout .porel_sns_list .sns_tit{border-bottom:1px solid #ccc;}
+	.ev_layout .porel_sns_list .sns_list{border-bottom:1px solid #ccc; padding:10px 0 0; zoom:1; min-height:80px; _height:80px;}
+	.ev_layout .porel_sns_list .sns_list:after{clear:both; display:block; content:'';}
+	.ev_layout .porel_sns_list .sns_list .thumb{float:left; margin-right:20px; margin-bottom:10px;}
+	.ev_layout .porel_sns_list .sns_list .img_etc{padding:5px 0 10px;}
+	.ev_layout .porel_sns_list .sns_list .date{color:#888;}
+	.ev_layout .porel_sns_list .sns_list .cont{padding-top:10px; line-height:18px;}
+.ev_layout .porel_sns_list .sns_list_etc{width:800px; margin:0 auto;}
+.ev_layout .porel_sns_list .sns_list_etc .tit{}
+.ev_layout .porel_sns_list .sns_list_etc ul{margin:0 15px; color:#888; line-height:22px;}

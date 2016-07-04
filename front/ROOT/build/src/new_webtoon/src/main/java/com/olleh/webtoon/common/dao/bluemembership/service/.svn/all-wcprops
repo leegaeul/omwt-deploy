@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service
+END
+BMService.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/BMService.java
+END
+InicisService.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/InicisService.java
+END
+BMPrdService.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/BMPrdService.java
+END
+BMTermService.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/BMTermService.java
+END
+MobiService.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/MobiService.java
+END
+BMOrderService.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/java/com/olleh/webtoon/common/dao/bluemembership/service/BMOrderService.java
+END

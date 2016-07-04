@@ -1,0 +1,90 @@
+<modify-entry
+   name="appInstall.jsp"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/appInstall.jsp.svn-base"
+   name=".svn/prop-base/tempfile.tmp"/>
+<readonly
+   name=".svn/prop-base/appInstall.jsp.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="appInstall.jsp"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="appInstall.jsp"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/appInstall.jsp"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="appInstall.jsp"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="appInstall.jsp"
+   name=".svn/tmp/text-base/appInstall.jsp.svn-base"/>
+<mv
+   dest=".svn/text-base/appInstall.jsp.svn-base"
+   name=".svn/tmp/text-base/appInstall.jsp.svn-base"/>
+<readonly
+   name=".svn/text-base/appInstall.jsp.svn-base"/>
+<modify-entry
+   name="appInstall.jsp"
+   checksum="75f01f2f029e6fe56448e4ecdd2b939d"/>
+<modify-entry
+   name="appInstall.jsp"
+   text-time="working"/>
+<modify-entry
+   name="appInstall.jsp"
+   working-size="working"/>
+<modify-entry
+   name="index.jsp"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/index.jsp.svn-base"
+   name=".svn/prop-base/tempfile.2.tmp"/>
+<readonly
+   name=".svn/prop-base/index.jsp.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="index.jsp"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="index.jsp"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/index.jsp"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="index.jsp"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="index.jsp"
+   name=".svn/tmp/text-base/index.jsp.svn-base"/>
+<mv
+   dest=".svn/text-base/index.jsp.svn-base"
+   name=".svn/tmp/text-base/index.jsp.svn-base"/>
+<readonly
+   name=".svn/text-base/index.jsp.svn-base"/>
+<modify-entry
+   name="index.jsp"
+   checksum="41727f7321339c49eaf355b62cc0f116"/>
+<modify-entry
+   name="index.jsp"
+   text-time="working"/>
+<modify-entry
+   name="index.jsp"
+   working-size="working"/>

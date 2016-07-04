@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olleh.webtoon.common.dao.support.persistence.FAQMapper">	
+
+	<cache eviction="LRU" flushInterval="30000" size="8" readOnly="true"/>
+	
+	<select id="faqSelectListCnt" parameterType="com.olleh.webtoon.common.dao.support.domain.FaqDomain" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ow_faq
+		where 
+		<if test='mobileyn == null or mobileyn == "N"'>
+			displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			mdisplayyn = 'Y'
+		</if>	   
+		<if test="keyword != null and keyword != ''">
+			and
+			title like #{keyword}
+		</if>
+	</select>
+	
+	<select id="faqSelectList" parameterType="com.olleh.webtoon.common.dao.support.domain.FaqDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.FaqDomain">
+		select
+			faqseq,
+			faqfg, 
+			title,
+			contents,
+			date_format(regdt, '%y.%m.%d') regdate
+		from 
+			ow_faq
+		where 
+		<if test='mobileyn == null or mobileyn == "N"'>
+			displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			mdisplayyn = 'Y'
+		</if>	   
+		<if test="keyword != null and keyword != ''">
+			and
+			title like #{keyword} 
+		</if>
+		order by
+			faqseq desc
+		limit 
+			#{startRowNo}, #{pageSize}
+	</select>
+	
+	<select id="faqSelectDetail" parameterType="com.olleh.webtoon.common.dao.support.domain.FaqDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.FaqDomain">
+		select
+			faqseq,
+			faqfg, 
+			title, 
+			contents,
+			date_format(regdt, '%y.%m.%d') regdate
+		from 
+			ow_faq
+		where 
+			faqseq = #{faqseq}
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and mdisplayyn = 'Y'
+		</if>	   
+	</select>
+	
+	<select id="prevFaqSelectSeq" parameterType="com.olleh.webtoon.common.dao.support.domain.FaqDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.FaqDomain">
+		select 
+			faqseq , title
+		from 
+			ow_faq
+		where 
+		<![CDATA[
+			faqseq < #{faqseq} 
+		]]>	
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and mdisplayyn = 'Y'
+		</if>	   
+		order by 
+			faqseq desc
+		limit 
+			0,1
+	</select>
+	
+	<select id="nextFaqSelectSeq" parameterType="com.olleh.webtoon.common.dao.support.domain.FaqDomain"  resultType="com.olleh.webtoon.common.dao.support.domain.FaqDomain">
+		select 
+			faqseq, title
+		from 
+			ow_faq
+		where 
+		<![CDATA[
+			faqseq > #{faqseq} 
+		]]>	
+		<if test='mobileyn == null or mobileyn == "N"'>
+			and displayyn = 'Y'
+		</if>
+		<if test='mobileyn != null and mobileyn == "Y"'>
+			and mdisplayyn = 'Y'
+		</if>	
+		order by 
+			faqseq asc
+		limit 
+			0,1 
+	</select>
+	
+</mapper>

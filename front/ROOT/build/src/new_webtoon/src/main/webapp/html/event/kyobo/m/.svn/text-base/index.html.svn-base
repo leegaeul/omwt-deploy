@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<title>올레마켓웹툰 이벤트</title>
+<style>
+body,div,form,fieldset,legend,input,textarea,p,blockquote,th,td { margin:0; padding:0;}
+fieldset, img { border:0;}
+hr, caption, legend { display:none;}
+input,select,button{vertical-align:middle}
+img, input, select, textarea {vertical-align: middle;}
+.wrap { max-width:600px; min-width:320px; margin:0 auto; }
+.wrap .con{width:100%; height:auto;}
+.rel { position:relative; }
+.rel span.online{ position:absolute;top:82%;left:25%; width:54% }
+.rel span.contest { position:absolute;top:82%;left:25%; width:54% }
+.rel span.location1 { position:absolute;top:35.7%;left:56%;width:23% }
+.rel span.location2 { position:absolute;top:53.4%;left:56%;width:23% }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+	<div><img src="/html/event/kyobo/m/images/gb_img01.jpg" class="con" alt="행복한 꿈을 충전하는 3총사 이벤트" /></div>
+	<div class="rel">
+		<img src="/html/event/kyobo/m/images/gb_img02.jpg" class="con" alt="이벤트1" />
+		<span class="online"><a href="http://www.kyobobook.co.kr/event/eventViewByPid.laf?eventPid=28007&classGb=KOR&PRE=Y" target="_blank"><img src="/html/event/kyobo/m/images/btn01.gif" alt="교보문고 온라인으로 가기" style="width:100%" /></a></span>
+	</div>
+	<div class="rel">
+		<img src="/html/event/kyobo/m/images/gb_img03.jpg" class="con" alt="이벤트2" />
+		<span class="contest"><a href="http://m.webtoon.olleh.com/m/eventpromotion/contestEvent.kt" target="_blank"><img src="/html/event/kyobo/m/images/btn02.gif" alt="제2회 올레마켓웹툰 공모전" style="width:100%" /></a></span>
+	</div>
+	<div class="rel">
+		<img src="/html/event/kyobo/m/images/gb_img04.jpg" class="con" alt="이벤트3" />
+		<span class="location1"><a href="http://m.kyobobook.com/storeinfo/show/01" target="_blank"><img src="/html/event/kyobo/m/images/btn_loc.gif" alt="위치보러가기" style="width:100%" /></a></span>
+		<span class="location2"><a href="http://m.kyobobook.com/storeinfo/show/36" target="_blank"><img src="/html/event/kyobo/m/images/btn_loc.gif" alt="위치보러가기" style="width:100%" /></a></span>
+	</div>
+</div>
+
+</body>
+</html>

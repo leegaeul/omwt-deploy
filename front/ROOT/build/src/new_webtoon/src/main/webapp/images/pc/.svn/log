@@ -1,0 +1,495 @@
+<modify-entry
+   name="tit_mem_join02.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/tit_mem_join02.gif.svn-base"
+   name=".svn/prop-base/tempfile.tmp"/>
+<readonly
+   name=".svn/prop-base/tit_mem_join02.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="tit_mem_join02.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="tit_mem_join02.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/tit_mem_join02.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="tit_mem_join02.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="tit_mem_join02.gif"
+   name=".svn/tmp/text-base/tit_mem_join02.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/tit_mem_join02.gif.svn-base"
+   name=".svn/tmp/text-base/tit_mem_join02.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/tit_mem_join02.gif.svn-base"/>
+<modify-entry
+   name="tit_mem_join02.gif"
+   checksum="a13e806d65d8976d5df7232c789d788d"/>
+<modify-entry
+   name="tit_mem_join02.gif"
+   text-time="working"/>
+<modify-entry
+   name="tit_mem_join02.gif"
+   working-size="working"/>
+<modify-entry
+   name="bg_mytoon_tabon.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/bg_mytoon_tabon.gif.svn-base"
+   name=".svn/prop-base/tempfile.2.tmp"/>
+<readonly
+   name=".svn/prop-base/bg_mytoon_tabon.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="bg_mytoon_tabon.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="bg_mytoon_tabon.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/bg_mytoon_tabon.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="bg_mytoon_tabon.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="bg_mytoon_tabon.gif"
+   name=".svn/tmp/text-base/bg_mytoon_tabon.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/bg_mytoon_tabon.gif.svn-base"
+   name=".svn/tmp/text-base/bg_mytoon_tabon.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/bg_mytoon_tabon.gif.svn-base"/>
+<modify-entry
+   name="bg_mytoon_tabon.gif"
+   checksum="6e86e7c2195fa094a2a85b4f9caa67a5"/>
+<modify-entry
+   name="bg_mytoon_tabon.gif"
+   text-time="working"/>
+<modify-entry
+   name="bg_mytoon_tabon.gif"
+   working-size="working"/>
+<modify-entry
+   name="stickon_all_sel.png"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/stickon_all_sel.png.svn-base"
+   name=".svn/prop-base/tempfile.3.tmp"/>
+<readonly
+   name=".svn/prop-base/stickon_all_sel.png.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="stickon_all_sel.png"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="stickon_all_sel.png"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/stickon_all_sel.png"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="stickon_all_sel.png"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="stickon_all_sel.png"
+   name=".svn/tmp/text-base/stickon_all_sel.png.svn-base"/>
+<mv
+   dest=".svn/text-base/stickon_all_sel.png.svn-base"
+   name=".svn/tmp/text-base/stickon_all_sel.png.svn-base"/>
+<readonly
+   name=".svn/text-base/stickon_all_sel.png.svn-base"/>
+<modify-entry
+   name="stickon_all_sel.png"
+   checksum="d5fa5f0a48659086db21955626af093f"/>
+<modify-entry
+   name="stickon_all_sel.png"
+   text-time="working"/>
+<modify-entry
+   name="stickon_all_sel.png"
+   working-size="working"/>
+<modify-entry
+   name="stickon_shop_sel.png"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/stickon_shop_sel.png.svn-base"
+   name=".svn/prop-base/tempfile.4.tmp"/>
+<readonly
+   name=".svn/prop-base/stickon_shop_sel.png.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="stickon_shop_sel.png"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="stickon_shop_sel.png"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/stickon_shop_sel.png"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="stickon_shop_sel.png"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="stickon_shop_sel.png"
+   name=".svn/tmp/text-base/stickon_shop_sel.png.svn-base"/>
+<mv
+   dest=".svn/text-base/stickon_shop_sel.png.svn-base"
+   name=".svn/tmp/text-base/stickon_shop_sel.png.svn-base"/>
+<readonly
+   name=".svn/text-base/stickon_shop_sel.png.svn-base"/>
+<modify-entry
+   name="stickon_shop_sel.png"
+   checksum="49a388ce8602367f1f30ba1dadd8ee4b"/>
+<modify-entry
+   name="stickon_shop_sel.png"
+   text-time="working"/>
+<modify-entry
+   name="stickon_shop_sel.png"
+   working-size="working"/>
+<modify-entry
+   name="tit_bluemem_join02.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/tit_bluemem_join02.gif.svn-base"
+   name=".svn/prop-base/tempfile.5.tmp"/>
+<readonly
+   name=".svn/prop-base/tit_bluemem_join02.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="tit_bluemem_join02.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="tit_bluemem_join02.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/tit_bluemem_join02.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="tit_bluemem_join02.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="tit_bluemem_join02.gif"
+   name=".svn/tmp/text-base/tit_bluemem_join02.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/tit_bluemem_join02.gif.svn-base"
+   name=".svn/tmp/text-base/tit_bluemem_join02.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/tit_bluemem_join02.gif.svn-base"/>
+<modify-entry
+   name="tit_bluemem_join02.gif"
+   checksum="dc2d239c6838f5dd974f89e10ca2871d"/>
+<modify-entry
+   name="tit_bluemem_join02.gif"
+   text-time="working"/>
+<modify-entry
+   name="tit_bluemem_join02.gif"
+   working-size="working"/>
+<modify-entry
+   name="tit_toon_view.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/tit_toon_view.gif.svn-base"
+   name=".svn/prop-base/tempfile.6.tmp"/>
+<readonly
+   name=".svn/prop-base/tit_toon_view.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="tit_toon_view.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="tit_toon_view.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/tit_toon_view.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="tit_toon_view.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="tit_toon_view.gif"
+   name=".svn/tmp/text-base/tit_toon_view.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/tit_toon_view.gif.svn-base"
+   name=".svn/tmp/text-base/tit_toon_view.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/tit_toon_view.gif.svn-base"/>
+<modify-entry
+   name="tit_toon_view.gif"
+   checksum="08a9d51006e58fbbfc6558a83fde9763"/>
+<modify-entry
+   name="tit_toon_view.gif"
+   text-time="working"/>
+<modify-entry
+   name="tit_toon_view.gif"
+   working-size="working"/>
+<modify-entry
+   name="btn_login.png"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/btn_login.png.svn-base"
+   name=".svn/prop-base/tempfile.7.tmp"/>
+<readonly
+   name=".svn/prop-base/btn_login.png.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="btn_login.png"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="btn_login.png"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/btn_login.png"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="btn_login.png"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="btn_login.png"
+   name=".svn/tmp/text-base/btn_login.png.svn-base"/>
+<mv
+   dest=".svn/text-base/btn_login.png.svn-base"
+   name=".svn/tmp/text-base/btn_login.png.svn-base"/>
+<readonly
+   name=".svn/text-base/btn_login.png.svn-base"/>
+<modify-entry
+   name="btn_login.png"
+   checksum="ae4ceb05cf89f897cf0f31dea3b3bc0e"/>
+<modify-entry
+   name="btn_login.png"
+   text-time="working"/>
+<modify-entry
+   name="btn_login.png"
+   working-size="working"/>
+<modify-entry
+   name="bg_recent_nolist.jpg"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/bg_recent_nolist.jpg.svn-base"
+   name=".svn/prop-base/tempfile.8.tmp"/>
+<readonly
+   name=".svn/prop-base/bg_recent_nolist.jpg.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="bg_recent_nolist.jpg"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="bg_recent_nolist.jpg"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/bg_recent_nolist.jpg"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="bg_recent_nolist.jpg"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="bg_recent_nolist.jpg"
+   name=".svn/tmp/text-base/bg_recent_nolist.jpg.svn-base"/>
+<mv
+   dest=".svn/text-base/bg_recent_nolist.jpg.svn-base"
+   name=".svn/tmp/text-base/bg_recent_nolist.jpg.svn-base"/>
+<readonly
+   name=".svn/text-base/bg_recent_nolist.jpg.svn-base"/>
+<modify-entry
+   name="bg_recent_nolist.jpg"
+   checksum="d966e1ebf7d409f2b0f865c43cdb22ae"/>
+<modify-entry
+   name="bg_recent_nolist.jpg"
+   text-time="working"/>
+<modify-entry
+   name="bg_recent_nolist.jpg"
+   working-size="working"/>
+<modify-entry
+   name="tit_bluemem_join06.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/tit_bluemem_join06.gif.svn-base"
+   name=".svn/prop-base/tempfile.9.tmp"/>
+<readonly
+   name=".svn/prop-base/tit_bluemem_join06.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="tit_bluemem_join06.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="tit_bluemem_join06.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/tit_bluemem_join06.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="tit_bluemem_join06.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="tit_bluemem_join06.gif"
+   name=".svn/tmp/text-base/tit_bluemem_join06.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/tit_bluemem_join06.gif.svn-base"
+   name=".svn/tmp/text-base/tit_bluemem_join06.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/tit_bluemem_join06.gif.svn-base"/>
+<modify-entry
+   name="tit_bluemem_join06.gif"
+   checksum="a01b60c7f2b367f5301932a3725cbc49"/>
+<modify-entry
+   name="tit_bluemem_join06.gif"
+   text-time="working"/>
+<modify-entry
+   name="tit_bluemem_join06.gif"
+   working-size="working"/>
+<modify-entry
+   name="toon_icon_end.png"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/toon_icon_end.png.svn-base"
+   name=".svn/prop-base/tempfile.10.tmp"/>
+<readonly
+   name=".svn/prop-base/toon_icon_end.png.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="toon_icon_end.png"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="toon_icon_end.png"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/toon_icon_end.png"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="toon_icon_end.png"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="toon_icon_end.png"
+   name=".svn/tmp/text-base/toon_icon_end.png.svn-base"/>
+<mv
+   dest=".svn/text-base/toon_icon_end.png.svn-base"
+   name=".svn/tmp/text-base/toon_icon_end.png.svn-base"/>
+<readonly
+   name=".svn/text-base/toon_icon_end.png.svn-base"/>
+<modify-entry
+   name="toon_icon_end.png"
+   checksum="9850e817dff4a37ea05fadabd3319445"/>
+<modify-entry
+   name="toon_icon_end.png"
+   text-time="working"/>
+<modify-entry
+   name="toon_icon_end.png"
+   working-size="working"/>
+<modify-entry
+   name="btn_berry_charge.gif"
+   present-props=""
+   has-prop-mods="false"
+   has-props="true"/>
+<mv
+   dest=".svn/prop-base/btn_berry_charge.gif.svn-base"
+   name=".svn/prop-base/tempfile.11.tmp"/>
+<readonly
+   name=".svn/prop-base/btn_berry_charge.gif.svn-base"/>
+<modify-entry
+   committed-rev="13006"
+   committed-date="2016-06-16T05:09:21.164514Z"
+   name="btn_berry_charge.gif"
+   last-author="20160012"
+   uuid="96c9b21e-5fc9-47b4-8962-9d6059600d29"/>
+<modify-wcprop
+   name="btn_berry_charge.gif"
+   propname="svn:wc:ra_dav:version-url"
+   propval="/svn/App-Eco/olleh_market/!svn/ver/13006/test/new_webtoon/src/main/webapp/images/pc/btn_berry_charge.gif"/>
+<modify-entry
+   text-time="1970-01-01T00:00:00.000000Z"
+   name="btn_berry_charge.gif"
+   kind="file"
+   deleted="false"
+   working-size="-1"
+   absent="false"
+   revision="13053"/>
+<cp-and-translate
+   dest="btn_berry_charge.gif"
+   name=".svn/tmp/text-base/btn_berry_charge.gif.svn-base"/>
+<mv
+   dest=".svn/text-base/btn_berry_charge.gif.svn-base"
+   name=".svn/tmp/text-base/btn_berry_charge.gif.svn-base"/>
+<readonly
+   name=".svn/text-base/btn_berry_charge.gif.svn-base"/>
+<modify-entry
+   name="btn_berry_charge.gif"
+   checksum="6d750d7fb6673071025bef4c2eb5490b"/>
+<modify-entry
+   name="btn_berry_charge.gif"
+   text-time="working"/>
+<modify-entry
+   name="btn_berry_charge.gif"
+   working-size="working"/>
